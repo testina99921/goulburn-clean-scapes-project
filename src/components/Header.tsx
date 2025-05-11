@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Droplet } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,9 +22,39 @@ const Header = () => {
     };
   }, [scrolled]);
 
+  const scrollToFAQ = (e) => {
+    e.preventDefault();
+    // First go to home page if not already there
+    if (window.location.pathname !== '/') {
+      window.location.href = '/#faq';
+    } else {
+      // If already on home page, just scroll to FAQ section
+      const faqSection = document.getElementById('faq');
+      if (faqSection) {
+        faqSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
+  const scrollToHowItWorks = (e) => {
+    e.preventDefault();
+    // First go to home page if not already there
+    if (window.location.pathname !== '/') {
+      window.location.href = '/#how-it-works';
+    } else {
+      // If already on home page, just scroll to How It Works section
+      const howItWorksSection = document.getElementById('how-it-works');
+      if (howItWorksSection) {
+        howItWorksSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/80 backdrop-blur-lg shadow-md' : 'bg-white/60 backdrop-blur-md'
+      scrolled ? 'bg-navy/90 backdrop-blur-lg shadow-md' : 'bg-navy/80 backdrop-blur-md'
     }`}>
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
@@ -33,27 +63,30 @@ const Header = () => {
               src="/lovable-uploads/4728361d-92a8-4803-8916-d47dc3ab3a1b.png" 
               alt="R Judd Enterprises" 
               className="h-10 md:h-12"
+              style={{ filter: 'brightness(0) invert(1)' }}
             />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center justify-center flex-1">
-            <Link to="/" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Home</Link>
-            <Link to="/services" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Services</Link>
-            <Link to="/testimonials" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Testimonials</Link>
-            <a href="/#faq" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">FAQ</a>
-            <Link to="/contact" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Contact</Link>
+            <Link to="/" className="text-white hover:text-navyLight font-bold mx-4 transition-colors">Home</Link>
+            <Link to="/services" className="text-white hover:text-navyLight font-bold mx-4 transition-colors">Services</Link>
+            <a href="/#how-it-works" onClick={scrollToHowItWorks} className="text-white hover:text-navyLight font-bold mx-4 transition-colors">How It Works</a>
+            <Link to="/testimonials" className="text-white hover:text-navyLight font-bold mx-4 transition-colors">Testimonials</Link>
+            <a href="/#faq" onClick={scrollToFAQ} className="text-white hover:text-navyLight font-bold mx-4 transition-colors">FAQ</a>
+            <Link to="/contact" className="text-white hover:text-navyLight font-bold mx-4 transition-colors">Contact</Link>
           </nav>
 
           <div className="hidden md:flex items-center">
-            <Link to="/contact" className="neumorphic-button">
+            <Link to="/contact" className="neumorphic-button bg-white text-navy hover:bg-navyLight hover:text-white">
+              <Droplet className="w-4 h-4 mr-2" />
               Free Quote
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-navy"
+            className="md:hidden text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -90,6 +123,13 @@ const Header = () => {
             >
               Services
             </Link>
+            <a
+              href="/#how-it-works" 
+              className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
+              onClick={scrollToHowItWorks}
+            >
+              How It Works
+            </a>
             <Link 
               to="/testimonials" 
               className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
@@ -97,10 +137,10 @@ const Header = () => {
             >
               Testimonials
             </Link>
-            <a 
+            <a
               href="/#faq" 
               className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={scrollToFAQ}
             >
               FAQ
             </a>
@@ -113,9 +153,10 @@ const Header = () => {
             </Link>
             <Link 
               to="/contact" 
-              className="bg-navy text-white py-3 px-6 rounded-lg text-center font-bold text-lg hover:bg-navyLight transition-colors"
+              className="bg-navy text-white py-3 px-6 rounded-lg text-center font-bold text-lg hover:bg-navyLight transition-colors flex items-center justify-center"
               onClick={() => setIsMenuOpen(false)}
             >
+              <Droplet className="w-5 h-5 mr-2" />
               Free Quote
             </Link>
           </nav>

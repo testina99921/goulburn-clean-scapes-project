@@ -1,61 +1,58 @@
 
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Droplet } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-navy text-white py-6">
+    <footer className="bg-navy text-white py-4">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-2 text-sm">
           {/* Company Info */}
-          <div className="mb-2">
-            <h3 className="font-bold text-base mb-1">R Judd Enterprise</h3>
-            <div className="flex items-center mb-1 text-xs">
-              <Phone size={14} className="mr-2" />
-              <a href="tel:0417264292" className="hover:text-navyLight transition-colors">0417 264 292</a>
+          <div>
+            <h3 className="font-bold mb-1 text-sm">R Judd Enterprise</h3>
+            <div className="flex items-center mb-1">
+              <Phone size={12} className="mr-1" />
+              <a href="tel:0417264292" className="hover:text-navyLight transition-colors text-xs">0417 264 292</a>
             </div>
-            <div className="flex items-center mb-1 text-xs">
-              <Mail size={14} className="mr-2" />
-              <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
+            <div className="flex items-center mb-1">
+              <Mail size={12} className="mr-1" />
+              <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors text-xs">rossjudd@hotmail.com</a>
             </div>
-            <div className="flex items-start mb-1 text-xs">
-              <MapPin size={14} className="mr-2 mt-0.5 flex-shrink-0" />
-              <p>Goulburn & Canberra, NSW, Australia</p>
+            <div className="flex items-start mb-1">
+              <MapPin size={12} className="mr-1 mt-0.5 flex-shrink-0" />
+              <p className="text-xs">Goulburn & Canberra, NSW</p>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="mb-2">
-            <h3 className="font-bold text-base mb-1">Quick Links</h3>
-            <ul className="grid grid-cols-2 text-xs">
+          <div>
+            <h3 className="font-bold mb-1 text-sm">Quick Links</h3>
+            <ul className="grid grid-cols-1 text-xs space-y-1">
               <li><Link to="/" className="hover:text-navyLight transition-colors">Home</Link></li>
+              <li><a href="/#how-it-works" className="hover:text-navyLight transition-colors">How It Works</a></li>
               <li><a href="/#faq" className="hover:text-navyLight transition-colors">FAQ</a></li>
-              <li><Link to="/services" className="hover:text-navyLight transition-colors">Services</Link></li>
               <li><Link to="/contact" className="hover:text-navyLight transition-colors">Contact</Link></li>
             </ul>
           </div>
 
           {/* Services */}
-          <div className="mb-2">
-            <h3 className="font-bold text-base mb-1">Our Services</h3>
-            <ul className="grid grid-cols-2 text-xs gap-y-0.5">
+          <div>
+            <h3 className="font-bold mb-1 text-sm">Our Services</h3>
+            <ul className="grid grid-cols-1 text-xs space-y-1">
               <li><Link to="/services" className="hover:text-navyLight transition-colors">Commercial Pressure Washing</Link></li>
               <li><Link to="/services" className="hover:text-navyLight transition-colors">Driveway Cleaning</Link></li>
               <li><Link to="/services" className="hover:text-navyLight transition-colors">House Washing</Link></li>
-              <li><Link to="/services" className="hover:text-navyLight transition-colors">Deck & Patio Cleaning</Link></li>
               <li><Link to="/services" className="hover:text-navyLight transition-colors">Roof Cleaning</Link></li>
-              <li><Link to="/services" className="hover:text-navyLight transition-colors">Fence Cleaning</Link></li>
-              <li><Link to="/contact" className="hover:text-navyLight transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
           {/* Business Hours */}
-          <div className="mb-2">
-            <h3 className="font-bold text-base mb-1">Business Hours</h3>
+          <div>
+            <h3 className="font-bold mb-1 text-sm">Business Hours</h3>
             <div className="flex items-start text-xs mb-2">
-              <Clock size={14} className="mr-2 mt-0.5 flex-shrink-0" />
+              <Clock size={12} className="mr-1 mt-0.5 flex-shrink-0" />
               <div>
                 <p>Monday - Friday: 8am - 6pm</p>
                 <p>Saturday: 9am - 1pm</p>
@@ -64,7 +61,8 @@ const Footer = () => {
             </div>
             
             <div>
-              <Link to="/contact" className="bg-white text-navy py-1.5 px-3 rounded-lg text-center font-medium hover:bg-navyLight hover:text-white transition-colors inline-block text-xs">
+              <Link to="/contact" className="bg-white text-navy py-1.5 px-3 rounded-lg text-center font-medium hover:bg-navyLight hover:text-white transition-colors inline-flex items-center text-xs">
+                <Droplet className="w-3 h-3 mr-1" />
                 Request a Quote
               </Link>
             </div>

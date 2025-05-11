@@ -1,7 +1,6 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import SectionTitle from './SectionTitle';
 
 // FAQ data
 const faqData = [
@@ -33,41 +32,32 @@ const faqData = [
 
 const FAQSection: React.FC = () => {
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <SectionTitle 
-          title="Frequently Asked Questions" 
-          subtitle="Find answers to common questions about our pressure washing services"
-        />
-        
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="w-full">
-            {faqData.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="border-b border-gray-200">
-                <AccordionTrigger className="text-left font-medium text-navy hover:text-green py-4">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-        
-        <div className="text-center mt-10">
-          <p className="text-gray-600 mb-4">
-            Don't see your question here? Get in touch with us directly.
-          </p>
-          <a 
-            href="/contact" 
-            className="neumorphic-button bg-navy text-white hover:bg-navyLight inline-block"
-          >
-            Contact Us
-          </a>
-        </div>
+    <div className="max-w-3xl mx-auto">
+      <Accordion type="single" collapsible className="w-full">
+        {faqData.map((faq, index) => (
+          <AccordionItem key={index} value={`item-${index}`} className="border-b border-navyLight/20">
+            <AccordionTrigger className="text-left font-medium text-navy hover:text-navyLight py-4">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-navy pb-4">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+      
+      <div className="text-center mt-10">
+        <p className="text-navy mb-4">
+          Don't see your question here? Get in touch with us directly.
+        </p>
+        <a 
+          href="/contact" 
+          className="neumorphic-button bg-navy text-white hover:bg-navyLight inline-block"
+        >
+          Contact Us
+        </a>
       </div>
-    </section>
+    </div>
   );
 };
 

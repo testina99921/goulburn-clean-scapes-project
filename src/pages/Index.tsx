@@ -20,14 +20,20 @@ import {
   ClipboardCheck, 
   MessageCircle, 
   Calendar,
-  Check
+  Check,
+  Droplet,
+  SprayCan,
+  House,
+  ShowerHead,
+  Water,
+  Wrench
 } from 'lucide-react';
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Pressure washing image
-  const pressureWashingHero = "https://images.unsplash.com/photo-1623767322495-1c208883ad06?q=80&w=2070&auto=format&fit=crop";
+  // Hero image
+  const heroImage = "https://images.unsplash.com/photo-1623767322495-1c208883ad06?q=80&w=2070&auto=format&fit=crop";
   
   // Before-After Images
   const beforeImage = "/lovable-uploads/7a6c7328-de8c-43a1-80cc-532f5b359b7d.png"; 
@@ -104,7 +110,7 @@ const Index = () => {
       <section 
         className="pt-32 pb-24 md:py-40 relative bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url(${pressureWashingHero})`,
+          backgroundImage: `linear-gradient(rgba(36, 175, 188, 0.7), rgba(36, 175, 188, 0.8)), url(${heroImage})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover'
         }}
@@ -120,13 +126,21 @@ const Index = () => {
               Restore the beauty of your home or business with our expert pressure washing services in Goulburn, Canberra & NSW.
             </p>
           </AnimateOnScroll>
-          <AnimateOnScroll delay={400}>
+          <AnimateOnScroll delay={400} className="flex flex-col md:flex-row justify-center items-center gap-4">
             <button 
               onClick={openModal} 
-              className="cta-button animate-glow"
+              className="cta-button animate-glow flex items-center"
             >
-              Free Quote
+              <Droplet className="w-5 h-5 mr-2" />
+              Get A Free Quote
             </button>
+            <Link 
+              to="/services"
+              className="neumorphic-button bg-white text-navy hover:bg-navyLight hover:text-white flex items-center"
+            >
+              <SprayCan className="w-5 h-5 mr-2" />
+              Learn More
+            </Link>
           </AnimateOnScroll>
         </div>
       </section>
@@ -137,16 +151,16 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <AnimateOnScroll className="md:w-1/3">
               <div className="rounded-lg overflow-hidden shadow-xl card-3d">
-                <img src="https://images.unsplash.com/photo-1610501640036-c70e9c7f10c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Pressure Washing Service" className="w-full object-cover h-72" />
+                <img src="/lovable-uploads/710c2b6a-0f4a-48b0-81d1-3e790c100c62.png" alt="Pressure Washing Service" className="w-full object-cover h-72" />
               </div>
             </AnimateOnScroll>
             <div className="md:w-2/3">
               <AnimateOnScroll>
                 <h2 className="text-3xl font-light text-navy mb-4">Trusted by <span className="font-semibold">Goulburn</span></h2>
-                <p className="text-lg text-gray-600 mb-4">
+                <p className="text-lg text-navy mb-4">
                   Ross Judd of R JUDD Enterprises brings years of experience and a reputation for excellence to every pressure washing job. As a trusted name in Goulburn for many years, Ross has built a solid reputation for quality craftsmanship and customer satisfaction.
                 </p>
-                <p className="text-lg text-gray-600 mb-6">
+                <p className="text-lg text-navy mb-6">
                   Now offering professional pressure washing services, we bring the same commitment to quality and attention to detail that has made R JUDD Enterprises a trusted name in the community.
                 </p>
                 <Link to="/about" className="text-navy font-medium hover:text-navyLight transition-colors flex items-center fancy-link">
@@ -162,7 +176,7 @@ const Index = () => {
       </section>
 
       {/* Before & After Showcase */}
-      <section className="py-16 bg-gradient" id="before-after">
+      <section className="py-16 bg-navyLight/10" id="before-after">
         <div className="container mx-auto px-4">
           <AnimateOnScroll>
             <SectionTitle 
@@ -182,7 +196,8 @@ const Index = () => {
             
             <div className="text-center mt-8">
               <AnimateOnScroll delay={400}>
-                <Link to="/gallery" className="neumorphic-button inline-block">
+                <Link to="/gallery" className="neumorphic-button inline-flex items-center">
+                  <Water className="w-5 h-5 mr-2" />
                   View More Transformations
                 </Link>
               </AnimateOnScroll>
@@ -206,7 +221,7 @@ const Index = () => {
               <ServiceCard
                 title="Residential Pressure Washing"
                 description="Complete exterior cleaning for homes, including siding, driveways, decks, patios, walkways and fences."
-                icon={<HomeIcon size={48} />}
+                icon={<House size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -214,7 +229,7 @@ const Index = () => {
               <ServiceCard
                 title="Commercial Pressure Washing"
                 description="Maintain a professional appearance for your business with our building exterior, parking lot, and sidewalk cleaning."
-                icon={<BuildingIcon size={48} />}
+                icon={<BuildingIcon size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -222,9 +237,7 @@ const Index = () => {
               <ServiceCard
                 title="Driveway & Concrete Cleaning"
                 description="Remove oil stains, dirt, and grime from concrete, pavers, and other driveway surfaces."
-                icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
-                </svg>}
+                icon={<SprayCan size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -232,7 +245,7 @@ const Index = () => {
               <ServiceCard
                 title="House Washing"
                 description="Safely remove dirt, mold, and mildew from your home's exterior to restore its appearance."
-                icon={<HomeIcon size={48} />}
+                icon={<HomeIcon size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -240,9 +253,7 @@ const Index = () => {
               <ServiceCard
                 title="Deck & Patio Restoration"
                 description="Bring your outdoor living spaces back to life with our deck and patio cleaning services."
-                icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>}
+                icon={<ShowerHead size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -250,16 +261,15 @@ const Index = () => {
               <ServiceCard
                 title="Roof Cleaning"
                 description="Remove black streaks, moss, and algae from your roof to improve your home's appearance and extend roof life."
-                icon={<svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                </svg>}
+                icon={<Droplet size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
           </div>
           
           <div className="text-center mt-10">
             <AnimateOnScroll>
-              <Link to="/services" className="neumorphic-button inline-block">
+              <Link to="/services" className="neumorphic-button inline-flex items-center">
+                <Wrench className="w-5 h-5 mr-2" />
                 View All Services
               </Link>
             </AnimateOnScroll>
@@ -268,7 +278,7 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 bg-gradient">
+      <section className="py-16 bg-navyLight/10">
         <div className="container mx-auto px-4">
           <AnimateOnScroll>
             <SectionTitle 
@@ -284,7 +294,7 @@ const Index = () => {
                   <BuildingIcon size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Backed by R JUDD Enterprises</h3>
-                <p className="text-gray-600">
+                <p className="text-navy">
                   A trusted local business with years of experience serving the Goulburn community with excellence.
                 </p>
               </div>
@@ -292,13 +302,11 @@ const Index = () => {
             
             <AnimateOnScroll delay={200}>
               <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-green rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                  </svg>
+                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Water size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Eco-Friendly Solutions</h3>
-                <p className="text-gray-600">
+                <p className="text-navy">
                   We use environmentally responsible cleaning solutions that are effective yet safe for your family and property.
                 </p>
               </div>
@@ -306,11 +314,11 @@ const Index = () => {
             
             <AnimateOnScroll delay={300}>
               <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClipboardCheck size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">100% Satisfaction Guarantee</h3>
-                <p className="text-gray-600">
+                <p className="text-navy">
                   We stand behind our work with a complete satisfaction guarantee. Your happiness is our priority.
                 </p>
               </div>
@@ -320,7 +328,7 @@ const Index = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white" id="how-it-works">
         <div className="container mx-auto px-4">
           <AnimateOnScroll>
             <SectionTitle 
@@ -333,7 +341,7 @@ const Index = () => {
             <AnimateOnScroll delay={100}>
               <ProcessCard
                 step={1}
-                icon={<MessageCircle size={48} />}
+                icon={<MessageCircle size={48} className="text-navy" />}
                 title="Request a Quote"
                 description="Contact us for a free, no-obligation quote. We'll assess your needs and provide transparent pricing."
               />
@@ -342,7 +350,7 @@ const Index = () => {
             <AnimateOnScroll delay={200}>
               <ProcessCard
                 step={2}
-                icon={<Calendar size={48} />}
+                icon={<Calendar size={48} className="text-navy" />}
                 title="Schedule Service"
                 description="We'll find a time that works for you. Our team arrives on time, ready to transform your property."
               />
@@ -351,7 +359,7 @@ const Index = () => {
             <AnimateOnScroll delay={300}>
               <ProcessCard
                 step={3}
-                icon={<HomeIcon size={48} />}
+                icon={<HomeIcon size={48} className="text-navy" />}
                 title="Enjoy the Results"
                 description="Sit back and enjoy your beautifully cleaned property, free from dirt, grime, and buildup."
               />
@@ -361,7 +369,7 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gradient">
+      <section className="py-16 bg-navyLight/10">
         <div className="container mx-auto px-4">
           <AnimateOnScroll>
             <SectionTitle 
@@ -403,28 +411,36 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <AnimateOnScroll delay={100}>
-              <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+              <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
+                <div className="mb-3 text-navy">
+                  <Droplet className="w-8 h-8 mx-auto" />
+                </div>
                 <h3 className="text-2xl font-semibold mb-2 text-navy">New Customer Special</h3>
-                <p className="text-4xl font-bold text-green mb-4">15% OFF</p>
-                <p className="text-gray-600 mb-6">Your first pressure washing service with us.</p>
+                <p className="text-4xl font-bold text-navy mb-4">15% OFF</p>
+                <p className="text-navy mb-6 flex-grow">Your first pressure washing service with us.</p>
                 <button 
                   onClick={openModal} 
-                  className="neumorphic-button inline-block"
+                  className="neumorphic-button inline-flex items-center justify-center"
                 >
+                  <SprayCan className="w-5 h-5 mr-2" />
                   Free Quote
                 </button>
               </div>
             </AnimateOnScroll>
             
             <AnimateOnScroll delay={200}>
-              <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+              <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
+                <div className="mb-3 text-navy">
+                  <Water className="w-8 h-8 mx-auto" />
+                </div>
                 <h3 className="text-2xl font-semibold mb-2 text-navy">Bundle & Save</h3>
-                <p className="text-4xl font-bold text-orange mb-4">25% OFF</p>
-                <p className="text-gray-600 mb-6">When you book 3 or more services together.</p>
+                <p className="text-4xl font-bold text-navy mb-4">25% OFF</p>
+                <p className="text-navy mb-6 flex-grow">When you book 3 or more services together.</p>
                 <button 
                   onClick={openModal} 
-                  className="neumorphic-button inline-block"
+                  className="neumorphic-button inline-flex items-center justify-center"
                 >
+                  <SprayCan className="w-5 h-5 mr-2" />
                   Free Quote
                 </button>
               </div>
@@ -434,7 +450,7 @@ const Index = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-gradient" id="faq">
+      <section className="py-16 bg-navy/10" id="faq">
         <div className="container mx-auto px-4">
           <AnimateOnScroll>
             <SectionTitle 
@@ -450,10 +466,31 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-navy text-white">
+      <section className="py-12 bg-navy text-white">
         <div className="container mx-auto px-4">
           <AnimateOnScroll>
-            <CTASection openModal={openModal} />
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Property?</h2>
+              <p className="text-xl mb-8 max-w-3xl mx-auto">
+                Contact us today to schedule your pressure washing service. We'll help you restore your property's appearance and protect your investment.
+              </p>
+              <div className="flex flex-col md:flex-row justify-center gap-4">
+                <button
+                  onClick={openModal}
+                  className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-navyLight hover:text-white transition-colors inline-flex items-center justify-center"
+                >
+                  <Droplet className="w-5 h-5 mr-2" />
+                  Get A Free Quote
+                </button>
+                <Link
+                  to="/contact"
+                  className="bg-transparent border-2 border-white text-white py-3 px-6 rounded-lg font-bold hover:bg-white hover:text-navy transition-colors inline-flex items-center justify-center"
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Contact Us
+                </Link>
+              </div>
+            </div>
           </AnimateOnScroll>
         </div>
       </section>

@@ -1,302 +1,429 @@
 
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import AnimateOnScroll from '../components/AnimateOnScroll';
 import SectionTitle from '../components/SectionTitle';
-import { Mail, Phone, MapPin, Clock, Send, Upload, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { Phone, Mail, MapPin, Clock, Droplet, Building } from 'lucide-react';
 
 const Contact = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [message, setMessage] = useState('');
-  const [files, setFiles] = useState<File[]>([]);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+
+    // Load Google Maps script
+    const loadGoogleMaps = () => {
+      const googleMapScript = document.createElement('script');
+      googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAVbnaG1G6Mom3fvBoA0EAGKdiUasCk8Fc&libraries=places`;
+      googleMapScript.async = true;
+      googleMapScript.defer = true;
+      window.document.body.appendChild(googleMapScript);
+      
+      googleMapScript.addEventListener('load', () => {
+        initGoogleMap();
+      });
+    };
+
+    // Initialize Google Maps
+    const initGoogleMap = () => {
+      if (window.google && window.google.maps) {
+        const mapOptions = {
+          center: { lat: -34.7548, lng: 149.7186 }, // Goulburn coordinates
+          zoom: 13,
+          styles: [
+            {
+              "featureType": "water",
+              "elementType": "geometry",
+              "stylers": [
+                {
+                  "color": "#24afbc"
+                },
+                {
+                  "lightness": 17
+                }
+              ]
+            },
+            {
+              "featureType": "landscape",
+              "elementType": "geometry",
+              "stylers": [
+                {
+                  "color": "#f5f5f5"
+                },
+                {
+                  "lightness": 20
+                }
+              ]
+            },
+            {
+              "featureType": "road.highway",
+              "elementType": "geometry.fill",
+              "stylers": [
+                {
+                  "color": "#ffffff"
+                },
+                {
+                  "lightness": 17
+                }
+              ]
+            },
+            {
+              "featureType": "road.highway",
+              "elementType": "geometry.stroke",
+              "stylers": [
+                {
+                  "color": "#ffffff"
+                },
+                {
+                  "lightness": 29
+                },
+                {
+                  "weight": 0.2
+                }
+              ]
+            }
+          ]
+        };
+
+        const map = new window.google.maps.Map(
+          document.getElementById('google-map'),
+          mapOptions
+        );
+
+        // Add marker for business location
+        new window.google.maps.Marker({
+          position: { lat: -34.7548, lng: 149.7186 },
+          map,
+          title: 'R Judd Enterprise',
+          icon: {
+            path: window.google.maps.SymbolPath.CIRCLE,
+            fillColor: '#24AFBC',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2,
+            scale: 10,
+          },
+        });
+      }
+    };
+
+    loadGoogleMaps();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitting(true);
+    setIsSubmitting(true);
     
     // Simulate form submission
     setTimeout(() => {
-      setSubmitting(false);
-      setSubmitted(true);
-      
-      // Reset form after 2 seconds
-      setTimeout(() => {
-        setName('');
-        setEmail('');
-        setPhone('');
-        setAddress('');
-        setMessage('');
-        setFiles([]);
-        setSubmitted(false);
-      }, 2000);
-    }, 1000);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setFiles(prev => [...prev, ...newFiles]);
-    }
-  };
-
-  const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index));
+      toast({
+        title: "Message Sent!",
+        description: "We've received your message and will be in touch shortly.",
+      });
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: '',
+      });
+      setIsSubmitting(false);
+    }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient">
+    <div className="min-h-screen">
       <Header />
       
-      <main className="pt-24 pb-16">
+      {/* Page Header */}
+      <section className="pt-32 pb-16 bg-navy text-white">
         <div className="container mx-auto px-4">
-          {/* Get in Touch Section */}
-          <section className="mb-16">
-            <div className="max-w-4xl mx-auto glass-card rounded-xl p-8 md:p-12 shadow-lg">
-              <AnimateOnScroll>
-                <SectionTitle
-                  title="Get In Touch"
-                  subtitle="Send us a message and we'll get back to you soon"
-                />
-              </AnimateOnScroll>
-              
-              <div className="mt-8">
-                {submitted ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-green rounded-full mx-auto flex items-center justify-center mb-6">
-                      <Check size={32} className="text-white" />
-                    </div>
-                    <h2 className="text-2xl font-semibold mb-2 text-navy">Thank You!</h2>
-                    <p className="text-gray-600">Your message has been sent successfully. We'll get back to you shortly.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <AnimateOnScroll delay={100}>
-                        <div>
-                          <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name</label>
-                          <input
-                            id="name"
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy focus:border-transparent"
-                            required
-                          />
-                        </div>
-                      </AnimateOnScroll>
-                      <AnimateOnScroll delay={200}>
-                        <div>
-                          <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
-                          <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy focus:border-transparent"
-                            required
-                          />
-                        </div>
-                      </AnimateOnScroll>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <AnimateOnScroll delay={300}>
-                        <div>
-                          <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">Phone Number</label>
-                          <input
-                            id="phone"
-                            type="tel"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy focus:border-transparent"
-                            required
-                          />
-                        </div>
-                      </AnimateOnScroll>
-                      <AnimateOnScroll delay={400}>
-                        <div>
-                          <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Address</label>
-                          <input
-                            id="address"
-                            type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy focus:border-transparent"
-                            required
-                          />
-                        </div>
-                      </AnimateOnScroll>
-                    </div>
-
-                    <AnimateOnScroll delay={500}>
-                      <div>
-                        <label htmlFor="message" className="block text-gray-700 font-medium mb-2">Message</label>
-                        <textarea
-                          id="message"
-                          rows={5}
-                          value={message}
-                          onChange={(e) => setMessage(e.target.value)}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
-                          required
-                        ></textarea>
-                      </div>
-                    </AnimateOnScroll>
-
-                    <AnimateOnScroll delay={600}>
-                      <div>
-                        <label className="block text-gray-700 font-medium mb-2">Attach Photos (Optional)</label>
-                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                          <div className="space-y-1 text-center">
-                            <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                            <div className="flex text-sm text-gray-600">
-                              <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-medium text-navy hover:text-navyLight">
-                                <span>Upload files</span>
-                                <input id="file-upload" name="file-upload" type="file" multiple className="sr-only" onChange={handleFileChange} />
-                              </label>
-                              <p className="pl-1">or drag and drop</p>
-                            </div>
-                            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                          </div>
-                        </div>
-                        
-                        {files.length > 0 && (
-                          <div className="mt-2">
-                            <p className="text-sm font-medium text-gray-700 mb-2">Selected files:</p>
-                            <ul className="space-y-1">
-                              {files.map((file, index) => (
-                                <li key={`${file.name}-${index}`} className="flex items-center justify-between text-sm bg-gray-50 p-2 rounded">
-                                  <span className="truncate max-w-xs">{file.name}</span>
-                                  <button 
-                                    type="button" 
-                                    onClick={() => removeFile(index)}
-                                    className="text-red-500 hover:text-red-700"
-                                  >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                  </button>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    </AnimateOnScroll>
-                    
-                    <AnimateOnScroll delay={700}>
-                      <div className="pt-2">
-                        <button
-                          type="submit"
-                          disabled={submitting}
-                          className={`py-3 px-6 bg-navy text-white text-lg font-bold rounded-lg transition-all duration-300 flex items-center justify-center 
-                          ${submitting ? 'opacity-75 cursor-not-allowed' : 'hover:bg-navyLight hover:shadow-glow transform hover:scale-105'}`}
-                        >
-                          {submitting ? (
-                            <>
-                              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                              </svg>
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <Send size={18} className="mr-2" />
-                              Submit
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </AnimateOnScroll>
-                  </form>
-                )}
-              </div>
-            </div>
-          </section>
-
-          {/* Contact Information */}
-          <section className="mb-16">
-            <div className="max-w-5xl mx-auto">
-              <AnimateOnScroll>
-                <SectionTitle
-                  title="Contact Information"
-                  subtitle="Get in touch with our friendly team"
-                />
-              </AnimateOnScroll>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-                <AnimateOnScroll delay={100}>
-                  <div className="glass-card p-6 rounded-xl text-center">
-                    <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Phone size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 text-navy">Phone</h3>
-                    <p className="text-gray-600">Call us for a free quote</p>
-                    <a href="tel:0417264292" className="text-lg font-semibold text-navy hover:text-navyLight transition-colors">0417 264 292</a>
-                  </div>
-                </AnimateOnScroll>
-
-                <AnimateOnScroll delay={200}>
-                  <div className="glass-card p-6 rounded-xl text-center">
-                    <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Mail size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 text-navy">Email</h3>
-                    <p className="text-gray-600">Send us a message anytime</p>
-                    <a href="mailto:rossjudd@hotmail.com" className="text-navy hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
-                  </div>
-                </AnimateOnScroll>
-
-                <AnimateOnScroll delay={300}>
-                  <div className="glass-card p-6 rounded-xl text-center">
-                    <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Clock size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 text-navy">Business Hours</h3>
-                    <p className="text-gray-600">Monday - Friday: 8am - 6pm</p>
-                    <p className="text-gray-600">Saturday: 9am - 1pm</p>
-                    <p className="text-gray-600">Sunday: Closed</p>
-                  </div>
-                </AnimateOnScroll>
-              </div>
-            </div>
-          </section>
-
-          {/* Service Area */}
-          <section>
-            <div className="max-w-4xl mx-auto text-center">
-              <AnimateOnScroll>
-                <h2 className="text-3xl font-light text-navy mb-4">Service Areas</h2>
-                <p className="text-lg text-gray-600 mb-6">
-                  We proudly provide pressure washing services to the following areas:
-                </p>
-                <div className="glass-card p-6 rounded-xl max-w-2xl mx-auto">
-                  <div className="flex flex-wrap justify-center gap-2">
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Goulburn</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Canberra</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Queanbeyan</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Yass</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Bungendore</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Collector</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Gunning</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Marulan</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Moss Vale</span>
-                    <span className="bg-navy/10 text-navy px-4 py-2 rounded-full font-medium">Southern Highlands</span>
-                  </div>
-                  <p className="mt-6 text-gray-600">Don't see your area listed? Contact us to check if we service your location.</p>
-                </div>
-              </AnimateOnScroll>
-            </div>
-          </section>
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
+            <p className="text-xl max-w-3xl mx-auto opacity-90">
+              Get in touch with our team to schedule a service or request a free quote.
+            </p>
+          </div>
         </div>
-      </main>
+      </section>
       
+      {/* Contact Info & Form */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Contact Information */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-6 text-navy">Contact Information</h2>
+              
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 text-navy">Phone</h3>
+                    <p className="text-navy">
+                      <a href="tel:0417264292" className="hover:text-navyLight transition-colors">0417 264 292</a>
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                    <Mail size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 text-navy">Email</h3>
+                    <p className="text-navy">
+                      <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 text-navy">Service Area</h3>
+                    <p className="text-navy">Goulburn, Canberra & surrounding areas in NSW</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                    <Clock size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1 text-navy">Business Hours</h3>
+                    <p className="text-navy">Monday - Friday: 8am - 6pm</p>
+                    <p className="text-navy">Saturday: 9am - 1pm</p>
+                    <p className="text-navy">Sunday: Closed</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Contact Form */}
+            <div className="glass-card rounded-lg p-8 shadow-lg">
+              <h2 className="text-2xl font-semibold mb-6 text-navy">Send us a Message</h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block mb-1 font-medium text-navy">Full Name</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange}
+                    required 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your name"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="block mb-1 font-medium text-navy">Email Address</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value={formData.email} 
+                    onChange={handleChange}
+                    required 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your email"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="phone" className="block mb-1 font-medium text-navy">Phone Number</label>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    value={formData.phone} 
+                    onChange={handleChange}
+                    required 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your phone number"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="service" className="block mb-1 font-medium text-navy">Service Interested In</label>
+                  <select 
+                    id="service" 
+                    name="service" 
+                    value={formData.service} 
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  >
+                    <option value="">Select a service</option>
+                    <option value="residential">Residential Pressure Washing</option>
+                    <option value="commercial">Commercial Pressure Washing</option>
+                    <option value="driveway">Driveway & Concrete Cleaning</option>
+                    <option value="house">House Washing</option>
+                    <option value="deck">Deck & Patio Restoration</option>
+                    <option value="roof">Roof Cleaning</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block mb-1 font-medium text-navy">Message</label>
+                  <textarea 
+                    id="message" 
+                    name="message" 
+                    value={formData.message} 
+                    onChange={handleChange}
+                    rows={4} 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Tell us about your project or ask any questions"
+                  ></textarea>
+                </div>
+                
+                <div className="pt-2">
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full bg-navy hover:bg-navyLight text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="mr-2 h-5 w-5" /> Send Message
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Google Map */}
+      <section className="py-16 bg-navyLight/10">
+        <div className="container mx-auto px-4">
+          <SectionTitle 
+            title="Find Us" 
+            subtitle="Serving Goulburn, Canberra & surrounding areas"
+          />
+          
+          <div className="max-w-5xl mx-auto mt-8">
+            <div id="google-map" className="w-full h-[400px] rounded-xl shadow-lg"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service Areas */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <SectionTitle 
+            title="Areas We Serve" 
+            subtitle="Our service area covers Goulburn, Canberra and surrounding regions"
+          />
+          
+          <div className="max-w-4xl mx-auto mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="glass-card p-6 rounded-lg bg-navyLight/5 flex flex-col items-center">
+                <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mb-4 text-white">
+                  <Building size={24} />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-navy">Goulburn</h3>
+                <ul className="text-navy text-center">
+                  <li>Goulburn City</li>
+                  <li>Bradfordville</li>
+                  <li>Eastgrove</li>
+                  <li>Kenmore</li>
+                  <li>Run-o-Waters</li>
+                </ul>
+              </div>
+              
+              <div className="glass-card p-6 rounded-lg bg-navyLight/5 flex flex-col items-center">
+                <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mb-4 text-white">
+                  <Building size={24} />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-navy">Canberra</h3>
+                <ul className="text-navy text-center">
+                  <li>Civic</li>
+                  <li>Belconnen</li>
+                  <li>Woden</li>
+                  <li>Tuggeranong</li>
+                  <li>Gungahlin</li>
+                </ul>
+              </div>
+              
+              <div className="glass-card p-6 rounded-lg bg-navyLight/5 flex flex-col items-center">
+                <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mb-4 text-white">
+                  <Building size={24} />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-navy">Surrounding Areas</h3>
+                <ul className="text-navy text-center">
+                  <li>Marulan</li>
+                  <li>Bungonia</li>
+                  <li>Windellama</li>
+                  <li>Crookwell</li>
+                  <li>Taralga</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p className="text-center mt-8 text-navy">
+              Don't see your area? Contact us to inquire about service availability in your location.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-12 bg-navy text-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p className="text-xl mb-8 max-w-3xl mx-auto">
+              Contact us today for a free, no-obligation quote on our professional pressure washing services.
+            </p>
+            <div className="flex justify-center">
+              <a 
+                href="tel:0417264292" 
+                className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-navyLight hover:text-white transition-colors inline-flex items-center"
+              >
+                <Phone className="mr-2 h-5 w-5" /> Call Now: 0417 264 292
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
