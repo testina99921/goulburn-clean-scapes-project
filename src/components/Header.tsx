@@ -40,7 +40,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center justify-center flex-1">
             <Link to="/" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Home</Link>
             <Link to="/services" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Services</Link>
-            <Link to="/gallery" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Gallery</Link>
+            <Link to="/testimonials" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Testimonials</Link>
             <a href="/#faq" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">FAQ</a>
             <Link to="/contact" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Contact</Link>
           </nav>
@@ -91,11 +91,11 @@ const Header = () => {
               Services
             </Link>
             <Link 
-              to="/gallery" 
+              to="/testimonials" 
               className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Gallery
+              Testimonials
             </Link>
             <a 
               href="/#faq" 

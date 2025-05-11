@@ -36,34 +36,34 @@ const Index = () => {
   // Testimonials data
   const testimonials = [
     {
-      name: "John Smith",
+      name: "Alex Wilson",
       location: "Goulburn, NSW",
       quote: "The team at R Judd Enterprise did an amazing job on my driveway and house exterior. It looks like new again! Professional, punctual, and thorough.",
-      result: "Driveway looks brand new"
+      rating: 5
     },
     {
       name: "Sarah Johnson",
       location: "Goulburn, NSW",
       quote: "I couldn't believe the difference in my patio after they cleaned it. Years of dirt gone in just hours. Great value for the quality of work.",
-      result: "Patio restored to original condition"
+      rating: 5
     },
     {
       name: "Michael Thompson",
       location: "Canberra, ACT",
       quote: "As a business owner, I appreciate their professionalism and attention to detail. Our storefront has never looked better. Will definitely use their services again.",
-      result: "Increased foot traffic to business"
+      rating: 4
     },
     {
       name: "Emma Davis",
       location: "Goulburn, NSW",
       quote: "Ross and his team were extremely professional. They cleaned our roof and it looks amazing. The price was fair and the service exceptional.",
-      result: "Extended roof lifespan by years"
+      rating: 5
     },
     {
       name: "David Wilson",
       location: "Canberra, ACT",
       quote: "Excellent service from start to finish. The fence cleaning was done perfectly and they left no mess behind. Very impressed.",
-      result: "Fence restored to original color"
+      rating: 4
     }
   ];
 
