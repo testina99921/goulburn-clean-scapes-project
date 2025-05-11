@@ -53,9 +53,9 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom colors for the pressure washing website - Updated with tortiques light blue
-				navy: '#4A90A7', // Updated to tortiques light blue
-				navyLight: '#5EB0C9',
+				// Custom colors for the pressure washing website - Updated with turquoise blue
+				navy: '#24AFBC', // Updated to turquoise blue
+				navyLight: '#4BCCD9',
 				green: '#3CB371',
 				greenLight: '#6ECB91',
 				orange: '#FF8C32',
@@ -96,6 +96,10 @@ export default {
 				'zoom-in': {
 					'0%': { opacity: '0', transform: 'scale(0.95)' },
 					'100%': { opacity: '1', transform: 'scale(1)' }
+				},
+				'glow': {
+					'0%, 100%': { boxShadow: '0 0 15px 5px rgba(36, 175, 188, 0.7)' },
+					'50%': { boxShadow: '0 0 25px 10px rgba(36, 175, 188, 0.9)' }
 				}
 			},
 			animation: {
@@ -103,14 +107,16 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
 				'fade-in': 'fade-in 0.5s ease-out forwards',
-				'zoom-in': 'zoom-in 0.3s ease-out forwards'
+				'zoom-in': 'zoom-in 0.3s ease-out forwards',
+				'glow': 'glow 2s ease-in-out infinite'
 			},
 			fontFamily: {
 				'inter': ['Inter', 'sans-serif']
 			},
 			boxShadow: {
 				'neumorphic': '5px 5px 15px rgba(0,0,0,0.08), -5px -5px 15px rgba(255,255,255,0.5)',
-				'neumorphic-hover': '7px 7px 20px rgba(0,0,0,0.13), -7px -7px 20px rgba(255,255,255,0.6)'
+				'neumorphic-hover': '7px 7px 20px rgba(0,0,0,0.13), -7px -7px 20px rgba(255,255,255,0.6)',
+				'glow': '0 0 20px 5px rgba(36, 175, 188, 0.7)'
 			}
 		}
 	},

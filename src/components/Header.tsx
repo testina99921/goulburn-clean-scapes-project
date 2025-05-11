@@ -24,30 +24,38 @@ const Header = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white shadow-md' : 'bg-white/90 backdrop-blur-md'
+      scrolled ? 'bg-white/80 backdrop-blur-lg shadow-md' : 'bg-white/60 backdrop-blur-md'
     }`}>
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-[#4A90A7] text-xl font-bold flex items-center gap-2">
-            <span className="text-[#4A90A7] font-bold">R Judd Enterprise</span>
+          <Link to="/" className="flex-1 md:flex-none">
+            <img 
+              src="/lovable-uploads/4728361d-92a8-4803-8916-d47dc3ab3a1b.png" 
+              alt="R Judd Enterprises" 
+              className="h-10 md:h-12"
+            />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Home</Link>
-            <Link to="/services" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Services</Link>
-            <Link to="/gallery" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Gallery</Link>
-            <Link to="/faq" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">FAQ</Link>
-            <Link to="/contact" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Contact</Link>
-            <Link to="/contact" className="bg-[#4A90A7] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#5EB0C9] transition-colors">
+          <nav className="hidden md:flex items-center justify-center flex-1">
+            <Link to="/" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Home</Link>
+            <Link to="/services" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Services</Link>
+            <Link to="/gallery" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Gallery</Link>
+            <a href="/#faq" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">FAQ</a>
+            <Link to="/contact" className="text-navy hover:text-navyLight font-bold mx-4 transition-colors">Contact</Link>
+          </nav>
+
+          <div className="hidden md:flex items-center">
+            <Link to="/contact" className="neumorphic-button">
               Free Quote
             </Link>
-          </nav>
+          </div>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-[#4A90A7]"
+            className="md:hidden text-navy"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -59,8 +67,9 @@ const Header = () => {
         <div className="p-6">
           <div className="flex justify-end">
             <button 
-              className="text-[#4A90A7]"
+              className="text-navy"
               onClick={() => setIsMenuOpen(false)}
+              aria-label="Close menu"
             >
               <X size={24} />
             </button>
@@ -69,42 +78,42 @@ const Header = () => {
           <nav className="mt-8 flex flex-col space-y-6">
             <Link 
               to="/" 
-              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
+              className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/services" 
-              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
+              className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Services
             </Link>
             <Link 
               to="/gallery" 
-              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
+              className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Gallery
             </Link>
-            <Link 
-              to="/faq" 
-              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
+            <a 
+              href="/#faq" 
+              className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               FAQ
-            </Link>
+            </a>
             <Link 
               to="/contact" 
-              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
+              className="text-navy hover:text-navyLight font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
             <Link 
               to="/contact" 
-              className="bg-[#4A90A7] text-white py-3 px-6 rounded-lg text-center font-bold hover:bg-[#5EB0C9] transition-colors"
+              className="bg-navy text-white py-3 px-6 rounded-lg text-center font-bold text-lg hover:bg-navyLight transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Free Quote

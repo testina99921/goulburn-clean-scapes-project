@@ -20,7 +20,8 @@ const BeforeAfterSlider = ({
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     setIsDragging(true);
   };
 
@@ -56,7 +57,7 @@ const BeforeAfterSlider = ({
     if (isDragging) {
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchmove', handleTouchMove);
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
       window.addEventListener('touchend', handleMouseUp);
     }
 
@@ -71,7 +72,7 @@ const BeforeAfterSlider = ({
   return (
     <div 
       ref={containerRef} 
-      className="before-after-slider rounded-lg overflow-hidden shadow-lg"
+      className="before-after-slider rounded-xl overflow-hidden shadow-xl"
       style={{ height }}
     >
       <div className="slider-container">
@@ -81,7 +82,7 @@ const BeforeAfterSlider = ({
             alt="Before" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-md text-sm font-medium">
+          <div className="absolute top-4 left-4 bg-black/70 text-white px-4 py-2 rounded-md text-base font-medium">
             {beforeLabel}
           </div>
         </div>
@@ -89,7 +90,7 @@ const BeforeAfterSlider = ({
         <div 
           className="slider-after h-full"
           style={{ 
-            clipPath: `inset(0 0 0 ${sliderPosition}%)` 
+            clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` 
           }}
         >
           <img 
@@ -97,7 +98,7 @@ const BeforeAfterSlider = ({
             alt="After" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-4 right-4 bg-green/90 text-white px-3 py-1.5 rounded-md text-sm font-medium">
+          <div className="absolute top-4 right-4 bg-navy text-white px-4 py-2 rounded-md text-base font-medium">
             {afterLabel}
           </div>
         </div>
@@ -108,34 +109,11 @@ const BeforeAfterSlider = ({
         ></div>
         
         <div 
-          className="slider-handle flex items-center justify-center"
+          className="slider-handle"
           style={{ left: `${sliderPosition}%` }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
-        >
-          <svg 
-            width="16" 
-            height="16" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path 
-              d="M8.5 5L15.5 12L8.5 19" 
-              stroke="#4A90A7" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            />
-            <path 
-              d="M15.5 5L8.5 12L15.5 19" 
-              stroke="#4A90A7" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        ></div>
       </div>
     </div>
   );

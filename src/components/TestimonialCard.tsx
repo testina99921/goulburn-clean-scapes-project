@@ -5,17 +5,19 @@ interface TestimonialCardProps {
   name: string;
   location: string;
   quote: string;
+  result?: string;
   image?: string;
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ 
   name, 
   location, 
-  quote, 
+  quote,
+  result,
   image 
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col h-full">
+    <div className="testimonial-card">
       <div className="flex items-center mb-4">
         <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
           {image ? (
@@ -44,7 +46,12 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         >
           <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-3v-10h8.983zm10.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3v-10h9z" />
         </svg>
-        <p>{quote}</p>
+        <p className="mb-4">{quote}</p>
+        {result && (
+          <div className="mt-3 border-t border-gray-200 pt-3">
+            <p className="text-navy font-medium">Result: {result}</p>
+          </div>
+        )}
       </div>
     </div>
   );
