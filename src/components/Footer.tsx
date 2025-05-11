@@ -1,41 +1,40 @@
 
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Instagram, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-navy text-white pt-16 pb-8">
+    <footer className="bg-[#4A90A7] text-white pt-10 pb-6">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Company Info */}
           <div>
-            <h3 className="font-bold text-xl mb-4">R Judd Enterprise</h3>
-            <p className="mb-6 text-gray-300">Professional pressure washing services in Goulburn NSW and surrounding areas.</p>
-            <div className="flex items-center mb-3">
-              <Phone size={18} className="mr-2" />
+            <h3 className="font-bold text-lg mb-3">R Judd Enterprise</h3>
+            <p className="mb-3 text-gray-100 text-sm">Professional pressure washing services in Goulburn, Canberra NSW and surrounding areas.</p>
+            <div className="flex items-center mb-2 text-sm">
+              <Phone size={15} className="mr-2" />
               <a href="tel:0417264292" className="hover:text-green transition-colors">0417 264 292</a>
             </div>
-            <div className="flex items-center mb-3">
-              <Mail size={18} className="mr-2" />
+            <div className="flex items-center mb-2 text-sm">
+              <Mail size={15} className="mr-2" />
               <a href="mailto:rossjudd@hotmail.com" className="hover:text-green transition-colors">rossjudd@hotmail.com</a>
             </div>
-            <div className="flex items-start mb-3">
-              <MapPin size={18} className="mr-2 mt-1 flex-shrink-0" />
-              <p>Goulburn, NSW, Australia</p>
+            <div className="flex items-start mb-2 text-sm">
+              <MapPin size={15} className="mr-2 mt-1 flex-shrink-0" />
+              <p>Goulburn & Canberra, NSW, Australia</p>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-bold text-xl mb-4">Quick Links</h3>
-            <ul className="space-y-3">
+            <h3 className="font-bold text-lg mb-3">Quick Links</h3>
+            <ul className="space-y-2 text-sm">
               <li><Link to="/" className="hover:text-green transition-colors">Home</Link></li>
               <li><Link to="/about" className="hover:text-green transition-colors">About Us</Link></li>
               <li><Link to="/services" className="hover:text-green transition-colors">Services</Link></li>
               <li><Link to="/gallery" className="hover:text-green transition-colors">Gallery</Link></li>
-              <li><Link to="/testimonials" className="hover:text-green transition-colors">Testimonials</Link></li>
               <li><Link to="/blog" className="hover:text-green transition-colors">Blog</Link></li>
               <li><Link to="/contact" className="hover:text-green transition-colors">Contact</Link></li>
             </ul>
@@ -43,8 +42,8 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h3 className="font-bold text-xl mb-4">Our Services</h3>
-            <ul className="space-y-3">
+            <h3 className="font-bold text-lg mb-3">Our Services</h3>
+            <ul className="space-y-2 text-sm">
               <li><Link to="/services" className="hover:text-green transition-colors">Residential Pressure Washing</Link></li>
               <li><Link to="/services" className="hover:text-green transition-colors">Commercial Pressure Washing</Link></li>
               <li><Link to="/services" className="hover:text-green transition-colors">Driveway Cleaning</Link></li>
@@ -55,12 +54,12 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Business Hours & Newsletter */}
+          {/* Business Hours */}
           <div>
-            <h3 className="font-bold text-xl mb-4">Business Hours</h3>
-            <div className="space-y-2 mb-6">
+            <h3 className="font-bold text-lg mb-3">Business Hours</h3>
+            <div className="space-y-1 mb-4 text-sm">
               <div className="flex items-start">
-                <Clock size={18} className="mr-2 mt-1 flex-shrink-0" />
+                <Clock size={15} className="mr-2 mt-1 flex-shrink-0" />
                 <div>
                   <p>Monday - Friday: 8am - 6pm</p>
                   <p>Saturday: 9am - 1pm</p>
@@ -69,18 +68,8 @@ const Footer = () => {
               </div>
             </div>
             
-            <h3 className="font-bold text-xl mb-4">Follow Us</h3>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-green transition-colors" aria-label="Facebook">
-                <Facebook size={24} />
-              </a>
-              <a href="#" className="hover:text-green transition-colors" aria-label="Instagram">
-                <Instagram size={24} />
-              </a>
-            </div>
-
-            <div className="mt-8">
-              <Link to="/contact" className="bg-white text-navy py-3 px-6 rounded-lg text-center font-medium hover:bg-gray-200 transition-colors inline-block">
+            <div className="mt-4">
+              <Link to="/contact" className="bg-white text-[#4A90A7] py-2 px-4 rounded-lg text-center font-medium hover:bg-gray-200 transition-colors inline-block text-sm">
                 Request a Quote
               </Link>
             </div>
@@ -88,7 +77,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700 mt-12 pt-6 text-center text-gray-400 text-sm">
+        <div className="border-t border-gray-300/30 mt-6 pt-4 text-center text-gray-200 text-xs">
           <p>© {currentYear} R Judd Enterprise. All rights reserved.</p>
         </div>
       </div>

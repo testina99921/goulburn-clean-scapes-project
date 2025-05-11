@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 215 66% 22%;
+    --primary: 195 39% 47%; /* Tortiques light blue */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 150 58% 31%;
@@ -33,7 +33,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 215 66% 22%;
+    --ring: 195 39% 47%;
 
     --radius: 0.5rem;
   }
@@ -51,11 +51,11 @@
   }
   
   .neumorphic-button {
-    @apply bg-white rounded-lg px-6 py-3 shadow-neumorphic text-navy font-semibold transition-all duration-300;
+    @apply bg-white rounded-lg px-6 py-3 shadow-neumorphic text-[#4A90A7] font-semibold transition-all duration-300;
   }
   
   .neumorphic-button:hover {
-    @apply shadow-neumorphic-hover text-navyLight;
+    @apply shadow-neumorphic-hover text-[#5EB0C9];
   }
 }
 

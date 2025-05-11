@@ -24,31 +24,29 @@ const Header = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/90 backdrop-blur-md shadow-md' : 'bg-transparent'
+      scrolled ? 'bg-white shadow-md' : 'bg-white/90 backdrop-blur-md'
     }`}>
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-navy text-xl font-bold flex items-center gap-2">
-            <span className="text-navy font-bold">R Judd Enterprise</span>
+          <Link to="/" className="text-[#4A90A7] text-xl font-bold flex items-center gap-2">
+            <span className="text-[#4A90A7] font-bold">R Judd Enterprise</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-navy hover:text-green font-medium transition-colors">Home</Link>
-            <Link to="/about" className="text-navy hover:text-green font-medium transition-colors">About Us</Link>
-            <Link to="/services" className="text-navy hover:text-green font-medium transition-colors">Services</Link>
-            <Link to="/gallery" className="text-navy hover:text-green font-medium transition-colors">Gallery</Link>
-            <Link to="/testimonials" className="text-navy hover:text-green font-medium transition-colors">Testimonials</Link>
-            <Link to="/blog" className="text-navy hover:text-green font-medium transition-colors">Blog</Link>
-            <Link to="/contact" className="text-navy hover:text-green font-medium transition-colors">Contact</Link>
-            <Link to="/contact" className="neumorphic-button bg-navy text-white hover:bg-navyLight">
-              Get a Free Quote
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Home</Link>
+            <Link to="/services" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Services</Link>
+            <Link to="/gallery" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Gallery</Link>
+            <Link to="/faq" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">FAQ</Link>
+            <Link to="/contact" className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold transition-colors">Contact</Link>
+            <Link to="/contact" className="bg-[#4A90A7] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#5EB0C9] transition-colors">
+              Free Quote
             </Link>
           </nav>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-navy"
+            className="md:hidden text-[#4A90A7]"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -61,7 +59,7 @@ const Header = () => {
         <div className="p-6">
           <div className="flex justify-end">
             <button 
-              className="text-navy"
+              className="text-[#4A90A7]"
               onClick={() => setIsMenuOpen(false)}
             >
               <X size={24} />
@@ -71,59 +69,45 @@ const Header = () => {
           <nav className="mt-8 flex flex-col space-y-6">
             <Link 
               to="/" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
+              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
-              to="/about" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About Us
-            </Link>
-            <Link 
               to="/services" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
+              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Services
             </Link>
             <Link 
               to="/gallery" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
+              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Gallery
             </Link>
             <Link 
-              to="/testimonials" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
+              to="/faq" 
+              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Testimonials
-            </Link>
-            <Link 
-              to="/blog" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Blog
+              FAQ
             </Link>
             <Link 
               to="/contact" 
-              className="text-navy hover:text-green font-medium text-lg transition-colors"
+              className="text-[#4A90A7] hover:text-[#5EB0C9] font-bold text-lg transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
             <Link 
               to="/contact" 
-              className="bg-navy text-white py-3 px-6 rounded-lg text-center font-medium hover:bg-navyLight transition-colors"
+              className="bg-[#4A90A7] text-white py-3 px-6 rounded-lg text-center font-bold hover:bg-[#5EB0C9] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Get a Free Quote
+              Free Quote
             </Link>
           </nav>
         </div>

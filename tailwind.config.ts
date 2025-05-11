@@ -53,9 +53,9 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom colors for the pressure washing website
-				navy: '#0F3460',
-				navyLight: '#1A4B8C',
+				// Custom colors for the pressure washing website - Updated with tortiques light blue
+				navy: '#4A90A7', // Updated to tortiques light blue
+				navyLight: '#5EB0C9',
 				green: '#3CB371',
 				greenLight: '#6ECB91',
 				orange: '#FF8C32',

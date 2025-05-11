@@ -122,14 +122,14 @@ const BeforeAfterSlider = ({
           >
             <path 
               d="M8.5 5L15.5 12L8.5 19" 
-              stroke="#0F3460" 
+              stroke="#4A90A7" 
               strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round"
             />
             <path 
               d="M15.5 5L8.5 12L15.5 19" 
-              stroke="#0F3460" 
+              stroke="#4A90A7" 
               strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round"
