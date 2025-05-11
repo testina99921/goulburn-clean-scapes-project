@@ -13,6 +13,7 @@ interface Testimonial {
   name: string;
   location: string;
   quote: string;
+  rating: number; // Updated to match TestimonialCard props
   result?: string;
   image?: string;
 }
@@ -59,6 +60,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials 
                 name={testimonial.name}
                 location={testimonial.location}
                 quote={testimonial.quote}
+                rating={testimonial.rating} // Make sure we're passing rating prop
                 result={testimonial.result}
                 image={testimonial.image}
               />

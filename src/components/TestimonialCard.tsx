@@ -7,6 +7,7 @@ interface TestimonialCardProps {
   quote: string;
   rating: number;
   image?: string;
+  result?: string; // Added result property
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ 
@@ -14,7 +15,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   location, 
   quote,
   rating,
-  image 
+  image,
+  result // Added result parameter
 }) => {
   const renderStars = () => {
     const stars = [];
@@ -65,6 +67,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-3v-10h8.983zm10.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3v-10h9z" />
         </svg>
         <p className="mb-4">{quote}</p>
+        {result && <p className="mb-4 font-medium text-navy">{result}</p>}
         <div className="mt-3 border-t border-navyLight/20 pt-3 flex">
           {renderStars()}
         </div>
