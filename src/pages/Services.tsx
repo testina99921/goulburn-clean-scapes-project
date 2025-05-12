@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -15,7 +14,8 @@ import {
   Leaf,
   PaintBucket,
   Trash2,
-  Brush
+  Brush,
+  PhoneCall
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -407,7 +407,7 @@ const Services = () => {
                 href="tel:0417264292" 
                 className="bg-transparent border-2 border-white text-white py-3 px-6 rounded-lg font-bold hover:bg-white hover:text-navy transition-colors inline-flex items-center justify-center"
               >
-                <Phone className="mr-2 h-5 w-5" /> Call: 0417 264 292
+                <PhoneCall className="mr-2 h-5 w-5" /> Call: 0417 264 292
               </a>
             </div>
           </div>
