@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
 interface QuoteRequestModalProps {
   isOpen: boolean;
@@ -13,18 +13,31 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     email: '',
     phone: '',
     address: '',
-    service: '',
+    services: [] as string[],
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleServiceChange = (service: string) => {
+    setFormData(prevState => {
+      const updatedServices = prevState.services.includes(service)
+        ? prevState.services.filter(s => s !== service)
+        : [...prevState.services, service];
+      
+      return {
+        ...prevState,
+        services: updatedServices,
+      };
+    });
   };
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -34,6 +47,11 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     // Here we would normally send the data to a server
     // For this demo, we'll simulate a successful submission after a delay
     setTimeout(() => {
+      console.log("Form submitted with data:", {
+        ...formData,
+        email: "rossjudd@hotmail.com" // Email where the form will be sent
+      });
+      
       setIsSubmitting(false);
       setIsSubmitted(true);
       
@@ -43,7 +61,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
         email: '',
         phone: '',
         address: '',
-        service: '',
+        services: [],
         message: '',
       });
       
@@ -60,7 +78,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
   
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="relative bg-navy/10 rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
+      <div className="relative bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
         <div className="p-6">
           <button 
             onClick={onClose}
@@ -92,7 +110,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white/80 text-navy"
+                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white text-navy"
                   placeholder="John Smith"
                   required
                 />
@@ -106,7 +124,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white/80 text-navy"
+                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white text-navy"
                   placeholder="your@email.com"
                   required
                 />
@@ -120,7 +138,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white/80 text-navy"
+                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white text-navy"
                   placeholder="0400 000 000"
                   required
                 />
@@ -134,31 +152,48 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white/80 text-navy"
+                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white text-navy"
                   placeholder="123 Main St, Goulburn NSW"
                   required
                 />
               </div>
               
               <div>
-                <label htmlFor="service" className="block text-sm font-medium text-navy mb-1">Service Needed</label>
-                <select
-                  id="service"
-                  name="service"
-                  value={formData.service}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white/80 text-navy"
-                  required
-                >
-                  <option value="">Select a Service</option>
-                  <option value="residential">Residential Pressure Washing</option>
-                  <option value="commercial">Commercial Pressure Washing</option>
-                  <option value="driveway">Driveway Cleaning</option>
-                  <option value="house">House Washing</option>
-                  <option value="deck">Deck & Patio Cleaning</option>
-                  <option value="roof">Roof Cleaning</option>
-                  <option value="other">Other</option>
-                </select>
+                <label className="block text-sm font-medium text-navy mb-2">Services Needed</label>
+                <div className="grid grid-cols-1 gap-2 mt-1">
+                  {[
+                    { id: 'residential', label: 'Residential Pressure Washing' },
+                    { id: 'commercial', label: 'Commercial Pressure Washing' },
+                    { id: 'driveway', label: 'Driveway Cleaning' },
+                    { id: 'house', label: 'House Washing' },
+                    { id: 'deck', label: 'Deck & Patio Cleaning' },
+                    { id: 'roof', label: 'Roof Cleaning' },
+                    { id: 'other', label: 'Other' }
+                  ].map(service => (
+                    <div key={service.id} className="flex items-center">
+                      <div
+                        onClick={() => handleServiceChange(service.id)}
+                        className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
+                          formData.services.includes(service.id)
+                            ? 'bg-navy border-navy'
+                            : 'border-navy/40'
+                        }`}
+                      >
+                        {formData.services.includes(service.id) && <Check size={12} className="text-white" />}
+                      </div>
+                      <label 
+                        htmlFor={`service-${service.id}`} 
+                        className="text-navy cursor-pointer"
+                        onClick={() => handleServiceChange(service.id)}
+                      >
+                        {service.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {formData.services.length === 0 && (
+                  <p className="text-xs text-orange mt-1">Please select at least one service</p>
+                )}
               </div>
               
               <div>
@@ -169,7 +204,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white/80 text-navy"
+                  className="w-full p-3 border border-navyLight/30 rounded-lg focus:ring-2 focus:ring-navy focus:outline-none bg-white text-navy"
                   placeholder="Tell us more about your needs..."
                 ></textarea>
               </div>
@@ -177,8 +212,8 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
               <div className="pt-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-navy text-white py-3 px-6 rounded-lg font-bold hover:bg-navyLight transition-colors flex items-center justify-center"
+                  disabled={isSubmitting || formData.services.length === 0}
+                  className="w-full bg-navy text-white py-3 px-6 rounded-lg font-bold hover:bg-navyLight transition-colors flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>

@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -13,6 +13,28 @@ import NotFound from "./pages/NotFound";
 import "./ScrollAnimation.js";
 
 const queryClient = new QueryClient();
+
+// ScrollToHashElement component to handle hash navigation
+const ScrollToHashElement = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // If there's a hash in the URL
+    if (location.hash) {
+      // Get the element by ID
+      const element = document.getElementById(location.hash.slice(1));
+      
+      // If the element exists, scroll to it
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [location]);
+
+  return null;
+};
 
 const App = () => {
   useEffect(() => {
@@ -39,6 +61,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToHashElement />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />

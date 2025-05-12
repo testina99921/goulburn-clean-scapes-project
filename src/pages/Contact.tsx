@@ -1,10 +1,11 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SectionTitle from '../components/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { Phone, Mail, MapPin, Clock, Droplet, Building } from 'lucide-react';
+import { PhoneCall, Mail, MapPin, Clock, Droplet, Building } from 'lucide-react';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -171,7 +172,7 @@ const Contact = () => {
           <div className="flex flex-wrap justify-center gap-8">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                <Phone size={24} />
+                <PhoneCall size={24} />
               </div>
               <div>
                 <h3 className="font-semibold mb-1 text-navy">Phone</h3>
@@ -411,7 +412,7 @@ const Contact = () => {
                 href="tel:0417264292" 
                 className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-green hover:text-white transition-colors inline-flex items-center"
               >
-                <Phone className="mr-2 h-5 w-5" /> Call Now: 0417 264 292
+                <PhoneCall className="mr-2 h-5 w-5" /> Call Now: 0417 264 292
               </a>
             </div>
           </div>

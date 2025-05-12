@@ -19,7 +19,6 @@ import {
   ClipboardCheck, 
   MessageCircle, 
   Calendar,
-  Check,
   Droplet,
   SprayCan,
   House,
@@ -138,7 +137,7 @@ const Index = () => {
           <AnimateOnScroll delay={400} className="flex flex-col md:flex-row justify-center items-center gap-4">
             <button 
               onClick={openModal} 
-              className="cta-button animate-glow flex items-center"
+              className="cta-button animate-glow flex items-center justify-center"
             >
               <Droplet className="w-5 h-5 mr-2" />
               Get A Free Quote
@@ -230,7 +229,7 @@ const Index = () => {
               <ServiceCard
                 title="Residential Pressure Washing"
                 description="Complete exterior cleaning for homes, including siding, driveways, decks, patios, walkways and fences."
-                icon={<House size={48} className="text-green" />}
+                icon={<House size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -238,7 +237,7 @@ const Index = () => {
               <ServiceCard
                 title="Commercial Pressure Washing"
                 description="Maintain a professional appearance for your business with our building exterior, parking lot, and sidewalk cleaning."
-                icon={<BuildingIcon size={48} className="text-orange" />}
+                icon={<BuildingIcon size={48} className="text-green" />}
               />
             </AnimateOnScroll>
             
@@ -246,7 +245,7 @@ const Index = () => {
               <ServiceCard
                 title="Driveway & Concrete Cleaning"
                 description="Remove oil stains, dirt, and grime from concrete, pavers, and other driveway surfaces."
-                icon={<SprayCan size={48} className="text-greenLight" />}
+                icon={<SprayCan size={48} className="text-orange" />}
               />
             </AnimateOnScroll>
             
@@ -254,7 +253,7 @@ const Index = () => {
               <ServiceCard
                 title="House Washing"
                 description="Safely remove dirt, mold, and mildew from your home's exterior to restore its appearance."
-                icon={<HomeIcon size={48} className="text-orangeLight" />}
+                icon={<HomeIcon size={48} className="text-navy" />}
               />
             </AnimateOnScroll>
             
@@ -262,7 +261,7 @@ const Index = () => {
               <ServiceCard
                 title="Deck & Patio Restoration"
                 description="Bring your outdoor living spaces back to life with our deck and patio cleaning services."
-                icon={<ShowerHead size={48} className="text-green" />}
+                icon={<ShowerHead size={48} className="text-greenLight" />}
               />
             </AnimateOnScroll>
             
@@ -270,7 +269,7 @@ const Index = () => {
               <ServiceCard
                 title="Roof Cleaning"
                 description="Remove black streaks, moss, and algae from your roof to improve your home's appearance and extend roof life."
-                icon={<Droplet size={48} className="text-navy" />}
+                icon={<Droplet size={48} className="text-orangeLight" />}
               />
             </AnimateOnScroll>
           </div>
@@ -298,8 +297,8 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <AnimateOnScroll delay={100}>
-              <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-orange rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card rounded-xl p-8 text-center h-full flex flex-col">
+                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
                   <BuildingIcon size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Backed by R JUDD Enterprises</h3>
@@ -310,7 +309,7 @@ const Index = () => {
             </AnimateOnScroll>
             
             <AnimateOnScroll delay={200}>
-              <div className="glass-card rounded-xl p-8 text-center">
+              <div className="glass-card rounded-xl p-8 text-center h-full flex flex-col">
                 <div className="w-16 h-16 bg-green rounded-full flex items-center justify-center mx-auto mb-4">
                   <Droplet size={32} className="text-white" />
                 </div>
@@ -322,8 +321,8 @@ const Index = () => {
             </AnimateOnScroll>
             
             <AnimateOnScroll delay={300}>
-              <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-orangeLight rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card rounded-xl p-8 text-center h-full flex flex-col">
+                <div className="w-16 h-16 bg-orange rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClipboardCheck size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">100% Satisfaction Guarantee</h3>
@@ -350,7 +349,7 @@ const Index = () => {
             <AnimateOnScroll delay={100}>
               <ProcessCard
                 step={1}
-                icon={<MessageCircle size={48} className="text-orange" />}
+                icon={<MessageCircle size={48} className="text-green" />}
                 title="Request a Quote"
                 description="Contact us for a free, no-obligation quote. We'll assess your needs and provide transparent pricing."
               />
@@ -368,7 +367,7 @@ const Index = () => {
             <AnimateOnScroll delay={300}>
               <ProcessCard
                 step={3}
-                icon={<HomeIcon size={48} className="text-orangeLight" />}
+                icon={<HomeIcon size={48} className="text-green" />}
                 title="Enjoy the Results"
                 description="Sit back and enjoy your beautifully cleaned property, free from dirt, grime, and buildup."
               />
@@ -420,37 +419,29 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <AnimateOnScroll delay={100}>
-              <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
-                <div className="mb-3 text-green">
-                  <Droplet className="w-8 h-8 mx-auto" />
-                </div>
-                <h3 className="text-2xl font-semibold mb-2 text-navy">New Customer Special</h3>
-                <p className="text-4xl font-bold text-navy mb-4">15% OFF</p>
-                <p className="text-navy mb-6 flex-grow">Your first pressure washing service with us.</p>
+              <div className="border-2 border-green border-dashed rounded-lg p-6 h-full flex flex-col bg-[#F2FCE2]">
+                <h3 className="text-2xl font-bold mb-2 text-navy">New Customer Special</h3>
+                <p className="text-4xl font-bold text-green mb-4">15% OFF</p>
+                <p className="text-black mb-6 flex-grow">Your first pressure washing service with us.</p>
                 <button 
                   onClick={openModal} 
-                  className="neumorphic-button inline-flex items-center justify-center"
+                  className="bg-white text-navy py-2 px-4 rounded-lg hover:bg-navy hover:text-white transition-colors border border-navy inline-block mx-auto"
                 >
-                  <SprayCan className="w-5 h-5 mr-2" />
-                  Free Quote
+                  Claim Offer
                 </button>
               </div>
             </AnimateOnScroll>
             
             <AnimateOnScroll delay={200}>
-              <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
-                <div className="mb-3 text-orange">
-                  <Droplet className="w-8 h-8 mx-auto" />
-                </div>
-                <h3 className="text-2xl font-semibold mb-2 text-navy">Bundle & Save</h3>
-                <p className="text-4xl font-bold text-navy mb-4">25% OFF</p>
-                <p className="text-navy mb-6 flex-grow">When you book 3 or more services together.</p>
+              <div className="border-2 border-orange border-dashed rounded-lg p-6 h-full flex flex-col bg-[#FEF7CD]">
+                <h3 className="text-2xl font-bold mb-2 text-navy">Bundle & Save</h3>
+                <p className="text-4xl font-bold text-orange mb-4">25% OFF</p>
+                <p className="text-black mb-6 flex-grow">When you book 3 or more services together.</p>
                 <button 
                   onClick={openModal} 
-                  className="neumorphic-button inline-flex items-center justify-center"
+                  className="bg-white text-navy py-2 px-4 rounded-lg hover:bg-navy hover:text-white transition-colors border border-navy inline-block mx-auto"
                 >
-                  <SprayCan className="w-5 h-5 mr-2" />
-                  Free Quote
+                  Claim Offer
                 </button>
               </div>
             </AnimateOnScroll>
@@ -486,7 +477,7 @@ const Index = () => {
               <div className="flex flex-col md:flex-row justify-center gap-4">
                 <button
                   onClick={openModal}
-                  className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-navyLight hover:text-white transition-colors inline-flex items-center justify-center"
+                  className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-green hover:text-white transition-colors inline-flex items-center justify-center"
                 >
                   <Droplet className="w-5 h-5 mr-2" />
                   Get A Free Quote

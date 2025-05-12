@@ -1,7 +1,15 @@
 
 declare global {
   interface Window {
-    google: any;
+    google: {
+      maps: {
+        Map: any;
+        Marker: any;
+        LatLng: any;
+        SymbolPath: any;
+        NavigationControl: any;
+      };
+    };
   }
 }
 
