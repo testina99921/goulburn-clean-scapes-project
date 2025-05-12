@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -25,7 +24,6 @@ import {
   SprayCan,
   House,
   ShowerHead,
-  Water,
   Wrench
 } from 'lucide-react';
 
@@ -197,7 +195,7 @@ const Index = () => {
             <div className="text-center mt-8">
               <AnimateOnScroll delay={400}>
                 <Link to="/gallery" className="neumorphic-button inline-flex items-center">
-                  <Water className="w-5 h-5 mr-2" />
+                  <Droplet className="w-5 h-5 mr-2" />
                   View More Transformations
                 </Link>
               </AnimateOnScroll>
@@ -303,7 +301,7 @@ const Index = () => {
             <AnimateOnScroll delay={200}>
               <div className="glass-card rounded-xl p-8 text-center">
                 <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Water size={32} className="text-white" />
+                  <Droplet size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Eco-Friendly Solutions</h3>
                 <p className="text-navy">
