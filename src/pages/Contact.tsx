@@ -5,7 +5,8 @@ import Footer from '../components/Footer';
 import SectionTitle from '../components/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { PhoneCall, Mail, MapPin, Clock, Droplet, Building } from 'lucide-react';
+import { PhoneCall, Mail, MapPin, Clock, Droplet, Building, Check } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -15,6 +16,7 @@ const Contact = () => {
     phone: '',
     service: '',
     message: '',
+    additionalServices: [] as string[]
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -24,20 +26,24 @@ const Contact = () => {
 
     // Load Google Maps script
     const loadGoogleMaps = () => {
+      // Remove any existing Google Maps scripts to prevent duplicates
+      const existingScripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
+      existingScripts.forEach(script => script.remove());
+
       const googleMapScript = document.createElement('script');
-      googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAVbnaG1G6Mom3fvBoA0EAGKdiUasCk8Fc&libraries=places`;
+      googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAVbnaG1G6Mom3fvBoA0EAGKdiUasCk8Fc&libraries=places&callback=initGoogleMap`;
       googleMapScript.async = true;
       googleMapScript.defer = true;
       window.document.body.appendChild(googleMapScript);
       
-      googleMapScript.addEventListener('load', () => {
-        initGoogleMap();
-      });
+      // Define the callback function globally
+      window.initGoogleMap = initGoogleMap;
     };
 
     // Initialize Google Maps
-    const initGoogleMap = () => {
-      if (window.google && window.google.maps) {
+    function initGoogleMap() {
+      const mapElement = document.getElementById('google-map');
+      if (mapElement && window.google && window.google.maps) {
         const mapOptions = {
           center: { lat: -34.7548, lng: 149.7186 }, // Goulburn coordinates
           zoom: 13,
@@ -97,7 +103,7 @@ const Contact = () => {
         };
 
         const map = new window.google.maps.Map(
-          document.getElementById('google-map'),
+          mapElement,
           mapOptions
         );
 
@@ -116,9 +122,21 @@ const Contact = () => {
           },
         });
       }
-    };
+    }
 
+    // Add initGoogleMap function to window
+    window.initGoogleMap = initGoogleMap;
+    
+    // Load Google Maps
     loadGoogleMaps();
+
+    // Cleanup
+    return () => {
+      // Remove global function
+      if (window.initGoogleMap) {
+        delete window.initGoogleMap;
+      }
+    };
   }, []);
 
   const handleChange = (e) => {
@@ -129,22 +147,42 @@ const Contact = () => {
     });
   };
 
+  const handleAdditionalServiceChange = (service: string) => {
+    setFormData(prevState => {
+      const updatedServices = prevState.additionalServices.includes(service)
+        ? prevState.additionalServices.filter(s => s !== service)
+        : [...prevState.additionalServices, service];
+      
+      return {
+        ...prevState,
+        additionalServices: updatedServices,
+      };
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     // Simulate form submission
     setTimeout(() => {
+      console.log("Form submitted with data:", {
+        ...formData,
+        email: "rossjudd@hotmail.com" // Email where the form will be sent
+      });
+      
       toast({
         title: "Message Sent!",
         description: "We've received your message and will be in touch shortly.",
       });
+      
       setFormData({
         name: '',
         email: '',
         phone: '',
         service: '',
         message: '',
+        additionalServices: []
       });
       setIsSubmitting(false);
     }, 1500);
@@ -219,76 +257,112 @@ const Contact = () => {
       
       {/* Contact Form */}
       <section className="py-8 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
+        <div className="container mx-auto px-4 max-w-5xl">
           <div className="bg-white rounded-lg p-8 shadow-lg">
             <h2 className="text-2xl font-semibold mb-6 text-navy text-center">Send us a Message</h2>
             
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block mb-1 font-medium text-navy">Full Name</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  value={formData.name} 
-                  onChange={handleChange}
-                  required 
-                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                  placeholder="Your name"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="block mb-1 font-medium text-navy">Full Name</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange}
+                    required 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your name"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="block mb-1 font-medium text-navy">Email Address</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value={formData.email} 
+                    onChange={handleChange}
+                    required 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your email"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="phone" className="block mb-1 font-medium text-navy">Phone Number</label>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    value={formData.phone} 
+                    onChange={handleChange}
+                    required 
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your phone number"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="service" className="block mb-1 font-medium text-navy">Service Interested In</label>
+                  <select 
+                    id="service" 
+                    name="service" 
+                    value={formData.service} 
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  >
+                    <option value="">Select a service</option>
+                    <option value="residential">Residential Pressure Washing</option>
+                    <option value="commercial">Commercial Pressure Washing</option>
+                    <option value="driveway">Driveway & Concrete Cleaning</option>
+                    <option value="house">House Washing</option>
+                    <option value="deck">Deck & Patio Restoration</option>
+                    <option value="roof">Roof Cleaning</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
               </div>
               
               <div>
-                <label htmlFor="email" className="block mb-1 font-medium text-navy">Email Address</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  value={formData.email} 
-                  onChange={handleChange}
-                  required 
-                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                  placeholder="Your email"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="phone" className="block mb-1 font-medium text-navy">Phone Number</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  name="phone" 
-                  value={formData.phone} 
-                  onChange={handleChange}
-                  required 
-                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                  placeholder="Your phone number"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="service" className="block mb-1 font-medium text-navy">Service Interested In</label>
-                <select 
-                  id="service" 
-                  name="service" 
-                  value={formData.service} 
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                >
-                  <option value="">Select a service</option>
-                  <option value="residential">Residential Pressure Washing</option>
-                  <option value="commercial">Commercial Pressure Washing</option>
-                  <option value="driveway">Driveway & Concrete Cleaning</option>
-                  <option value="house">House Washing</option>
-                  <option value="deck">Deck & Patio Restoration</option>
-                  <option value="roof">Roof Cleaning</option>
-                  <option value="other">Other</option>
-                </select>
+                <label className="block mb-1 font-medium text-navy">Additional Services (Optional)</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-1">
+                  {[
+                    { id: 'gutter', label: 'Gutter Cleaning' },
+                    { id: 'window', label: 'Window Washing' },
+                    { id: 'fence', label: 'Fence Restoration' },
+                    { id: 'paver', label: 'Paver Sealing' }
+                  ].map(service => (
+                    <div key={service.id} className="flex items-center">
+                      <div
+                        onClick={() => handleAdditionalServiceChange(service.id)}
+                        className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
+                          formData.additionalServices.includes(service.id)
+                            ? 'bg-navy border-navy'
+                            : 'border-navy/40'
+                        }`}
+                      >
+                        {formData.additionalServices.includes(service.id) && <Check size={12} className="text-white" />}
+                      </div>
+                      <label 
+                        htmlFor={`service-${service.id}`} 
+                        className="text-black cursor-pointer"
+                        onClick={() => handleAdditionalServiceChange(service.id)}
+                      >
+                        {service.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
               
               <div>
                 <label htmlFor="message" className="block mb-1 font-medium text-navy">Message</label>
-                <textarea 
+                <Textarea 
                   id="message" 
                   name="message" 
                   value={formData.message} 
@@ -296,7 +370,7 @@ const Contact = () => {
                   rows={4} 
                   className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
                   placeholder="Tell us about your project or ask any questions"
-                ></textarea>
+                />
               </div>
               
               <div className="pt-2">

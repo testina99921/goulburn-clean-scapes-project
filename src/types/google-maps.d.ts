@@ -10,6 +10,7 @@ declare global {
         NavigationControl: any;
       };
     };
+    initGoogleMap: () => void;
   }
 }
 

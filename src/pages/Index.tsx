@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -407,47 +408,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Special Offers Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <AnimateOnScroll>
-            <SectionTitle 
-              title="Special Offers" 
-              subtitle="Take advantage of our limited-time deals"
-            />
-          </AnimateOnScroll>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <AnimateOnScroll delay={100}>
-              <div className="border-2 border-green border-dashed rounded-lg p-6 h-full flex flex-col bg-[#F2FCE2]">
-                <h3 className="text-2xl font-bold mb-2 text-navy">New Customer Special</h3>
-                <p className="text-4xl font-bold text-green mb-4">15% OFF</p>
-                <p className="text-black mb-6 flex-grow">Your first pressure washing service with us.</p>
-                <button 
-                  onClick={openModal} 
-                  className="bg-white text-navy py-2 px-4 rounded-lg hover:bg-navy hover:text-white transition-colors border border-navy inline-block mx-auto"
-                >
-                  Claim Offer
-                </button>
-              </div>
-            </AnimateOnScroll>
-            
-            <AnimateOnScroll delay={200}>
-              <div className="border-2 border-orange border-dashed rounded-lg p-6 h-full flex flex-col bg-[#FEF7CD]">
-                <h3 className="text-2xl font-bold mb-2 text-navy">Bundle & Save</h3>
-                <p className="text-4xl font-bold text-orange mb-4">25% OFF</p>
-                <p className="text-black mb-6 flex-grow">When you book 3 or more services together.</p>
-                <button 
-                  onClick={openModal} 
-                  className="bg-white text-navy py-2 px-4 rounded-lg hover:bg-navy hover:text-white transition-colors border border-navy inline-block mx-auto"
-                >
-                  Claim Offer
-                </button>
-              </div>
-            </AnimateOnScroll>
-          </div>
-        </div>
-      </section>
+      {/* Special Offers Section - Hidden as requested */}
 
       {/* FAQ Section */}
       <section className="py-16 bg-navy/10" id="faq">

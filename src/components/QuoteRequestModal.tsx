@@ -14,6 +14,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     phone: '',
     address: '',
     services: [] as string[],
+    additionalServices: [] as string[],
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,6 +37,19 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
       return {
         ...prevState,
         services: updatedServices,
+      };
+    });
+  };
+
+  const handleAdditionalServiceChange = (service: string) => {
+    setFormData(prevState => {
+      const updatedServices = prevState.additionalServices.includes(service)
+        ? prevState.additionalServices.filter(s => s !== service)
+        : [...prevState.additionalServices, service];
+      
+      return {
+        ...prevState,
+        additionalServices: updatedServices,
       };
     });
   };
@@ -62,6 +76,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
         phone: '',
         address: '',
         services: [],
+        additionalServices: [],
         message: '',
       });
       
@@ -194,6 +209,38 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                 {formData.services.length === 0 && (
                   <p className="text-xs text-orange mt-1">Please select at least one service</p>
                 )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Additional Services (Optional)</label>
+                <div className="grid grid-cols-1 gap-2 mt-1">
+                  {[
+                    { id: 'gutter', label: 'Gutter Cleaning' },
+                    { id: 'window', label: 'Window Washing' },
+                    { id: 'fence', label: 'Fence Restoration' },
+                    { id: 'paver', label: 'Paver Sealing' }
+                  ].map(service => (
+                    <div key={service.id} className="flex items-center">
+                      <div
+                        onClick={() => handleAdditionalServiceChange(service.id)}
+                        className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
+                          formData.additionalServices.includes(service.id)
+                            ? 'bg-navy border-navy'
+                            : 'border-navy/40'
+                        }`}
+                      >
+                        {formData.additionalServices.includes(service.id) && <Check size={12} className="text-white" />}
+                      </div>
+                      <label 
+                        htmlFor={`additional-service-${service.id}`} 
+                        className="text-navy cursor-pointer"
+                        onClick={() => handleAdditionalServiceChange(service.id)}
+                      >
+                        {service.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
               
               <div>
