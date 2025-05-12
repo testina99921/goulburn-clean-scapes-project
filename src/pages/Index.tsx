@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -150,11 +149,11 @@ const Index = () => {
       <Header />
       <SEOMetaTags />
       
-      {/* Hero Section */}
+      {/* Hero Section - Removed the blue overlay */}
       <section 
         className="pt-32 pb-24 md:py-40 relative bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(36, 175, 188, 0.7), rgba(36, 175, 188, 0.8)), url(${heroImage})`,
+          backgroundImage: `url(${heroImage})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover'
         }}

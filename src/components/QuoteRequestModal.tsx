@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Mail, Check } from 'lucide-react';
+import { X, Mail, Check, Upload } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,6 +24,8 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
     additionalServices: [] as string[],
     message: ''
   });
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -46,6 +48,40 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
     });
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles: File[] = [];
+    const newPreviewUrls: string[] = [];
+
+    // Process each selected file
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.startsWith('image/')) {
+        newFiles.push(file);
+        newPreviewUrls.push(URL.createObjectURL(file));
+      }
+    }
+
+    setImageFiles([...imageFiles, ...newFiles]);
+    setImagePreviewUrls([...imagePreviewUrls, ...newPreviewUrls]);
+  };
+
+  const removeImage = (index: number) => {
+    const updatedFiles = [...imageFiles];
+    const updatedUrls = [...imagePreviewUrls];
+    
+    // Revoke the object URL to avoid memory leaks
+    URL.revokeObjectURL(updatedUrls[index]);
+    
+    updatedFiles.splice(index, 1);
+    updatedUrls.splice(index, 1);
+    
+    setImageFiles(updatedFiles);
+    setImagePreviewUrls(updatedUrls);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -55,6 +91,7 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
       console.log('Quote request submitted:', {
         ...formData,
         email: "rossjudd@hotmail.com", // Email where the quote will be sent
+        imageCount: imageFiles.length
       });
       
       toast({
@@ -72,6 +109,11 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
         additionalServices: [],
         message: ''
       });
+      
+      // Clear images
+      imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
+      setImageFiles([]);
+      setImagePreviewUrls([]);
       
       setIsSubmitting(false);
       onClose();
@@ -202,6 +244,58 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Image upload section */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
+              <div className="flex items-center justify-center w-full">
+                <label 
+                  htmlFor="image-upload" 
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                    <p className="mb-2 text-sm text-gray-500">
+                      <span className="font-semibold">Click to upload</span> or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 5MB)</p>
+                  </div>
+                  <Input 
+                    id="image-upload" 
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+              
+              {/* Image previews */}
+              {imagePreviewUrls.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Images:</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {imagePreviewUrls.map((url, index) => (
+                      <div key={index} className="relative rounded-md overflow-hidden h-24">
+                        <img 
+                          src={url} 
+                          alt={`Uploaded preview ${index + 1}`} 
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             
             <div>
