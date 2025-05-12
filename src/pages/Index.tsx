@@ -87,6 +87,17 @@ const Index = () => {
     const elements = document.querySelectorAll('.animate-section');
     elements.forEach(el => observer.observe(el));
 
+    // Check if we need to scroll to specific section based on hash
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500);
+    }
+
     return () => {
       elements.forEach(el => observer.unobserve(el));
     };
@@ -149,7 +160,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <AnimateOnScroll className="md:w-1/3">
               <div className="rounded-lg overflow-hidden shadow-xl card-3d">
-                <img src="/lovable-uploads/710c2b6a-0f4a-48b0-81d1-3e790c100c62.png" alt="Pressure Washing Service" className="w-full object-cover h-72" />
+                <img src="/lovable-uploads/4c20fc47-a9f3-4cac-817d-1719c44d45b8.png" alt="Ross Judd" className="w-full object-cover h-72" />
               </div>
             </AnimateOnScroll>
             <div className="md:w-2/3">
@@ -219,7 +230,7 @@ const Index = () => {
               <ServiceCard
                 title="Residential Pressure Washing"
                 description="Complete exterior cleaning for homes, including siding, driveways, decks, patios, walkways and fences."
-                icon={<House size={48} className="text-navy" />}
+                icon={<House size={48} className="text-green" />}
               />
             </AnimateOnScroll>
             
@@ -227,7 +238,7 @@ const Index = () => {
               <ServiceCard
                 title="Commercial Pressure Washing"
                 description="Maintain a professional appearance for your business with our building exterior, parking lot, and sidewalk cleaning."
-                icon={<BuildingIcon size={48} className="text-navy" />}
+                icon={<BuildingIcon size={48} className="text-orange" />}
               />
             </AnimateOnScroll>
             
@@ -235,7 +246,7 @@ const Index = () => {
               <ServiceCard
                 title="Driveway & Concrete Cleaning"
                 description="Remove oil stains, dirt, and grime from concrete, pavers, and other driveway surfaces."
-                icon={<SprayCan size={48} className="text-navy" />}
+                icon={<SprayCan size={48} className="text-greenLight" />}
               />
             </AnimateOnScroll>
             
@@ -243,7 +254,7 @@ const Index = () => {
               <ServiceCard
                 title="House Washing"
                 description="Safely remove dirt, mold, and mildew from your home's exterior to restore its appearance."
-                icon={<HomeIcon size={48} className="text-navy" />}
+                icon={<HomeIcon size={48} className="text-orangeLight" />}
               />
             </AnimateOnScroll>
             
@@ -251,7 +262,7 @@ const Index = () => {
               <ServiceCard
                 title="Deck & Patio Restoration"
                 description="Bring your outdoor living spaces back to life with our deck and patio cleaning services."
-                icon={<ShowerHead size={48} className="text-navy" />}
+                icon={<ShowerHead size={48} className="text-green" />}
               />
             </AnimateOnScroll>
             
@@ -288,7 +299,7 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <AnimateOnScroll delay={100}>
               <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-orange rounded-full flex items-center justify-center mx-auto mb-4">
                   <BuildingIcon size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Backed by R JUDD Enterprises</h3>
@@ -300,7 +311,7 @@ const Index = () => {
             
             <AnimateOnScroll delay={200}>
               <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-green rounded-full flex items-center justify-center mx-auto mb-4">
                   <Droplet size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Eco-Friendly Solutions</h3>
@@ -312,7 +323,7 @@ const Index = () => {
             
             <AnimateOnScroll delay={300}>
               <div className="glass-card rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-orangeLight rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClipboardCheck size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">100% Satisfaction Guarantee</h3>
@@ -339,7 +350,7 @@ const Index = () => {
             <AnimateOnScroll delay={100}>
               <ProcessCard
                 step={1}
-                icon={<MessageCircle size={48} className="text-navy" />}
+                icon={<MessageCircle size={48} className="text-orange" />}
                 title="Request a Quote"
                 description="Contact us for a free, no-obligation quote. We'll assess your needs and provide transparent pricing."
               />
@@ -348,7 +359,7 @@ const Index = () => {
             <AnimateOnScroll delay={200}>
               <ProcessCard
                 step={2}
-                icon={<Calendar size={48} className="text-navy" />}
+                icon={<Calendar size={48} className="text-green" />}
                 title="Schedule Service"
                 description="We'll find a time that works for you. Our team arrives on time, ready to transform your property."
               />
@@ -357,7 +368,7 @@ const Index = () => {
             <AnimateOnScroll delay={300}>
               <ProcessCard
                 step={3}
-                icon={<HomeIcon size={48} className="text-navy" />}
+                icon={<HomeIcon size={48} className="text-orangeLight" />}
                 title="Enjoy the Results"
                 description="Sit back and enjoy your beautifully cleaned property, free from dirt, grime, and buildup."
               />
@@ -410,7 +421,7 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <AnimateOnScroll delay={100}>
               <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
-                <div className="mb-3 text-navy">
+                <div className="mb-3 text-green">
                   <Droplet className="w-8 h-8 mx-auto" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2 text-navy">New Customer Special</h3>
@@ -428,7 +439,7 @@ const Index = () => {
             
             <AnimateOnScroll delay={200}>
               <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
-                <div className="mb-3 text-navy">
+                <div className="mb-3 text-orange">
                   <Droplet className="w-8 h-8 mx-auto" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2 text-navy">Bundle & Save</h3>

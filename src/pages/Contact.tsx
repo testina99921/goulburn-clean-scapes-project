@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -166,166 +165,161 @@ const Contact = () => {
         </div>
       </section>
       
-      {/* Contact Info & Form */}
-      <section className="py-16 bg-white">
+      {/* Contact Info */}
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div>
-              <h2 className="text-2xl font-semibold mb-6 text-navy">Contact Information</h2>
-              
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                    <Phone size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-navy">Phone</h3>
-                    <p className="text-navy">
-                      <a href="tel:0417264292" className="hover:text-navyLight transition-colors">0417 264 292</a>
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                    <Mail size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-navy">Email</h3>
-                    <p className="text-navy">
-                      <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                    <MapPin size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-navy">Service Area</h3>
-                    <p className="text-navy">Goulburn, Canberra & surrounding areas in NSW</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                    <Clock size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-navy">Business Hours</h3>
-                    <p className="text-navy">Monday - Friday: 8am - 6pm</p>
-                    <p className="text-navy">Saturday: 9am - 1pm</p>
-                    <p className="text-navy">Sunday: Closed</p>
-                  </div>
-                </div>
+          <div className="flex flex-wrap justify-center gap-8">
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                <Phone size={24} />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1 text-navy">Phone</h3>
+                <p className="text-black">
+                  <a href="tel:0417264292" className="hover:text-navyLight transition-colors">0417 264 292</a>
+                </p>
               </div>
             </div>
             
-            {/* Contact Form */}
-            <div className="glass-card rounded-lg p-8 shadow-lg">
-              <h2 className="text-2xl font-semibold mb-6 text-navy">Send us a Message</h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block mb-1 font-medium text-navy">Full Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value={formData.name} 
-                    onChange={handleChange}
-                    required 
-                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                    placeholder="Your name"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block mb-1 font-medium text-navy">Email Address</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    value={formData.email} 
-                    onChange={handleChange}
-                    required 
-                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                    placeholder="Your email"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="phone" className="block mb-1 font-medium text-navy">Phone Number</label>
-                  <input 
-                    type="tel" 
-                    id="phone" 
-                    name="phone" 
-                    value={formData.phone} 
-                    onChange={handleChange}
-                    required 
-                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                    placeholder="Your phone number"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="service" className="block mb-1 font-medium text-navy">Service Interested In</label>
-                  <select 
-                    id="service" 
-                    name="service" 
-                    value={formData.service} 
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                  >
-                    <option value="">Select a service</option>
-                    <option value="residential">Residential Pressure Washing</option>
-                    <option value="commercial">Commercial Pressure Washing</option>
-                    <option value="driveway">Driveway & Concrete Cleaning</option>
-                    <option value="house">House Washing</option>
-                    <option value="deck">Deck & Patio Restoration</option>
-                    <option value="roof">Roof Cleaning</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block mb-1 font-medium text-navy">Message</label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    value={formData.message} 
-                    onChange={handleChange}
-                    rows={4} 
-                    className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                    placeholder="Tell us about your project or ask any questions"
-                  ></textarea>
-                </div>
-                
-                <div className="pt-2">
-                  <Button 
-                    type="submit" 
-                    disabled={isSubmitting}
-                    className="w-full bg-navy hover:bg-navyLight text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Mail className="mr-2 h-5 w-5" /> Send Message
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </form>
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                <Mail size={24} />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1 text-navy">Email</h3>
+                <p className="text-black">
+                  <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
+                </p>
+              </div>
             </div>
+            
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                <MapPin size={24} />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1 text-navy">Service Area</h3>
+                <p className="text-black">Goulburn, Canberra & surrounding areas in NSW</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
+                <Clock size={24} />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1 text-navy">Business Hours</h3>
+                <p className="text-black">Mon-Fri: 8am-6pm | Sat: 9am-1pm | Sun: Closed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Contact Form */}
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="bg-white rounded-lg p-8 shadow-lg">
+            <h2 className="text-2xl font-semibold mb-6 text-navy text-center">Send us a Message</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block mb-1 font-medium text-navy">Full Name</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  value={formData.name} 
+                  onChange={handleChange}
+                  required 
+                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your name"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block mb-1 font-medium text-navy">Email Address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  value={formData.email} 
+                  onChange={handleChange}
+                  required 
+                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your email"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="phone" className="block mb-1 font-medium text-navy">Phone Number</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  value={formData.phone} 
+                  onChange={handleChange}
+                  required 
+                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your phone number"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="service" className="block mb-1 font-medium text-navy">Service Interested In</label>
+                <select 
+                  id="service" 
+                  name="service" 
+                  value={formData.service} 
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                >
+                  <option value="">Select a service</option>
+                  <option value="residential">Residential Pressure Washing</option>
+                  <option value="commercial">Commercial Pressure Washing</option>
+                  <option value="driveway">Driveway & Concrete Cleaning</option>
+                  <option value="house">House Washing</option>
+                  <option value="deck">Deck & Patio Restoration</option>
+                  <option value="roof">Roof Cleaning</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div>
+                <label htmlFor="message" className="block mb-1 font-medium text-navy">Message</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  value={formData.message} 
+                  onChange={handleChange}
+                  rows={4} 
+                  className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Tell us about your project or ask any questions"
+                ></textarea>
+              </div>
+              
+              <div className="pt-2">
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-navy hover:bg-green text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="mr-2 h-5 w-5" /> Send Message
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </section>
@@ -359,7 +353,7 @@ const Contact = () => {
                   <Building size={24} />
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-navy">Goulburn</h3>
-                <ul className="text-navy text-center">
+                <ul className="text-black text-center">
                   <li>Goulburn City</li>
                   <li>Bradfordville</li>
                   <li>Eastgrove</li>
@@ -373,7 +367,7 @@ const Contact = () => {
                   <Building size={24} />
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-navy">Canberra</h3>
-                <ul className="text-navy text-center">
+                <ul className="text-black text-center">
                   <li>Civic</li>
                   <li>Belconnen</li>
                   <li>Woden</li>
@@ -387,7 +381,7 @@ const Contact = () => {
                   <Building size={24} />
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-navy">Surrounding Areas</h3>
-                <ul className="text-navy text-center">
+                <ul className="text-black text-center">
                   <li>Marulan</li>
                   <li>Bungonia</li>
                   <li>Windellama</li>
@@ -415,7 +409,7 @@ const Contact = () => {
             <div className="flex justify-center">
               <a 
                 href="tel:0417264292" 
-                className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-navyLight hover:text-white transition-colors inline-flex items-center"
+                className="bg-white text-navy py-3 px-6 rounded-lg font-bold hover:bg-green hover:text-white transition-colors inline-flex items-center"
               >
                 <Phone className="mr-2 h-5 w-5" /> Call Now: 0417 264 292
               </a>

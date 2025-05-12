@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Droplet } from 'lucide-react';
@@ -60,10 +59,9 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex-1 md:flex-none">
             <img 
-              src="/lovable-uploads/4728361d-92a8-4803-8916-d47dc3ab3a1b.png" 
+              src="/lovable-uploads/0a1f9ea3-3c6d-4c91-a1f8-fbfbddc01305.png" 
               alt="R Judd Enterprises" 
               className="h-10 md:h-12"
-              style={{ filter: 'brightness(0) invert(1)' }}
             />
           </Link>
 
@@ -78,9 +76,9 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center">
-            <Link to="/contact" className="neumorphic-button bg-white text-navy hover:bg-navyLight hover:text-white">
+            <Link to="/contact" className="neumorphic-button bg-white text-navy hover:bg-navyLight hover:text-white flex items-center justify-center py-2 px-4">
               <Droplet className="w-4 h-4 mr-2" />
-              Free Quote
+              <span>Free Quote</span>
             </Link>
           </div>
 

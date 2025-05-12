@@ -1,62 +1,62 @@
 
-import React from 'react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
-// FAQ data
-const faqData = [
-  {
-    question: "What surfaces can be pressure washed?",
-    answer: "We can safely pressure wash a wide variety of surfaces including concrete driveways, pavers, brick, vinyl siding, wood decks (with appropriate pressure), fences, roofs, and more. Our team assesses each surface to determine the appropriate pressure level and cleaning solution to avoid any damage."
-  },
-  {
-    question: "How long does pressure washing take?",
-    answer: "The time required depends on the size and condition of the area being cleaned. A typical residential driveway might take 1-2 hours, while a complete house exterior could take 3-5 hours. Commercial projects may require more time. We'll provide a time estimate during your free quote."
-  },
-  {
-    question: "Is pressure washing safe for all surfaces?",
-    answer: "Not all surfaces can withstand the same pressure levels. Our technicians are trained to assess each surface and use appropriate pressure settings and techniques. For delicate surfaces, we may use soft washing techniques that rely more on cleaning solutions than high pressure."
-  },
-  {
-    question: "Do you use environmentally friendly cleaning solutions?",
-    answer: "Yes, we use eco-friendly biodegradable cleaning solutions that effectively remove dirt, grime, and biological growth without harming your plants, pets, or the environment. We take pride in our responsible approach to pressure washing."
-  },
-  {
-    question: "How often should I have my property pressure washed?",
-    answer: "For homes in the Goulburn area, we typically recommend pressure washing once a year to maintain your property's appearance and prevent long-term damage. However, driveways and walkways with heavy use may benefit from cleaning every 6-8 months."
-  },
-  {
-    question: "Can pressure washing remove all stains?",
-    answer: "While pressure washing is highly effective at removing most dirt, grime, mold, mildew, and algae, some deep-set stains (like oil that has penetrated concrete for years, rust, or certain paint stains) may not be completely removable. We'll give you our honest assessment during the quote process."
-  }
-];
+const FAQSection = () => {
+  const [openIndex, setOpenIndex] = useState(null);
 
-const FAQSection: React.FC = () => {
+  const faqs = [
+    {
+      question: "How long does a typical pressure washing service take?",
+      answer: "Service times vary depending on the size of the area and the level of cleaning required. A typical driveway cleaning can take 1-2 hours, while a whole house exterior cleaning might take 3-5 hours. We'll provide you with a time estimate before starting your service."
+    },
+    {
+      question: "Is pressure washing safe for all surfaces?",
+      answer: "Not all surfaces can withstand the same pressure. We adjust our equipment and techniques based on the specific surface being cleaned. For delicate surfaces like some sidings, we use soft washing techniques that clean effectively without causing damage."
+    },
+    {
+      question: "Do I need to be home during the service?",
+      answer: "It's not necessary to be present during the service as long as we have access to the areas that need cleaning and a water source. However, we recommend being available at the beginning and end of the service for a walkthrough."
+    },
+    {
+      question: "What cleaning solutions do you use?",
+      answer: "We use environmentally-friendly cleaning solutions that are effective at removing dirt, mold, mildew, and algae without harming your plants or property. Our solutions are biodegradable and safe for your family and pets."
+    },
+    {
+      question: "How often should I have my property pressure washed?",
+      answer: "Most properties benefit from an annual pressure washing, though this can vary depending on your local environment and the specific surfaces. Areas with high humidity or dense tree coverage may require more frequent cleaning to prevent mold and mildew buildup."
+    },
+    {
+      question: "Will pressure washing damage my plants or landscaping?",
+      answer: "We take precautions to protect your landscaping during the cleaning process. This includes rinsing plants before and after cleaning to dilute any cleaning solutions that might come into contact with them. Our eco-friendly solutions are designed to minimize impact on vegetation."
+    }
+  ];
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
-    <div className="max-w-3xl mx-auto">
-      <Accordion type="single" collapsible className="w-full">
-        {faqData.map((faq, index) => (
-          <AccordionItem key={index} value={`item-${index}`} className="border-b border-navyLight/20">
-            <AccordionTrigger className="text-left font-medium text-navy hover:text-navyLight py-4">
-              {faq.question}
-            </AccordionTrigger>
-            <AccordionContent className="text-navy pb-4">
-              {faq.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-      
-      <div className="text-center mt-10">
-        <p className="text-navy mb-4">
-          Don't see your question here? Get in touch with us directly.
-        </p>
-        <a 
-          href="/contact" 
-          className="neumorphic-button bg-navy text-white hover:bg-navyLight inline-block"
-        >
-          Contact Us
-        </a>
-      </div>
+    <div className="max-w-4xl mx-auto">
+      {faqs.map((faq, index) => (
+        <div key={index} className="mb-4">
+          <button
+            className="w-full flex justify-between items-center px-6 py-4 glass-card rounded-lg transition-colors duration-200 hover:bg-navyLight/20"
+            onClick={() => toggleFAQ(index)}
+          >
+            <span className="font-semibold text-left text-navy">{faq.question}</span>
+            <span className="text-navy">
+              {openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </span>
+          </button>
+          
+          {openIndex === index && (
+            <div className="px-6 py-4 bg-white/70 rounded-b-lg text-black mt-1 shadow-inner">
+              <p>{faq.answer}</p>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
