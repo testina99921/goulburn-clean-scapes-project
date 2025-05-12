@@ -429,7 +429,7 @@ const Index = () => {
             <AnimateOnScroll delay={200}>
               <div className="glass-card p-8 rounded-xl text-center transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
                 <div className="mb-3 text-navy">
-                  <Water className="w-8 h-8 mx-auto" />
+                  <Droplet className="w-8 h-8 mx-auto" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2 text-navy">Bundle & Save</h3>
                 <p className="text-4xl font-bold text-navy mb-4">25% OFF</p>
