@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -19,6 +20,34 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// SEO meta tags component
+const SEOMetaTags = () => {
+  useEffect(() => {
+    // Update document title for SEO
+    document.title = "Professional Pressure Washing Services | R Judd Enterprise";
+    
+    // Add meta description
+    const metaDescription = document.createElement('meta');
+    metaDescription.name = "description";
+    metaDescription.content = "R Judd Enterprise offers comprehensive pressure washing services for residential and commercial properties in Goulburn, Canberra & NSW. From house washing to driveway cleaning.";
+    document.head.appendChild(metaDescription);
+    
+    // Add keywords
+    const metaKeywords = document.createElement('meta');
+    metaKeywords.name = "keywords";
+    metaKeywords.content = "pressure washing, pressure cleaning, house washing, roof cleaning, driveway cleaning, Goulburn, Canberra, NSW";
+    document.head.appendChild(metaKeywords);
+    
+    return () => {
+      // Clean up only the tags we've added
+      const tags = document.head.querySelectorAll('meta[name="description"], meta[name="keywords"]');
+      tags.forEach(tag => document.head.removeChild(tag));
+    };
+  }, []);
+  
+  return null;
+};
+
 const Services = () => {
   useEffect(() => {
     // Scroll to top on page load
@@ -28,6 +57,7 @@ const Services = () => {
   return (
     <div className="min-h-screen">
       <Header />
+      <SEOMetaTags />
       
       {/* Core Services Section */}
       <section className="pt-32 pb-16 bg-white">
@@ -92,9 +122,10 @@ const Services = () => {
               <div className="glass-card rounded-xl overflow-hidden">
                 <div className="h-64 overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1617195520288-de81ad8033f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" 
+                    src="/lovable-uploads/94185086-0b3b-4517-8e13-218b2d6780c0.png" 
                     alt="Commercial Pressure Washing" 
                     className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6">
@@ -150,7 +181,7 @@ const Services = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Service 1 - Driveway & Concrete */}
             <AnimateOnScroll>
-              <div className="glass-card p-6 rounded-lg">
+              <div className="glass-card p-6 rounded-lg h-full">
                 <div className="h-16 w-16 rounded-full bg-orangeLight flex items-center justify-center mb-4 mx-auto">
                   <SprayCan className="text-white" size={32} />
                 </div>
@@ -177,7 +208,7 @@ const Services = () => {
             
             {/* Service 2 - House Washing */}
             <AnimateOnScroll delay={100}>
-              <div className="glass-card p-6 rounded-lg">
+              <div className="glass-card p-6 rounded-lg h-full">
                 <div className="h-16 w-16 rounded-full bg-green flex items-center justify-center mb-4 mx-auto">
                   <Home className="text-white" size={32} />
                 </div>
@@ -204,7 +235,7 @@ const Services = () => {
             
             {/* Service 3 - Roof Cleaning */}
             <AnimateOnScroll delay={200}>
-              <div className="glass-card p-6 rounded-lg">
+              <div className="glass-card p-6 rounded-lg h-full">
                 <div className="h-16 w-16 rounded-full bg-navy flex items-center justify-center mb-4 mx-auto">
                   <Droplet className="text-white" size={32} />
                 </div>
@@ -231,7 +262,7 @@ const Services = () => {
             
             {/* Service 4 - Deck & Patio */}
             <AnimateOnScroll delay={300}>
-              <div className="glass-card p-6 rounded-lg">
+              <div className="glass-card p-6 rounded-lg h-full">
                 <div className="h-16 w-16 rounded-full bg-orangeLight flex items-center justify-center mb-4 mx-auto">
                   <ShowerHead className="text-white" size={32} />
                 </div>
@@ -258,7 +289,7 @@ const Services = () => {
             
             {/* Service 5 - Fence Cleaning */}
             <AnimateOnScroll delay={400}>
-              <div className="glass-card p-6 rounded-lg">
+              <div className="glass-card p-6 rounded-lg h-full">
                 <div className="h-16 w-16 rounded-full bg-green flex items-center justify-center mb-4 mx-auto">
                   <PaintBucket className="text-white" size={32} />
                 </div>
@@ -285,7 +316,7 @@ const Services = () => {
             
             {/* Service 6 - Garbage Bin Cleaning */}
             <AnimateOnScroll delay={500}>
-              <div className="glass-card p-6 rounded-lg">
+              <div className="glass-card p-6 rounded-lg h-full">
                 <div className="h-16 w-16 rounded-full bg-navy flex items-center justify-center mb-4 mx-auto">
                   <Trash2 className="text-white" size={32} />
                 </div>

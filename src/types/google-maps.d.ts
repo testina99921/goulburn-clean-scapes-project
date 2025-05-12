@@ -8,6 +8,9 @@ declare global {
         LatLng: any;
         SymbolPath: any;
         NavigationControl: any;
+        InfoWindow: any;
+        MapTypeControlStyle: any;
+        ControlPosition: any;
       };
     };
     initGoogleMap: () => void;

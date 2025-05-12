@@ -27,11 +27,45 @@ import {
   Wrench
 } from 'lucide-react';
 
+// SEO meta tags component
+const SEOMetaTags = () => {
+  useEffect(() => {
+    // Update document title for SEO
+    document.title = "R Judd Enterprise | Professional Pressure Washing Services Goulburn, Canberra & NSW";
+    
+    // Add meta description
+    const metaDescription = document.createElement('meta');
+    metaDescription.name = "description";
+    metaDescription.content = "R Judd Enterprise provides top-quality pressure washing services for residential and commercial properties in Goulburn, Canberra & NSW. Transform your property today!";
+    document.head.appendChild(metaDescription);
+    
+    // Add keywords
+    const metaKeywords = document.createElement('meta');
+    metaKeywords.name = "keywords";
+    metaKeywords.content = "pressure washing, pressure cleaning, house washing, roof cleaning, driveway cleaning, Goulburn, Canberra, NSW, R Judd Enterprise";
+    document.head.appendChild(metaKeywords);
+    
+    // Add canonical link
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = "canonical";
+    canonicalLink.href = window.location.origin;
+    document.head.appendChild(canonicalLink);
+    
+    return () => {
+      // Clean up only the tags we've added
+      const tags = document.head.querySelectorAll('meta[name="description"], meta[name="keywords"], link[rel="canonical"]');
+      tags.forEach(tag => document.head.removeChild(tag));
+    };
+  }, []);
+  
+  return null;
+};
+
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Hero image
-  const heroImage = "https://images.unsplash.com/photo-1623767322495-1c208883ad06?q=80&w=2070&auto=format&fit=crop";
+  // Hero image - using the roof before/after image
+  const heroImage = "/lovable-uploads/17ebbf29-bccf-463d-8e21-bc70614e1f85.png";
   
   // Before-After Images
   const beforeImage = "/lovable-uploads/7a6c7328-de8c-43a1-80cc-532f5b359b7d.png"; 
@@ -114,6 +148,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient">
       <Header />
+      <SEOMetaTags />
       
       {/* Hero Section */}
       <section 
@@ -299,7 +334,7 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <AnimateOnScroll delay={100}>
               <div className="glass-card rounded-xl p-8 text-center h-full flex flex-col">
-                <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <BuildingIcon size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">Backed by R JUDD Enterprises</h3>
@@ -323,7 +358,7 @@ const Index = () => {
             
             <AnimateOnScroll delay={300}>
               <div className="glass-card rounded-xl p-8 text-center h-full flex flex-col">
-                <div className="w-16 h-16 bg-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-orange-700 rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClipboardCheck size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">100% Satisfaction Guarantee</h3>
@@ -407,8 +442,6 @@ const Index = () => {
           </AnimateOnScroll>
         </div>
       </section>
-
-      {/* Special Offers Section - Hidden as requested */}
 
       {/* FAQ Section */}
       <section className="py-16 bg-navy/10" id="faq">

@@ -1,15 +1,45 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SectionTitle from '../components/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { PhoneCall, Mail, MapPin, Clock, Droplet, Building, Check } from 'lucide-react';
+import { PhoneCall, Mail, MapPin, Clock, Droplet, Building, Check, Upload } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import emailjs from '@emailjs/browser';
+
+// SEO meta tags component
+const SEOMetaTags = () => {
+  useEffect(() => {
+    // Update document title for SEO
+    document.title = "Contact R Judd Enterprise | Professional Pressure Washing Services";
+    
+    // Add meta description
+    const metaDescription = document.createElement('meta');
+    metaDescription.name = "description";
+    metaDescription.content = "Contact R Judd Enterprise for professional pressure washing services in Goulburn, Canberra & NSW. Request a free quote today!";
+    document.head.appendChild(metaDescription);
+    
+    // Add keywords
+    const metaKeywords = document.createElement('meta');
+    metaKeywords.name = "keywords";
+    metaKeywords.content = "pressure washing, contact, Goulburn, Canberra, NSW, pressure cleaning, roof cleaning, driveway cleaning";
+    document.head.appendChild(metaKeywords);
+    
+    return () => {
+      // Clean up only the tags we've added
+      const tags = document.head.querySelectorAll('meta[name="description"], meta[name="keywords"]');
+      tags.forEach(tag => document.head.removeChild(tag));
+    };
+  }, []);
+  
+  return null;
+};
 
 const Contact = () => {
   const { toast } = useToast();
+  const formRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,10 +49,15 @@ const Contact = () => {
     additionalServices: [] as string[]
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
   useEffect(() => {
     // Scroll to top on page load
     window.scrollTo(0, 0);
+
+    // Initialize EmailJS
+    emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
 
     // Load Google Maps script
     const loadGoogleMaps = () => {
@@ -47,6 +82,11 @@ const Contact = () => {
         const mapOptions = {
           center: { lat: -34.7548, lng: 149.7186 }, // Goulburn coordinates
           zoom: 13,
+          mapTypeControl: true,
+          mapTypeControlOptions: {
+            style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+            position: window.google.maps.ControlPosition.TOP_RIGHT
+          },
           styles: [
             {
               "featureType": "water",
@@ -107,8 +147,8 @@ const Contact = () => {
           mapOptions
         );
 
-        // Add marker for business location
-        new window.google.maps.Marker({
+        // Add marker for business location with info window
+        const marker = new window.google.maps.Marker({
           position: { lat: -34.7548, lng: 149.7186 },
           map,
           title: 'R Judd Enterprise',
@@ -121,6 +161,24 @@ const Contact = () => {
             scale: 10,
           },
         });
+        
+        // Add info window
+        const infoWindow = new window.google.maps.InfoWindow({
+          content: `
+            <div style="padding: 10px;">
+              <h3 style="margin: 0 0 5px; font-weight: bold;">R Judd Enterprise</h3>
+              <p style="margin: 0;">Professional Pressure Washing Services</p>
+              <p style="margin: 5px 0 0;"><a href="tel:0417264292">0417 264 292</a></p>
+            </div>
+          `
+        });
+        
+        marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+        });
+        
+        // Open info window by default
+        infoWindow.open(map, marker);
       }
     }
 
@@ -160,22 +218,82 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      
+      // Limit to max 3 images
+      const newFiles = [...uploadedImages, ...filesArray].slice(0, 3);
+      setUploadedImages(newFiles);
+      
+      // Create preview URLs
+      const newUrls = newFiles.map(file => URL.createObjectURL(file));
+      
+      // Clean up old preview URLs to prevent memory leaks
+      imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
+      
+      setImagePreviewUrls(newUrls);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    // Remove image and its preview
+    const newImages = [...uploadedImages];
+    const newPreviewUrls = [...imagePreviewUrls];
+    
+    // Revoke URL to prevent memory leaks
+    URL.revokeObjectURL(newPreviewUrls[index]);
+    
+    newImages.splice(index, 1);
+    newPreviewUrls.splice(index, 1);
+    
+    setUploadedImages(newImages);
+    setImagePreviewUrls(newPreviewUrls);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Create a formatted message that includes additional services
+      const additionalServicesText = formData.additionalServices.length > 0 
+        ? `Additional Services Requested: ${formData.additionalServices.join(', ')}`
+        : 'No additional services requested';
+
+      // Prepare the data for EmailJS
+      const templateParams = {
+        to_email: "rossjudd@hotmail.com",
+        from_name: formData.name,
+        from_email: formData.email,
+        from_phone: formData.phone,
+        message: formData.message,
+        service_requested: formData.service,
+        additional_services: additionalServicesText
+        // Images would be handled separately or through a different service
+      };
+
+      // Send email using EmailJS
+      await emailjs.send(
+        "default_service", // Service ID
+        "template_contact", // Template ID
+        templateParams
+      );
+
+      // Log for debugging
       console.log("Form submitted with data:", {
         ...formData,
-        email: "rossjudd@hotmail.com" // Email where the form will be sent
+        email: "rossjudd@hotmail.com", // Email where the form will be sent
+        uploadedImages: uploadedImages.length > 0 ? `${uploadedImages.length} images attached` : 'No images'
       });
       
+      // Show success message
       toast({
         title: "Message Sent!",
         description: "We've received your message and will be in touch shortly.",
       });
       
+      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -184,13 +302,29 @@ const Contact = () => {
         message: '',
         additionalServices: []
       });
+      setUploadedImages([]);
+      setImagePreviewUrls([]);
+      
+      // Clean up image preview URLs
+      imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
+      setImagePreviewUrls([]);
+      
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error",
+        description: "There was a problem sending your message. Please try again or contact us directly.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
     <div className="min-h-screen">
       <Header />
+      <SEOMetaTags />
       
       {/* Page Header */}
       <section className="pt-32 pb-16 bg-navy text-white">
@@ -207,48 +341,48 @@ const Contact = () => {
       {/* Contact Info */}
       <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-4 lg:gap-8">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                <PhoneCall size={24} />
+              <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center mr-3 text-white shrink-0">
+                <PhoneCall size={20} />
               </div>
               <div>
-                <h3 className="font-semibold mb-1 text-navy">Phone</h3>
-                <p className="text-black">
+                <h3 className="font-semibold mb-0 text-navy text-sm">Phone</h3>
+                <p className="text-black text-sm">
                   <a href="tel:0417264292" className="hover:text-navyLight transition-colors">0417 264 292</a>
                 </p>
               </div>
             </div>
             
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                <Mail size={24} />
+              <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center mr-3 text-white shrink-0">
+                <Mail size={20} />
               </div>
               <div>
-                <h3 className="font-semibold mb-1 text-navy">Email</h3>
-                <p className="text-black">
+                <h3 className="font-semibold mb-0 text-navy text-sm">Email</h3>
+                <p className="text-black text-sm">
                   <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
                 </p>
               </div>
             </div>
             
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                <MapPin size={24} />
+              <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center mr-3 text-white shrink-0">
+                <MapPin size={20} />
               </div>
               <div>
-                <h3 className="font-semibold mb-1 text-navy">Service Area</h3>
-                <p className="text-black">Goulburn, Canberra & surrounding areas in NSW</p>
+                <h3 className="font-semibold mb-0 text-navy text-sm">Service Area</h3>
+                <p className="text-black text-sm">Goulburn, Canberra & surrounds</p>
               </div>
             </div>
             
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-navy rounded-full flex items-center justify-center mr-4 text-white shrink-0">
-                <Clock size={24} />
+              <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center mr-3 text-white shrink-0">
+                <Clock size={20} />
               </div>
               <div>
-                <h3 className="font-semibold mb-1 text-navy">Business Hours</h3>
-                <p className="text-black">Mon-Fri: 8am-6pm | Sat: 9am-1pm | Sun: Closed</p>
+                <h3 className="font-semibold mb-0 text-navy text-sm">Business Hours</h3>
+                <p className="text-black text-sm">Mon-Fri: 8am-6pm | Sat: 9am-1pm</p>
               </div>
             </div>
           </div>
@@ -261,7 +395,7 @@ const Contact = () => {
           <div className="bg-white rounded-lg p-8 shadow-lg">
             <h2 className="text-2xl font-semibold mb-6 text-navy text-center">Send us a Message</h2>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block mb-1 font-medium text-navy">Full Name</label>
@@ -335,7 +469,9 @@ const Contact = () => {
                     { id: 'gutter', label: 'Gutter Cleaning' },
                     { id: 'window', label: 'Window Washing' },
                     { id: 'fence', label: 'Fence Restoration' },
-                    { id: 'paver', label: 'Paver Sealing' }
+                    { id: 'paver', label: 'Paver Sealing' },
+                    { id: 'pressure', label: 'High Pressure Cleaning' },
+                    { id: 'solar', label: 'Solar Panel Cleaning' }
                   ].map(service => (
                     <div key={service.id} className="flex items-center">
                       <div
@@ -367,10 +503,52 @@ const Contact = () => {
                   name="message" 
                   value={formData.message} 
                   onChange={handleChange}
-                  rows={4} 
+                  rows={5} 
                   className="w-full px-4 py-2 border border-navyLight/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
                   placeholder="Tell us about your project or ask any questions"
                 />
+              </div>
+              
+              <div>
+                <label className="block mb-1 font-medium text-navy">Upload Images (Optional)</label>
+                <div className="mt-1 flex items-center">
+                  <label className="flex items-center justify-center px-4 py-2 border border-navyLight/20 rounded-lg cursor-pointer hover:bg-navyLight/5 transition-colors text-navy">
+                    <Upload className="mr-2 h-5 w-5" />
+                    <span>Choose files</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      disabled={uploadedImages.length >= 3}
+                    />
+                  </label>
+                  <span className="ml-3 text-sm text-gray-500">
+                    {uploadedImages.length === 0 ? 'No files selected' : `${uploadedImages.length} file(s) selected (max 3)`}
+                  </span>
+                </div>
+
+                {imagePreviewUrls.length > 0 && (
+                  <div className="mt-3 grid grid-cols-3 gap-3">
+                    {imagePreviewUrls.map((url, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={url}
+                          alt={`Preview ${index + 1}`}
+                          className="h-24 w-full object-cover rounded border border-navyLight/20"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               
               <div className="pt-2">
