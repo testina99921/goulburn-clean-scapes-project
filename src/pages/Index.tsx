@@ -149,7 +149,7 @@ const Index = () => {
       <Header />
       <SEOMetaTags />
       
-      {/* Hero Section - Removed the blue overlay */}
+      {/* Hero Section - Improved text contrast */}
       <section 
         className="pt-32 pb-24 md:py-40 relative bg-cover bg-center"
         style={{
@@ -158,14 +158,14 @@ const Index = () => {
           backgroundSize: 'cover'
         }}
       >
-        <div className="container mx-auto px-4 text-center text-white">
+        <div className="container mx-auto px-4 text-center">
           <AnimateOnScroll className="mb-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 leading-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               Transform Your Property with <span className="font-semibold">Professional</span> Pressure Washing
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll className="mb-8" delay={200}>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 font-light">
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto font-light text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] bg-navy/20 p-3 rounded-lg inline-block">
               Restore the beauty of your home or business with our expert pressure washing services in Goulburn, Canberra & NSW.
             </p>
           </AnimateOnScroll>

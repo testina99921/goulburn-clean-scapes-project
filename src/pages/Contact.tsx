@@ -21,12 +21,12 @@ import SectionTitle from '../components/SectionTitle';
 import AnimateOnScroll from '../components/AnimateOnScroll';
 import emailjs from '@emailjs/browser';
 
-// Form schema
+// Form schema - updated to replace subject with service
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   phone: z.string().min(5, { message: "Please enter a valid phone number." }),
-  subject: z.string().min(2, { message: "Subject must be at least 2 characters." }),
+  service: z.string().min(1, { message: "Please select a service." }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
   additionalServices: z.array(z.string()).optional(),
 });
@@ -69,7 +69,7 @@ const ContactPage = () => {
       name: "",
       email: "",
       phone: "",
-      subject: "",
+      service: "",
       message: "",
       additionalServices: [],
     },
@@ -303,12 +303,24 @@ const ContactPage = () => {
                       
                       <FormField
                         control={form.control}
-                        name="subject"
+                        name="service"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Subject</FormLabel>
+                            <FormLabel>Service Needed</FormLabel>
                             <FormControl>
-                              <Input placeholder="Message subject" {...field} />
+                              <select
+                                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy focus:border-navy"
+                                {...field}
+                              >
+                                <option value="">Select a service</option>
+                                <option value="residential">Residential Pressure Washing</option>
+                                <option value="commercial">Commercial Pressure Washing</option>
+                                <option value="driveway">Driveway & Concrete Cleaning</option>
+                                <option value="house">House Washing</option>
+                                <option value="deck">Deck & Patio Restoration</option>
+                                <option value="roof">Roof Cleaning</option>
+                                <option value="other">Other</option>
+                              </select>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -316,8 +328,11 @@ const ContactPage = () => {
                       />
                     </div>
                     
-                    {/* Highlighted Bin Cleaning Upsell */}
-                    <div className="p-4 bg-green/10 border border-green rounded-lg">
+                    {/* Highlighted Bin Cleaning Upsell - Modified with popular tag */}
+                    <div className="p-4 bg-green/10 border border-green rounded-lg relative">
+                      <div className="absolute -top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                        Popular
+                      </div>
                       <div className="flex items-center">
                         <div
                           onClick={handleBinCleaningChange}
@@ -340,9 +355,6 @@ const ContactPage = () => {
                           </label>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-500 mt-1 ml-7">
-                        Our popular bin cleaning service eliminates odors and bacteria from your waste containers
-                      </p>
                     </div>
                     
                     {/* Additional Services section */}
@@ -404,14 +416,13 @@ const ContactPage = () => {
                       <div className="flex items-center justify-center w-full mt-1">
                         <label 
                           htmlFor="contact-image-upload" 
-                          className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                          className="flex flex-col items-center justify-center w-full h-28 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                         >
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                            <p className="mb-2 text-sm text-gray-500">
-                              <span className="font-semibold">Click to upload</span> or drag and drop
+                          <div className="flex flex-col items-center justify-center pt-3 pb-3">
+                            <Upload className="w-7 h-7 mb-2 text-gray-400" />
+                            <p className="mb-1 text-sm text-gray-500">
+                              <span className="font-semibold">Click to upload</span> images
                             </p>
-                            <p className="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 5MB)</p>
                           </div>
                           <Input 
                             id="contact-image-upload" 
@@ -448,6 +459,11 @@ const ContactPage = () => {
                           </div>
                         </div>
                       )}
+                    </div>
+                    
+                    <div className="flex items-center justify-center mb-2">
+                      <Award className="text-green mr-2" size={22} />
+                      <p className="font-medium text-gray-700">100% Satisfaction Guarantee</p>
                     </div>
                     
                     <Button 

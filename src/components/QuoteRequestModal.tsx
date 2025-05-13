@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Mail, Check, Upload, Award, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -142,7 +141,7 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
           <p>Fill out this form to receive a no-obligation quote for our services.</p>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-6">
+        <form onSubmit={handleSubmit} className="p-6 max-h-[70vh] overflow-y-auto">
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -221,8 +220,11 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
               </select>
             </div>
 
-            {/* Highlighted Bin Cleaning Upsell */}
-            <div className="p-4 bg-green/10 border border-green rounded-lg">
+            {/* Highlighted Bin Cleaning Upsell - Modified with popular tag */}
+            <div className="p-4 bg-green/10 border border-green rounded-lg relative">
+              <div className="absolute -top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                Popular
+              </div>
               <div className="flex items-center">
                 <div
                   onClick={handleBinCleaningChange}
@@ -245,9 +247,6 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
                   </label>
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mt-1 ml-7">
-                Our popular bin cleaning service eliminates odors and bacteria from your waste containers
-              </p>
             </div>
 
             <div>
@@ -284,30 +283,17 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
               </div>
             </div>
             
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
-              <Textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={3}
-                placeholder="Tell us more about your project (size, timeline, specific needs)"
-                className="w-full"
-              />
-            </div>
-
-            {/* Image upload section - reduced size */}
+            {/* Image upload section - moved before additional details and reduced in size */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
               <div className="flex items-center justify-center w-full">
                 <label 
                   htmlFor="image-upload" 
-                  className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                  className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                 >
-                  <div className="flex flex-col items-center justify-center pt-2 pb-3">
-                    <Upload className="w-6 h-6 mb-2 text-gray-400" />
-                    <p className="text-sm text-gray-500">
+                  <div className="flex flex-col items-center justify-center pt-2 pb-2">
+                    <Upload className="w-5 h-5 mb-1 text-gray-400" />
+                    <p className="text-xs text-gray-500">
                       <span className="font-semibold">Click to upload</span> images
                     </p>
                   </div>
@@ -324,11 +310,11 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
               
               {/* Image previews */}
               {imagePreviewUrls.length > 0 && (
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Images:</p>
+                <div className="mt-2">
+                  <p className="text-sm font-medium text-gray-700 mb-1">Uploaded Images:</p>
                   <div className="grid grid-cols-3 gap-2">
                     {imagePreviewUrls.map((url, index) => (
-                      <div key={index} className="relative rounded-md overflow-hidden h-24">
+                      <div key={index} className="relative rounded-md overflow-hidden h-20">
                         <img 
                           src={url} 
                           alt={`Uploaded preview ${index + 1}`} 
@@ -339,13 +325,26 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
                           onClick={() => removeImage(index)}
                           className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
                         >
-                          <X size={14} />
+                          <X size={12} />
                         </button>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
+            </div>
+            
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
+              <Textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Tell us more about your project (size, timeline, specific needs)"
+                className="w-full"
+              />
             </div>
 
             <div className="flex items-center justify-center mb-2">
