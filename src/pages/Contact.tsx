@@ -9,7 +9,7 @@ import L from 'leaflet';
 import SectionTitle from '../components/SectionTitle';
 
 // Leaflet fix for default marker icon
-delete L.Icon.Default.prototype._getIconUrl;
+delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
@@ -58,7 +58,8 @@ const Contact = () => {
     }, 2000);
   };
 
-  const position = [-34.7544, 149.7188];
+  // Fix the position type to be a proper LatLngTuple
+  const position: [number, number] = [-34.7544, 149.7188];
 
   return (
     <div className="min-h-screen bg-gradient">
@@ -197,10 +198,10 @@ const Contact = () => {
                 </div>
               </div>
               
-              {/* Bin Cleaning Upsell with more prominent Popular tag */}
+              {/* Bin Cleaning Upsell with more prominent Popular tag - Updated to be more visible */}
               <div className="p-4 bg-green/10 border border-green rounded-lg relative">
-                <div className="absolute -top-3 -left-1 bg-red-600 text-white text-sm px-3 py-1 rounded-md font-bold transform rotate-0 shadow-md">
-                  Popular
+                <div className="absolute -top-3 -left-1 bg-red-600 text-white text-sm px-3 py-1 rounded-full font-bold transform -rotate-2 shadow-md flex items-center">
+                  <span className="text-white font-bold px-1">POPULAR</span>
                 </div>
                 <div className="flex items-start mt-2">
                   <div className="flex items-center h-5 mt-1">

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, Mail, Upload, Check } from 'lucide-react';
@@ -85,12 +86,6 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-2xl font-semibold text-navy">Request a Free Quote</h2>
-          <button 
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-800"
-          >
-            <X size={24} />
-          </button>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -201,10 +196,10 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
                 </select>
               </div>
 
-              {/* Highlighted Bin Cleaning Upsell with obvious Popular tag */}
+              {/* Highlighted Bin Cleaning Upsell with obvious Popular tag - Updated to be more visible */}
               <div className="p-4 bg-green/10 border border-green rounded-lg relative">
-                <div className="absolute -top-3 -left-1 bg-red-600 text-white text-sm px-3 py-1 rounded-md font-bold transform rotate-0 shadow-md">
-                  Popular
+                <div className="absolute -top-3 -left-1 bg-red-600 text-white text-sm px-3 py-1 rounded-full font-bold transform -rotate-2 shadow-md flex items-center">
+                  <span className="text-white font-bold px-1">POPULAR</span>
                 </div>
                 <div className="flex items-start mt-2">
                   <div className="flex items-center h-5 mt-1">
