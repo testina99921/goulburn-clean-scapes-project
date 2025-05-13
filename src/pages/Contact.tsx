@@ -1,501 +1,303 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Mail, Phone, MapPin, Clock, Send, Upload, X, Check, Trash2, Award } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import React, { useState } from 'react';
+import { Check, Mail, X } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import SectionTitle from '../components/SectionTitle';
-import AnimateOnScroll from '../components/AnimateOnScroll';
-import emailjs from '@emailjs/browser';
 
-// Form schema - updated to replace subject with service
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  phone: z.string().min(5, { message: "Please enter a valid phone number." }),
-  service: z.string().min(1, { message: "Please select a service." }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-  additionalServices: z.array(z.string()).optional(),
+// Leaflet fix for default marker icon
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
-// SEO meta tags component
-const SEOMetaTags = () => {
-  useEffect(() => {
-    document.title = "Contact R Judd Enterprise | Professional Pressure Washing Services";
-    
-    const metaDescription = document.createElement('meta');
-    metaDescription.name = "description";
-    metaDescription.content = "Contact R Judd Enterprise for professional pressure washing services in Goulburn, Canberra & NSW. Get in touch for a free quote today!";
-    document.head.appendChild(metaDescription);
-    
-    const metaKeywords = document.createElement('meta');
-    metaKeywords.name = "keywords";
-    metaKeywords.content = "contact, pressure washing, pressure cleaning, Goulburn, Canberra, NSW, quote, pressure washing services";
-    document.head.appendChild(metaKeywords);
-    
-    return () => {
-      const tags = document.head.querySelectorAll('meta[name="description"], meta[name="keywords"]');
-      tags.forEach(tag => document.head.removeChild(tag));
-    };
-  }, []);
-  
-  return null;
-};
-
-const ContactPage = () => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [additionalServices, setAdditionalServices] = useState<string[]>([]);
-  const [binCleaning, setBinCleaning] = useState(false);
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      service: "",
-      message: "",
-      additionalServices: [],
-    },
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    binCleaning: false,
+    message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
+    setIsSubmitSuccess(false);
 
-    try {
-      // Prepare data to include additional services
-      const submissionData = {
-        ...values,
-        additionalServices: additionalServices.join(", "),
-        binCleaning: binCleaning ? "Yes" : "No",
-        to_email: "rossjudd@hotmail.com", // Recipient email
-        imageCount: imageFiles.length,
-      };
-
-      console.log("Form submitted:", submissionData);
-
-      // Initialize EmailJS (replace with your actual service ID, template ID, and public key)
-      await emailjs.send(
-        'service_id', // Service ID
-        'template_id', // Template ID
-        submissionData,
-        'public_key' // Public Key
-      );
-
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for your message. We'll get back to you shortly.",
-      });
-
-      // Reset form
-      form.reset();
-      setAdditionalServices([]);
-      setBinCleaning(false);
-      
-      // Clear images
-      imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
-      setImageFiles([]);
-      setImagePreviewUrls([]);
-      
-    } catch (error) {
-      console.error('Error sending message:', error);
-      toast({
-        title: "Error",
-        description: "There was a problem sending your message. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
+    // Simulate form submission
+    setTimeout(() => {
       setIsSubmitting(false);
-    }
+      setIsSubmitSuccess(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        binCleaning: false,
+        message: ''
+      });
+    }, 2000);
   };
 
-  const handleAdditionalServiceChange = (service: string) => {
-    setAdditionalServices(prev => {
-      if (prev.includes(service)) {
-        return prev.filter(s => s !== service);
-      } else {
-        return [...prev, service];
-      }
-    });
-  };
-
-  const handleBinCleaningChange = () => {
-    setBinCleaning(prev => !prev);
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-
-    const newFiles: File[] = [];
-    const newPreviewUrls: string[] = [];
-
-    // Process each selected file
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file.type.startsWith('image/')) {
-        newFiles.push(file);
-        newPreviewUrls.push(URL.createObjectURL(file));
-      }
-    }
-
-    setImageFiles([...imageFiles, ...newFiles]);
-    setImagePreviewUrls([...imagePreviewUrls, ...newPreviewUrls]);
-  };
-
-  const removeImage = (index: number) => {
-    const updatedFiles = [...imageFiles];
-    const updatedUrls = [...imagePreviewUrls];
-    
-    // Revoke the object URL to avoid memory leaks
-    URL.revokeObjectURL(updatedUrls[index]);
-    
-    updatedFiles.splice(index, 1);
-    updatedUrls.splice(index, 1);
-    
-    setImageFiles(updatedFiles);
-    setImagePreviewUrls(updatedUrls);
-  };
-
-  useEffect(() => {
-    // Scroll to top on page load
-    window.scrollTo(0, 0);
-  }, []);
+  const position = [-34.7544, 149.7188];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient">
       <Header />
-      <SEOMetaTags />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-white">
-        <div className="container mx-auto px-4">
-          <AnimateOnScroll>
-            <SectionTitle 
-              title="Contact Us" 
-              subtitle="Get in touch with our team for professional pressure washing services"
-            />
-          </AnimateOnScroll>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-            {/* Contact Information - Made smaller */}
-            <AnimateOnScroll className="md:col-span-1">
-              <div className="glass-card rounded-lg p-6 h-full shadow-lg">
-                <h3 className="text-xl font-semibold mb-6 text-navy">Contact Information</h3>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <div className="bg-navy rounded-full p-2 mr-4 flex-shrink-0">
-                      <Phone className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-700">Phone</p>
-                      <a href="tel:0417264292" className="text-navy hover:underline">0417 264 292</a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-navy rounded-full p-2 mr-4 flex-shrink-0">
-                      <Mail className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-700">Email</p>
-                      <a href="mailto:rossjudd@hotmail.com" className="text-navy hover:underline">rossjudd@hotmail.com</a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-navy rounded-full p-2 mr-4 flex-shrink-0">
-                      <MapPin className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-700">Location</p>
-                      <p>Goulburn, NSW, Australia</p>
-                      <p className="text-sm text-gray-500">Serving Goulburn, Canberra & surrounds</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="bg-navy rounded-full p-2 mr-4 flex-shrink-0">
-                      <Clock className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-700">Business Hours</p>
-                      <p>Monday - Friday: 7:00 AM - 5:00 PM</p>
-                      <p>Saturday: 8:00 AM - 3:00 PM</p>
-                      <p>Sunday: By appointment</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AnimateOnScroll>
-            
-            {/* Contact Form - Made larger */}
-            <AnimateOnScroll className="md:col-span-2" delay={200}>
-              <div className="glass-card rounded-lg p-6 shadow-lg">
-                <div className="flex items-center justify-center mb-4">
-                  <Award className="text-green mr-2" size={22} />
-                  <h3 className="text-xl font-semibold text-navy">Send Us a Message</h3>
-                </div>
-                
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Full Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Your name" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email Address</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Your email" type="email" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone Number</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Your phone number" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="service"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Service Needed</FormLabel>
-                            <FormControl>
-                              <select
-                                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy focus:border-navy"
-                                {...field}
-                              >
-                                <option value="">Select a service</option>
-                                <option value="residential">Residential Pressure Washing</option>
-                                <option value="commercial">Commercial Pressure Washing</option>
-                                <option value="driveway">Driveway & Concrete Cleaning</option>
-                                <option value="house">House Washing</option>
-                                <option value="deck">Deck & Patio Restoration</option>
-                                <option value="roof">Roof Cleaning</option>
-                                <option value="other">Other</option>
-                              </select>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    {/* Highlighted Bin Cleaning Upsell - Modified with popular tag */}
-                    <div className="p-4 bg-green/10 border border-green rounded-lg relative">
-                      <div className="absolute -top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                        Popular
-                      </div>
-                      <div className="flex items-center">
-                        <div
-                          onClick={handleBinCleaningChange}
-                          className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
-                            binCleaning
-                              ? 'bg-green border-green'
-                              : 'border-gray-400'
-                          }`}
-                        >
-                          {binCleaning && <Check size={12} className="text-white" />}
-                        </div>
-                        <div className="flex items-center">
-                          <Trash2 size={18} className="mr-2 text-green" />
-                          <label 
-                            htmlFor="bin-cleaning" 
-                            className="text-gray-700 cursor-pointer font-medium"
-                            onClick={handleBinCleaningChange}
-                          >
-                            Add Garbage Bin Cleaning Service
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Additional Services section */}
-                    <div>
-                      <FormLabel>Additional Services (Optional)</FormLabel>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
-                        {[
-                          { id: 'gutter', label: 'Gutter Cleaning' },
-                          { id: 'window', label: 'Window Washing' },
-                          { id: 'fence', label: 'Fence Restoration' },
-                          { id: 'paver', label: 'Paver Sealing' },
-                          { id: 'solar', label: 'Solar Panel Cleaning' },
-                          { id: 'pressure', label: 'High Pressure Cleaning' }
-                        ].map(service => (
-                          <div key={service.id} className="flex items-center">
-                            <div
-                              onClick={() => handleAdditionalServiceChange(service.id)}
-                              className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
-                                additionalServices.includes(service.id)
-                                  ? 'bg-navy border-navy'
-                                  : 'border-gray-400'
-                              }`}
-                            >
-                              {additionalServices.includes(service.id) && <Check size={12} className="text-white" />}
-                            </div>
-                            <label 
-                              htmlFor={`service-${service.id}`} 
-                              className="text-gray-700 cursor-pointer text-sm"
-                              onClick={() => handleAdditionalServiceChange(service.id)}
-                            >
-                              {service.label}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Your Message</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="Tell us about your project or any questions you may have..." 
-                              className="min-h-[120px]" 
-                              {...field} 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {/* Image upload section */}
-                    <div>
-                      <FormLabel>Upload Images (Optional)</FormLabel>
-                      <div className="flex items-center justify-center w-full mt-1">
-                        <label 
-                          htmlFor="contact-image-upload" 
-                          className="flex flex-col items-center justify-center w-full h-28 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                        >
-                          <div className="flex flex-col items-center justify-center pt-3 pb-3">
-                            <Upload className="w-7 h-7 mb-2 text-gray-400" />
-                            <p className="mb-1 text-sm text-gray-500">
-                              <span className="font-semibold">Click to upload</span> images
-                            </p>
-                          </div>
-                          <Input 
-                            id="contact-image-upload" 
-                            type="file"
-                            multiple
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            className="hidden"
-                          />
-                        </label>
-                      </div>
-                      
-                      {/* Image previews */}
-                      {imagePreviewUrls.length > 0 && (
-                        <div className="mt-4">
-                          <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Images:</p>
-                          <div className="grid grid-cols-3 gap-2">
-                            {imagePreviewUrls.map((url, index) => (
-                              <div key={index} className="relative rounded-md overflow-hidden h-24">
-                                <img 
-                                  src={url} 
-                                  alt={`Uploaded preview ${index + 1}`} 
-                                  className="w-full h-full object-cover"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => removeImage(index)}
-                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
-                                >
-                                  <X size={14} />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center justify-center mb-2">
-                      <Award className="text-green mr-2" size={22} />
-                      <p className="font-medium text-gray-700">100% Satisfaction Guarantee</p>
-                    </div>
-                    
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-navy hover:bg-green"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Sending Message...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="mr-2 h-5 w-5" /> Send Message
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                </Form>
-              </div>
-            </AnimateOnScroll>
+      {/* Page Header */}
+      <section className="bg-navyLight/10 py-20">
+        <div className="container mx-auto px-4 text-center">
+          <SectionTitle 
+            title="Contact Us" 
+            subtitle="Get in touch with our team for inquiries and service requests"
+          />
+          <p className="text-xl text-navy mt-4">
+            We're here to help with all your pressure washing needs. Contact us today for a free quote!
+          </p>
+        </div>
+      </section>
+      
+      {/* Contact Information */}
+      <section className="py-12">
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="glass-card p-6 rounded-xl">
+            <h3 className="text-2xl font-semibold text-navy mb-4">Contact Information</h3>
+            <p className="text-navy mb-2">
+              <strong>Address:</strong> 123 Main Street, Goulburn, NSW 2580
+            </p>
+            <p className="text-navy mb-2">
+              <strong>Phone:</strong> <a href="tel:+61412345678" className="text-navy hover:text-navyLight transition-colors">+61 412 345 678</a>
+            </p>
+            <p className="text-navy mb-4">
+              <strong>Email:</strong> <a href="mailto:info@example.com" className="text-navy hover:text-navyLight transition-colors">info@example.com</a>
+            </p>
+            <h4 className="text-xl font-semibold text-navy mt-6 mb-3">Business Hours</h4>
+            <p className="text-navy">Monday - Friday: 9am - 5pm</p>
+            <p className="text-navy">Saturday: 9am - 12pm</p>
+            <p className="text-navy">Sunday: Closed</p>
+          </div>
+
+          {/* Map */}
+          <div className="glass-card rounded-xl overflow-hidden">
+            <MapContainer 
+              center={position} 
+              zoom={13} 
+              style={{ height: '300px', width: '100%' }}
+              className="rounded-xl"
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Marker position={position}>
+                <Popup>
+                  R Judd Enterprise <br /> We are located here.
+                </Popup>
+              </Marker>
+            </MapContainer>
           </div>
         </div>
       </section>
 
+      {/* Contact Form */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto glass-card p-8 rounded-xl">
+            <h2 className="text-3xl font-semibold text-navy mb-8 text-center">Send Us a Message</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block mb-2 text-sm font-medium text-navy">
+                    Full Name*
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-navy">
+                    Email*
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="phone" className="block mb-2 text-sm font-medium text-navy">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    placeholder="Your Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="service" className="block mb-2 text-sm font-medium text-navy">
+                    Service
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    value={formData.service}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select a Service</option>
+                    <option value="Residential Pressure Washing">Residential Pressure Washing</option>
+                    <option value="Commercial Pressure Washing">Commercial Pressure Washing</option>
+                    <option value="Driveway & Concrete Cleaning">Driveway & Concrete Cleaning</option>
+                    <option value="House Washing">House Washing</option>
+                    <option value="Deck & Patio Restoration">Deck & Patio Restoration</option>
+                    <option value="Roof Cleaning">Roof Cleaning</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                  </select>
+                </div>
+              </div>
+              
+              {/* Bin Cleaning Upsell with more prominent Popular tag */}
+              <div className="p-4 bg-green/10 border border-green rounded-lg relative">
+                <div className="absolute -top-3 -left-1 bg-red-600 text-white text-sm px-3 py-1 rounded-md font-bold transform rotate-0 shadow-md">
+                  Popular
+                </div>
+                <div className="flex items-start mt-2">
+                  <div className="flex items-center h-5 mt-1">
+                    <input
+                      id="binCleaning"
+                      name="binCleaning"
+                      type="checkbox"
+                      checked={formData.binCleaning}
+                      onChange={(e) => handleChange({
+                        target: {
+                          name: 'binCleaning',
+                          value: e.target.checked
+                        }
+                      } as React.ChangeEvent<HTMLInputElement>)}
+                      className="w-4 h-4 border border-gray-300 rounded"
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="binCleaning" className="font-medium text-navy">Add Bin Cleaning Service</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="message" className="block mb-2 text-sm font-medium text-navy">
+                  Message*
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={6}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="How can we help you?"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+              </div>
+              
+              <div className="text-center">
+                <button 
+                  type="submit" 
+                  className="bg-navy hover:bg-navyLight text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 inline-flex items-center"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="mr-2" size={20} />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+            
+            {isSubmitSuccess && (
+              <div className="mt-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <div className="flex items-center">
+                  <Check className="mr-2" size={20} />
+                  <span className="font-semibold">Success!</span>
+                </div>
+                <span className="block sm:inline mt-1">Thank you for your message. We'll get back to you soon!</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+      
+      {/* Map */}
+      <section className="py-12 bg-navyLight/10">
+        <div className="container mx-auto px-4">
+          <div className="glass-card rounded-xl overflow-hidden">
+            <MapContainer 
+              center={position} 
+              zoom={13} 
+              style={{ height: '400px', width: '100%' }}
+              className="rounded-xl"
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Marker position={position}>
+                <Popup>
+                  R Judd Enterprise <br /> We are located here.
+                </Popup>
+              </Marker>
+            </MapContainer>
+          </div>
+        </div>
+      </section>
+      
       <Footer />
     </div>
   );
 };
 
-export default ContactPage;
+export default Contact;

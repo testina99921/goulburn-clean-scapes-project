@@ -359,15 +359,12 @@ const Index = () => {
             <AnimateOnScroll delay={300}>
               <div className="glass-card rounded-xl p-8 text-center h-full flex flex-col">
                 <div className="w-16 h-16 bg-orange-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ClipboardCheck size={32} className="text-white" />
+                  <Award size={32} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-navy">100% Satisfaction Guarantee</h3>
                 <p className="text-navy">
                   We stand behind our work with a complete satisfaction guarantee. Your happiness is our priority.
                 </p>
-                <div className="mt-auto pt-4 flex justify-center">
-                  <Award size={32} className="text-orange-700" />
-                </div>
               </div>
             </AnimateOnScroll>
           </div>

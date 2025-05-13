@@ -34,7 +34,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
       }`}
     >
       {recommended && (
-        <div className="bg-green text-white py-2 px-4 font-medium text-center">
+        <div className="bg-red-600 text-white py-2 px-4 font-bold text-center text-base">
           Most Popular
         </div>
       )}

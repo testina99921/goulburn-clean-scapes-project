@@ -1,379 +1,318 @@
-
 import React, { useState } from 'react';
-import { X, Mail, Check, Upload, Award, Trash2 } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { X, Mail, Upload, Check } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast"
 
 interface QuoteRequestModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  service: string;
+  propertyType: string;
+  addBinCleaning: boolean;
+  preferredDate: string;
+  additionalDetails: string;
+}
+
 const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     phone: '',
     address: '',
     service: '',
-    additionalServices: [] as string[],
-    binCleaning: false,
-    message: ''
+    propertyType: '',
+    addBinCleaning: false,
+    preferredDate: '',
+    additionalDetails: '',
   });
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const { toast } = useToast()
+  
+  const handleInputChange = (key: keyof FormData, value: any) => {
     setFormData({
       ...formData,
-      [name]: value
+      [key]: value,
     });
   };
-
-  const handleAdditionalServiceChange = (service: string) => {
-    setFormData(prevState => {
-      const updatedServices = prevState.additionalServices.includes(service)
-        ? prevState.additionalServices.filter(s => s !== service)
-        : [...prevState.additionalServices, service];
-      
-      return {
-        ...prevState,
-        additionalServices: updatedServices,
-      };
-    });
-  };
-
-  const handleBinCleaningChange = () => {
-    setFormData(prevState => ({
-      ...prevState,
-      binCleaning: !prevState.binCleaning
-    }));
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-
-    const newFiles: File[] = [];
-    const newPreviewUrls: string[] = [];
-
-    // Process each selected file
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file.type.startsWith('image/')) {
-        newFiles.push(file);
-        newPreviewUrls.push(URL.createObjectURL(file));
-      }
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
     }
-
-    setImageFiles([...imageFiles, ...newFiles]);
-    setImagePreviewUrls([...imagePreviewUrls, ...newPreviewUrls]);
   };
 
-  const removeImage = (index: number) => {
-    const updatedFiles = [...imageFiles];
-    const updatedUrls = [...imagePreviewUrls];
-    
-    // Revoke the object URL to avoid memory leaks
-    URL.revokeObjectURL(updatedUrls[index]);
-    
-    updatedFiles.splice(index, 1);
-    updatedUrls.splice(index, 1);
-    
-    setImageFiles(updatedFiles);
-    setImagePreviewUrls(updatedUrls);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      console.log('Quote request submitted:', {
-        ...formData,
-        email: "rossjudd@hotmail.com", // Email where the quote will be sent
-        imageCount: imageFiles.length
-      });
-      
-      toast({
-        title: "Quote Request Sent!",
-        description: "We've received your request and will contact you shortly with a free quote.",
-      });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        service: '',
-        additionalServices: [],
-        binCleaning: false,
-        message: ''
-      });
-      
-      // Clear images
-      imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
-      setImageFiles([]);
-      setImagePreviewUrls([]);
-      
-      setIsSubmitting(false);
-      onClose();
-    }, 1500);
-  };
+    setIsSubmitSuccess(false);
 
+    // Simulate form submission delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Reset form and set success state
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      service: '',
+      propertyType: '',
+      addBinCleaning: false,
+      preferredDate: '',
+      additionalDetails: '',
+    });
+    setUploadedFile(null);
+    setIsSubmitting(false);
+    setIsSubmitSuccess(true);
+    toast({
+      title: "Success!",
+      description: "Your quote request has been submitted. We'll contact you soon!",
+    })
+  };
+  
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg p-0 bg-white rounded-xl">
-        <div className="p-6 bg-navy text-white rounded-t-xl">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-2xl font-semibold">Request a Free Quote</h2>
-            <button onClick={onClose} className="text-white hover:text-gray-200">
-              <X size={24} />
-            </button>
-          </div>
-          <p>Fill out this form to receive a no-obligation quote for our services.</p>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-2xl font-semibold text-navy">Request a Free Quote</h2>
+          <button 
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-800"
+          >
+            <X size={24} />
+          </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-6 max-h-[70vh] overflow-y-auto">
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                placeholder="Your name"
-                className="w-full"
-              />
-            </div>
-            
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Personal Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-navy">Personal Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-navy">
+                  Full Name*
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
                   required
-                  placeholder="Your email address"
-                  className="w-full"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-navy">
+                  Email*
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block mb-2 text-sm font-medium text-navy">
+                  Phone Number*
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your Phone"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="address" className="block mb-2 text-sm font-medium text-navy">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  placeholder="Your Address"
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          
+          {/* Service Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-navy">Service Information</h3>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="service" className="block mb-2 text-sm font-medium text-navy">
+                  Service Type*
+                </label>
+                <select
+                  id="service"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  value={formData.service}
+                  onChange={(e) => handleInputChange('service', e.target.value)}
+                  required
+                >
+                  <option value="">Select a Service</option>
+                  <option value="Residential Pressure Washing">Residential Pressure Washing</option>
+                  <option value="Commercial Pressure Washing">Commercial Pressure Washing</option>
+                  <option value="Driveway & Concrete Cleaning">Driveway & Concrete Cleaning</option>
+                  <option value="House Washing">House Washing</option>
+                  <option value="Deck & Patio Restoration">Deck & Patio Restoration</option>
+                  <option value="Roof Cleaning">Roof Cleaning</option>
+                  <option value="Other">Other (Please Specify)</option>
+                </select>
+              </div>
+              
+              <div>
+                <label htmlFor="propertyType" className="block mb-2 text-sm font-medium text-navy">
+                  Property Type*
+                </label>
+                <select
+                  id="propertyType"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  value={formData.propertyType}
+                  onChange={(e) => handleInputChange('propertyType', e.target.value)}
+                  required
+                >
+                  <option value="">Select Property Type</option>
+                  <option value="Residential">Residential</option>
+                  <option value="Commercial">Commercial</option>
+                  <option value="Industrial">Industrial</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              {/* Highlighted Bin Cleaning Upsell with obvious Popular tag */}
+              <div className="p-4 bg-green/10 border border-green rounded-lg relative">
+                <div className="absolute -top-3 -left-1 bg-red-600 text-white text-sm px-3 py-1 rounded-md font-bold transform rotate-0 shadow-md">
+                  Popular
+                </div>
+                <div className="flex items-start mt-2">
+                  <div className="flex items-center h-5 mt-1">
+                    <input
+                      id="binCleaning"
+                      type="checkbox"
+                      checked={formData.addBinCleaning}
+                      onChange={(e) => handleInputChange('addBinCleaning', e.target.checked)}
+                      className="w-4 h-4 border border-gray-300 rounded"
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="binCleaning" className="font-medium text-navy">Add Bin Cleaning Service</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="preferredDate" className="block mb-2 text-sm font-medium text-navy">
+                  Preferred Service Date
+                </label>
+                <input
+                  type="date"
+                  id="preferredDate"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  value={formData.preferredDate}
+                  onChange={(e) => handleInputChange('preferredDate', e.target.value)}
                 />
               </div>
               
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  placeholder="Your phone number"
-                  className="w-full"
-                />
-              </div>
-            </div>
-            
-            <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Property Address</label>
-              <Input
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-                placeholder="Address where service is needed"
-                className="w-full"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">Service Needed</label>
-              <select
-                id="service"
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                required
-                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy focus:border-navy"
-              >
-                <option value="">Select a service</option>
-                <option value="residential">Residential Pressure Washing</option>
-                <option value="commercial">Commercial Pressure Washing</option>
-                <option value="driveway">Driveway & Concrete Cleaning</option>
-                <option value="house">House Washing</option>
-                <option value="deck">Deck & Patio Restoration</option>
-                <option value="roof">Roof Cleaning</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            {/* Highlighted Bin Cleaning Upsell with obvious Popular tag */}
-            <div className="p-4 bg-green/10 border border-green rounded-lg relative">
-              <div className="absolute -top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                Popular
-              </div>
-              <div className="flex items-center">
-                <div
-                  onClick={handleBinCleaningChange}
-                  className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
-                    formData.binCleaning
-                      ? 'bg-green border-green'
-                      : 'border-gray-400'
-                  }`}
-                >
-                  {formData.binCleaning && <Check size={12} className="text-white" />}
-                </div>
-                <div className="flex items-center">
-                  <Trash2 size={18} className="mr-2 text-green" />
-                  <label 
-                    htmlFor="bin-cleaning" 
-                    className="text-gray-700 cursor-pointer font-medium"
-                    onClick={handleBinCleaningChange}
-                  >
-                    Add Garbage Bin Cleaning Service
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Additional Services (Optional)</label>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { id: 'gutter', label: 'Gutter Cleaning' },
-                  { id: 'window', label: 'Window Washing' },
-                  { id: 'fence', label: 'Fence Restoration' },
-                  { id: 'paver', label: 'Paver Sealing' },
-                  { id: 'solar', label: 'Solar Panel Cleaning' },
-                  { id: 'pressure', label: 'High Pressure Cleaning' }
-                ].map(service => (
-                  <div key={service.id} className="flex items-center">
-                    <div
-                      onClick={() => handleAdditionalServiceChange(service.id)}
-                      className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
-                        formData.additionalServices.includes(service.id)
-                          ? 'bg-navy border-navy'
-                          : 'border-gray-400'
-                      }`}
-                    >
-                      {formData.additionalServices.includes(service.id) && <Check size={12} className="text-white" />}
-                    </div>
-                    <label 
-                      htmlFor={`service-${service.id}`} 
-                      className="text-gray-700 cursor-pointer text-sm"
-                      onClick={() => handleAdditionalServiceChange(service.id)}
-                    >
-                      {service.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Image upload section - moved before additional details and reduced in size */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
-              <div className="flex items-center justify-center w-full">
-                <label 
-                  htmlFor="image-upload" 
-                  className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                >
-                  <div className="flex flex-col items-center justify-center pt-2 pb-2">
-                    <Upload className="w-5 h-5 mb-1 text-gray-400" />
-                    <p className="text-xs text-gray-500">
-                      <span className="font-semibold">Click to upload</span> images
-                    </p>
-                  </div>
-                  <Input 
-                    id="image-upload" 
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
+                <label htmlFor="additionalDetails" className="block mb-2 text-sm font-medium text-navy">
+                  Additional Details
                 </label>
+                <textarea
+                  id="additionalDetails"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
+                  rows={4}
+                  placeholder="Please provide any additional information that might help us understand your needs better."
+                  value={formData.additionalDetails}
+                  onChange={(e) => handleInputChange('additionalDetails', e.target.value)}
+                ></textarea>
               </div>
               
-              {/* Image previews */}
-              {imagePreviewUrls.length > 0 && (
-                <div className="mt-2">
-                  <p className="text-sm font-medium text-gray-700 mb-1">Uploaded Images:</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {imagePreviewUrls.map((url, index) => (
-                      <div key={index} className="relative rounded-md overflow-hidden h-20">
-                        <img 
-                          src={url} 
-                          alt={`Uploaded preview ${index + 1}`} 
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
-                        >
-                          <X size={12} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-navy">
+                  Upload Image (Optional)
+                </label>
+                <div className="flex items-center justify-center w-full">
+                  <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <Upload className="w-8 h-8 mb-2 text-gray-500" />
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span> or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 5MB)</p>
+                    </div>
+                    <input 
+                      id="dropzone-file" 
+                      type="file" 
+                      className="hidden" 
+                      onChange={handleFileChange}
+                      accept=".jpg,.jpeg,.png"
+                    />
+                  </label>
                 </div>
-              )}
+                {uploadedFile && (
+                  <div className="mt-2 flex items-center justify-between bg-gray-100 p-2 rounded-md">
+                    <span className="text-sm truncate max-w-[80%]">{uploadedFile.name}</span>
+                    <button 
+                      type="button"
+                      onClick={() => setUploadedFile(null)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-            
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
-              <Textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={3}
-                placeholder="Tell us more about your project (size, timeline, specific needs)"
-                className="w-full"
-              />
-            </div>
-
-            <div className="flex items-center justify-center mb-2">
-              <Award className="text-green mr-2" size={20} />
-              <p className="font-medium text-gray-700">100% Satisfaction Guarantee</p>
-            </div>
-
-            <Button
+          </div>
+          
+          <div className="pt-4">
+            <button
               type="submit"
+              className="w-full bg-navy text-white py-3 px-6 rounded-lg font-bold hover:bg-navyLight transition-colors flex items-center justify-center"
               disabled={isSubmitting}
-              className="w-full bg-navy hover:bg-green text-white py-3"
             >
               {isSubmitting ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Submitting...
-                </>
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
               ) : (
-                <>
-                  <Mail className="mr-2 h-5 w-5" /> Request Free Quote
-                </>
+                <Mail className="w-5 h-5 mr-2" />
               )}
-            </Button>
+              {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            </button>
           </div>
         </form>
+        
+        {/* Success Message */}
+        {isSubmitSuccess && (
+          <div className="mt-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <div className="flex items-center">
+              <Check className="mr-2" size={20} />
+              <span className="font-semibold">Success!</span>
+            </div>
+            <span className="block sm:inline mt-1">Your quote request has been submitted. We'll contact you soon!</span>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
