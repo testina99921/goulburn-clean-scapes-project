@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { X, Mail, Check, Upload, Award, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -220,7 +221,7 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
               </select>
             </div>
 
-            {/* Highlighted Bin Cleaning Upsell - Modified with popular tag */}
+            {/* Highlighted Bin Cleaning Upsell with obvious Popular tag */}
             <div className="p-4 bg-green/10 border border-green rounded-lg relative">
               <div className="absolute -top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                 Popular

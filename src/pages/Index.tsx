@@ -23,7 +23,8 @@ import {
   SprayCan,
   House,
   ShowerHead,
-  Wrench
+  Wrench,
+  Award
 } from 'lucide-react';
 
 // SEO meta tags component
@@ -364,6 +365,9 @@ const Index = () => {
                 <p className="text-navy">
                   We stand behind our work with a complete satisfaction guarantee. Your happiness is our priority.
                 </p>
+                <div className="mt-auto pt-4 flex justify-center">
+                  <Award size={32} className="text-orange-700" />
+                </div>
               </div>
             </AnimateOnScroll>
           </div>
