@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Mail, Check, Upload } from 'lucide-react';
+import { X, Mail, Check, Upload, Award, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,6 +22,7 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
     address: '',
     service: '',
     additionalServices: [] as string[],
+    binCleaning: false,
     message: ''
   });
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -46,6 +47,13 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
         additionalServices: updatedServices,
       };
     });
+  };
+
+  const handleBinCleaningChange = () => {
+    setFormData(prevState => ({
+      ...prevState,
+      binCleaning: !prevState.binCleaning
+    }));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +115,7 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
         address: '',
         service: '',
         additionalServices: [],
+        binCleaning: false,
         message: ''
       });
       
@@ -212,6 +221,35 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
               </select>
             </div>
 
+            {/* Highlighted Bin Cleaning Upsell */}
+            <div className="p-4 bg-green/10 border border-green rounded-lg">
+              <div className="flex items-center">
+                <div
+                  onClick={handleBinCleaningChange}
+                  className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
+                    formData.binCleaning
+                      ? 'bg-green border-green'
+                      : 'border-gray-400'
+                  }`}
+                >
+                  {formData.binCleaning && <Check size={12} className="text-white" />}
+                </div>
+                <div className="flex items-center">
+                  <Trash2 size={18} className="mr-2 text-green" />
+                  <label 
+                    htmlFor="bin-cleaning" 
+                    className="text-gray-700 cursor-pointer font-medium"
+                    onClick={handleBinCleaningChange}
+                  >
+                    Add Garbage Bin Cleaning Service
+                  </label>
+                </div>
+              </div>
+              <p className="text-sm text-gray-500 mt-1 ml-7">
+                Our popular bin cleaning service eliminates odors and bacteria from your waste containers
+              </p>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Additional Services (Optional)</label>
               <div className="grid grid-cols-2 gap-2">
@@ -245,21 +283,33 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
                 ))}
               </div>
             </div>
+            
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
+              <Textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Tell us more about your project (size, timeline, specific needs)"
+                className="w-full"
+              />
+            </div>
 
-            {/* Image upload section */}
+            {/* Image upload section - reduced size */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
               <div className="flex items-center justify-center w-full">
                 <label 
                   htmlFor="image-upload" 
-                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                  className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Click to upload</span> or drag and drop
+                  <div className="flex flex-col items-center justify-center pt-2 pb-3">
+                    <Upload className="w-6 h-6 mb-2 text-gray-400" />
+                    <p className="text-sm text-gray-500">
+                      <span className="font-semibold">Click to upload</span> images
                     </p>
-                    <p className="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 5MB)</p>
                   </div>
                   <Input 
                     id="image-upload" 
@@ -297,18 +347,10 @@ const QuoteRequestModal = ({ isOpen, onClose }: QuoteRequestModalProps) => {
                 </div>
               )}
             </div>
-            
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
-              <Textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={3}
-                placeholder="Tell us more about your project (size, timeline, specific needs)"
-                className="w-full"
-              />
+
+            <div className="flex items-center justify-center mb-2">
+              <Award className="text-green mr-2" size={20} />
+              <p className="font-medium text-gray-700">100% Satisfaction Guarantee</p>
             </div>
 
             <Button

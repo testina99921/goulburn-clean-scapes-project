@@ -122,7 +122,7 @@ const Services = () => {
               <div className="glass-card rounded-xl overflow-hidden">
                 <div className="h-64 overflow-hidden">
                   <img 
-                    src="/lovable-uploads/4728361d-92a8-4803-8916-d47dc3ab3a1b.png" 
+                    src="/lovable-uploads/c45bafd1-9bca-4cc4-80bb-60f2ad40c6e5.png" 
                     alt="Commercial Pressure Washing" 
                     className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                     loading="lazy"

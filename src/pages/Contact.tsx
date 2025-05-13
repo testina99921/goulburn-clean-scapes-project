@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Mail, Phone, MapPin, Clock, Send, Upload, X, Check } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Upload, X, Check, Trash2, Award } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -60,6 +59,7 @@ const ContactPage = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [additionalServices, setAdditionalServices] = useState<string[]>([]);
+  const [binCleaning, setBinCleaning] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
@@ -83,6 +83,7 @@ const ContactPage = () => {
       const submissionData = {
         ...values,
         additionalServices: additionalServices.join(", "),
+        binCleaning: binCleaning ? "Yes" : "No",
         to_email: "rossjudd@hotmail.com", // Recipient email
         imageCount: imageFiles.length,
       };
@@ -105,6 +106,7 @@ const ContactPage = () => {
       // Reset form
       form.reset();
       setAdditionalServices([]);
+      setBinCleaning(false);
       
       // Clear images
       imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
@@ -131,6 +133,10 @@ const ContactPage = () => {
         return [...prev, service];
       }
     });
+  };
+
+  const handleBinCleaningChange = () => {
+    setBinCleaning(prev => !prev);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -243,7 +249,10 @@ const ContactPage = () => {
             {/* Contact Form - Made larger */}
             <AnimateOnScroll className="md:col-span-2" delay={200}>
               <div className="glass-card rounded-lg p-6 shadow-lg">
-                <h3 className="text-xl font-semibold mb-6 text-navy">Send Us a Message</h3>
+                <div className="flex items-center justify-center mb-4">
+                  <Award className="text-green mr-2" size={22} />
+                  <h3 className="text-xl font-semibold text-navy">Send Us a Message</h3>
+                </div>
                 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -307,7 +316,36 @@ const ContactPage = () => {
                       />
                     </div>
                     
-                    {/* Additional Services section - same as in QuoteRequestModal */}
+                    {/* Highlighted Bin Cleaning Upsell */}
+                    <div className="p-4 bg-green/10 border border-green rounded-lg">
+                      <div className="flex items-center">
+                        <div
+                          onClick={handleBinCleaningChange}
+                          className={`w-5 h-5 border rounded mr-2 flex items-center justify-center cursor-pointer ${
+                            binCleaning
+                              ? 'bg-green border-green'
+                              : 'border-gray-400'
+                          }`}
+                        >
+                          {binCleaning && <Check size={12} className="text-white" />}
+                        </div>
+                        <div className="flex items-center">
+                          <Trash2 size={18} className="mr-2 text-green" />
+                          <label 
+                            htmlFor="bin-cleaning" 
+                            className="text-gray-700 cursor-pointer font-medium"
+                            onClick={handleBinCleaningChange}
+                          >
+                            Add Garbage Bin Cleaning Service
+                          </label>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1 ml-7">
+                        Our popular bin cleaning service eliminates odors and bacteria from your waste containers
+                      </p>
+                    </div>
+                    
+                    {/* Additional Services section */}
                     <div>
                       <FormLabel>Additional Services (Optional)</FormLabel>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
@@ -341,6 +379,24 @@ const ContactPage = () => {
                         ))}
                       </div>
                     </div>
+                    
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Your Message</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Tell us about your project or any questions you may have..." 
+                              className="min-h-[120px]" 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     
                     {/* Image upload section */}
                     <div>
@@ -393,24 +449,6 @@ const ContactPage = () => {
                         </div>
                       )}
                     </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Your Message</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="Tell us about your project or any questions you may have..." 
-                              className="min-h-[120px]" 
-                              {...field} 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                     
                     <Button 
                       type="submit" 
