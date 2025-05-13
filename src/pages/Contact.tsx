@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Check, Mail, X } from 'lucide-react';
+import { Check, Mail, X, Award } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -28,10 +29,12 @@ const Contact = () => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    
     setFormData(prevData => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: e.target.type === 'checkbox' ? checked : value
     }));
   };
 
@@ -206,12 +209,7 @@ const Contact = () => {
                       name="binCleaning"
                       type="checkbox"
                       checked={formData.binCleaning}
-                      onChange={(e) => handleChange({
-                        target: {
-                          name: 'binCleaning',
-                          value: e.target.checked
-                        }
-                      } as React.ChangeEvent<HTMLInputElement>)}
+                      onChange={handleChange}
                       className="w-4 h-4 border border-gray-300 rounded"
                     />
                   </div>
