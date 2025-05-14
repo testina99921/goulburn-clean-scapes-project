@@ -8,7 +8,8 @@ import CTASection from '../components/CTASection';
 import ScrollAnimation from '../components/ScrollAnimation';
 
 const About = () => {
-  const ownerImage = "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80";
+  // Use the image from Index page for consistency
+  const ownerImage = "/lovable-uploads/4c20fc47-a9f3-4cac-817d-1719c44d45b8.png";
   const teamImage = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
   const ctaBackground = "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80";
 
@@ -50,13 +51,13 @@ const About = () => {
               <ScrollAnimation>
                 <h2 className="text-3xl font-bold text-navy mb-6">Our Story</h2>
                 <p className="text-gray-600 mb-4">
-                  R Judd Enterprise was founded by Ross Judd, a trusted name in Goulburn's local business community for many years. With a solid foundation in repair, maintenance, building, and carpentry services through R JUDD Enterprises, Ross recognized the need for professional, reliable pressure washing services in the area.
+                  R Judd Enterprise is led by Ross Judd, a respected name in Goulburn's business community with many years of trusted service. With a strong foundation in property maintenance and improvement through R JUDD Enterprises, we recognized the need for high-quality, professional pressure washing services in our community.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Bringing the same commitment to quality craftsmanship, attention to detail, and outstanding customer service that made R JUDD Enterprises successful, we've expanded to offer comprehensive pressure washing solutions for both residential and commercial clients.
+                  We bring the same commitment to excellence, meticulous attention to detail, and exceptional customer service that has made R JUDD Enterprises successful. Our pressure washing division delivers comprehensive solutions tailored to both residential and commercial clients throughout Goulburn and surrounding areas.
                 </p>
                 <p className="text-gray-600">
-                  Our team combines years of experience with the latest pressure washing technology and techniques to deliver exceptional results that transform properties and exceed expectations.
+                  Our experienced team uses the latest pressure washing technology and techniques to deliver outstanding results that transform properties and consistently exceed our customers' expectations.
                 </p>
               </ScrollAnimation>
             </div>
@@ -130,13 +131,13 @@ const About = () => {
             <div className="md:w-1/2">
               <ScrollAnimation>
                 <p className="text-gray-600 mb-4">
-                  Our team consists of trained professionals who are passionate about delivering exceptional pressure washing services. Led by Ross Judd, we bring years of experience in property maintenance and improvement to every job.
+                  Our team consists of highly skilled professionals who are passionate about delivering exceptional pressure washing results. Led by Ross Judd, we bring extensive experience in property maintenance and improvement to every job we undertake.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Each team member undergoes comprehensive training in the latest pressure washing techniques and equipment operation to ensure safe, effective, and efficient service.
+                  Each team member undergoes comprehensive training in the latest pressure washing techniques and equipment operation to ensure safe, effective, and efficient service for our valued customers.
                 </p>
                 <p className="text-gray-600">
-                  We take pride in our work and treat every property with the utmost care and respect, as if it were our own.
+                  We take great pride in our work and treat every property with the same level of care and respect that we would give to our own homes and businesses.
                 </p>
               </ScrollAnimation>
             </div>
@@ -165,7 +166,7 @@ const About = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ScrollAnimation>
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md h-full">
                 <h3 className="text-xl font-semibold mb-3 text-navy">Commercial-Grade Pressure Washers</h3>
                 <p className="text-gray-600">
                   We use high-quality, commercial-grade pressure washers that provide powerful cleaning with adjustable pressure settings for different surfaces.
@@ -174,7 +175,7 @@ const About = () => {
             </ScrollAnimation>
             
             <ScrollAnimation>
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md h-full">
                 <h3 className="text-xl font-semibold mb-3 text-navy">Surface Cleaners</h3>
                 <p className="text-gray-600">
                   Our specialized surface cleaners ensure even cleaning across large areas like driveways and patios, eliminating streaking and maximizing efficiency.
@@ -183,7 +184,7 @@ const About = () => {
             </ScrollAnimation>
             
             <ScrollAnimation>
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md h-full">
                 <h3 className="text-xl font-semibold mb-3 text-navy">Environmentally Friendly Solutions</h3>
                 <p className="text-gray-600">
                   We use biodegradable, environmentally responsible cleaning solutions that effectively remove dirt, mold, and algae without harming plants or animals.
