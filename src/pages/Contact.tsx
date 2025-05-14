@@ -6,6 +6,8 @@ import SectionTitle from '../components/SectionTitle';
 import ContactForm from '../components/contact/ContactForm';
 import ContactMap from '../components/contact/ContactMap';
 import ContactInfo from '../components/contact/ContactInfo';
+import ContactHeader from '../components/contact/ContactHeader';
+import ContactFullWidthMap from '../components/contact/ContactFullWidthMap';
 
 const Contact = () => {
   return (
@@ -13,17 +15,7 @@ const Contact = () => {
       <Header />
       
       {/* Page Header */}
-      <section className="bg-navyLight/10 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <SectionTitle 
-            title="Contact Us" 
-            subtitle="Get in touch with our team for inquiries and service requests"
-          />
-          <p className="text-xl text-navy mt-4">
-            We're here to help with all your pressure washing needs. Contact us today for a free quote!
-          </p>
-        </div>
-      </section>
+      <ContactHeader />
       
       {/* Contact Information */}
       <section className="py-12">
@@ -41,9 +33,7 @@ const Contact = () => {
       </section>
       
       {/* Full Width Map */}
-      <section className="py-12 bg-navyLight/10">
-        <ContactMap fullWidth={true} />
-      </section>
+      <ContactFullWidthMap />
       
       <Footer />
     </div>
