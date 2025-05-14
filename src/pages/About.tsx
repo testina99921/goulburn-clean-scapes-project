@@ -10,7 +10,6 @@ import ScrollAnimation from '../components/ScrollAnimation';
 const About = () => {
   // Use the image from Index page for consistency
   const ownerImage = "/lovable-uploads/4c20fc47-a9f3-4cac-817d-1719c44d45b8.png";
-  const teamImage = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
   const ctaBackground = "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80";
 
   useEffect(() => {
@@ -119,45 +118,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* Our Team Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <SectionTitle 
-            title="Meet Our Team" 
-            subtitle="Dedicated professionals committed to excellence"
-          />
-          
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="md:w-1/2">
-              <ScrollAnimation>
-                <p className="text-gray-600 mb-4">
-                  Our team consists of highly skilled professionals who are passionate about delivering exceptional pressure washing results. Led by Ross Judd, we bring extensive experience in property maintenance and improvement to every job we undertake.
-                </p>
-                <p className="text-gray-600 mb-4">
-                  Each team member undergoes comprehensive training in the latest pressure washing techniques and equipment operation to ensure safe, effective, and efficient service for our valued customers.
-                </p>
-                <p className="text-gray-600">
-                  We take great pride in our work and treat every property with the same level of care and respect that we would give to our own homes and businesses.
-                </p>
-              </ScrollAnimation>
-            </div>
-            <div className="md:w-1/2">
-              <ScrollAnimation>
-                <div className="rounded-lg overflow-hidden shadow-xl">
-                  <img 
-                    src={teamImage} 
-                    alt="Our Team" 
-                    className="w-full h-auto"
-                  />
-                </div>
-              </ScrollAnimation>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Our Equipment Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title="Our Equipment" 
@@ -196,22 +158,25 @@ const About = () => {
       </section>
 
       {/* Our Service Area */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title="Our Service Area" 
-            subtitle="Serving Goulburn and surrounding communities"
+            subtitle="Serving Goulburn, Canberra and surrounding communities"
           />
           
           <div className="max-w-3xl mx-auto">
             <ScrollAnimation>
-              <div className="bg-gray-50 p-6 rounded-lg shadow-inner">
+              <div className="bg-white p-6 rounded-lg shadow-inner">
                 <p className="text-center text-gray-600 mb-4">
                   We proudly serve residential and commercial clients throughout:
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="text-center">
                     <p className="font-medium text-navy">Goulburn</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-medium text-navy">Canberra</p>
                   </div>
                   <div className="text-center">
                     <p className="font-medium text-navy">Marulan</p>

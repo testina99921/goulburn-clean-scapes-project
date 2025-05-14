@@ -19,7 +19,14 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     service: 'house-washing',
     message: '',
     binCleaning: false,
-    preferredContact: 'email',
+    additionalServices: {
+      gutterCleaning: false,
+      paverSealing: false,
+      windowWashing: false,
+      solarPanelCleaning: false,
+      fenceRestoration: false,
+      highPressureCleaning: false
+    },
     files: [] as File[]
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -34,10 +41,22 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: checked
-    }));
+    
+    if (name.includes('.')) {
+      const [group, field] = name.split('.');
+      setFormData(prev => ({
+        ...prev,
+        [group]: {
+          ...prev[group as keyof typeof prev],
+          [field]: checked
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked
+      }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +98,14 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
           service: 'house-washing',
           message: '',
           binCleaning: false,
-          preferredContact: 'email',
+          additionalServices: {
+            gutterCleaning: false,
+            paverSealing: false,
+            windowWashing: false,
+            solarPanelCleaning: false,
+            fenceRestoration: false,
+            highPressureCleaning: false
+          },
           files: []
         });
         setSubmitStatus('idle');
@@ -173,24 +199,6 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                 </div>
               </div>
               
-              {/* Preferred Contact Method */}
-              <div>
-                <label htmlFor="preferredContact" className="block text-sm font-medium text-gray-700 mb-1">
-                  Preferred Contact Method
-                </label>
-                <select
-                  id="preferredContact"
-                  name="preferredContact"
-                  value={formData.preferredContact}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                >
-                  <option value="email">Email</option>
-                  <option value="phone">Phone</option>
-                  <option value="text">Text Message</option>
-                </select>
-              </div>
-              
               {/* Service */}
               <div>
                 <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">
@@ -234,6 +242,96 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                 </div>
               </div>
               
+              {/* Additional Services */}
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <p className="font-medium text-navy mb-3">Additional Services (Optional)</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-start">
+                    <input
+                      id="gutterCleaning"
+                      name="additionalServices.gutterCleaning"
+                      type="checkbox"
+                      checked={formData.additionalServices.gutterCleaning}
+                      onChange={handleCheckboxChange}
+                      className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
+                    />
+                    <label htmlFor="gutterCleaning" className="ml-2 text-sm text-gray-700">
+                      Gutter Cleaning
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <input
+                      id="paverSealing"
+                      name="additionalServices.paverSealing"
+                      type="checkbox"
+                      checked={formData.additionalServices.paverSealing}
+                      onChange={handleCheckboxChange}
+                      className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
+                    />
+                    <label htmlFor="paverSealing" className="ml-2 text-sm text-gray-700">
+                      Paver Sealing
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <input
+                      id="windowWashing"
+                      name="additionalServices.windowWashing"
+                      type="checkbox"
+                      checked={formData.additionalServices.windowWashing}
+                      onChange={handleCheckboxChange}
+                      className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
+                    />
+                    <label htmlFor="windowWashing" className="ml-2 text-sm text-gray-700">
+                      Window Washing
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <input
+                      id="solarPanelCleaning"
+                      name="additionalServices.solarPanelCleaning"
+                      type="checkbox"
+                      checked={formData.additionalServices.solarPanelCleaning}
+                      onChange={handleCheckboxChange}
+                      className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
+                    />
+                    <label htmlFor="solarPanelCleaning" className="ml-2 text-sm text-gray-700">
+                      Solar Panel Cleaning
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <input
+                      id="fenceRestoration"
+                      name="additionalServices.fenceRestoration"
+                      type="checkbox"
+                      checked={formData.additionalServices.fenceRestoration}
+                      onChange={handleCheckboxChange}
+                      className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
+                    />
+                    <label htmlFor="fenceRestoration" className="ml-2 text-sm text-gray-700">
+                      Fence Restoration
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <input
+                      id="highPressureCleaning"
+                      name="additionalServices.highPressureCleaning"
+                      type="checkbox"
+                      checked={formData.additionalServices.highPressureCleaning}
+                      onChange={handleCheckboxChange}
+                      className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
+                    />
+                    <label htmlFor="highPressureCleaning" className="ml-2 text-sm text-gray-700">
+                      High Pressure Cleaning
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
               {/* Message */}
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
@@ -245,26 +343,24 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   rows={4}
                   value={formData.message}
                   onChange={handleChange}
+                  placeholder="Tell us about your project or any questions you may have..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
               
-              {/* File Upload */}
+              {/* File Upload - Made smaller */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Upload Photos (Optional)
+                  Upload Images (Optional)
                 </label>
                 <div className="flex items-center justify-center w-full">
                   <label
                     htmlFor="file-upload"
-                    className="w-full flex flex-col items-center px-4 py-6 bg-white text-navy rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50"
+                    className="w-full flex flex-col items-center px-4 py-3 bg-white text-navy rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50"
                   >
-                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-600">
-                      Drag & drop photos here, or click to select
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      JPG, PNG or PDF up to 10MB
+                    <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                    <p className="mt-1 text-sm text-gray-600">
+                      Click to upload images
                     </p>
                     <input
                       id="file-upload"
@@ -280,16 +376,16 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                 
                 {/* File List */}
                 {formData.files.length > 0 && (
-                  <div className="mt-3 space-y-2">
+                  <div className="mt-2 space-y-1">
                     {formData.files.map((file, index) => (
-                      <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                        <span className="truncate text-sm text-gray-700">{file.name}</span>
+                      <div key={index} className="flex justify-between items-center p-1 bg-gray-50 rounded text-xs">
+                        <span className="truncate text-gray-700">{file.name}</span>
                         <button
                           type="button"
                           onClick={() => removeFile(index)}
                           className="text-red-500 hover:text-red-700"
                         >
-                          <X size={16} />
+                          <X size={14} />
                         </button>
                       </div>
                     ))}
@@ -316,7 +412,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   ) : (
                     <span className="flex items-center justify-center">
                       <Mail className="h-5 w-5 mr-2" />
-                      Submit Quote Request
+                      Submit Free Quote
                     </span>
                   )}
                 </button>

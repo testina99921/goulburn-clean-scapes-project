@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Mail } from 'lucide-react';
+import { Mail, Upload, Trash2 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
 const ContactForm = () => {
@@ -10,19 +10,49 @@ const ContactForm = () => {
     phone: '',
     service: '',
     binCleaning: false,
+    additionalServices: {
+      gutterCleaning: false,
+      paverSealing: false,
+      windowWashing: false,
+      solarPanelCleaning: false,
+      fenceRestoration: false,
+      highPressureCleaning: false
+    },
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
     
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    if (name.includes('.')) {
+      const [group, field] = name.split('.');
+      setFormData(prev => ({
+        ...prev,
+        [group]: {
+          ...prev[group as keyof typeof prev],
+          [field]: checked
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      }));
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFiles(Array.from(e.target.files));
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,8 +75,17 @@ const ContactForm = () => {
           phone: '',
           service: '',
           binCleaning: false,
+          additionalServices: {
+            gutterCleaning: false,
+            paverSealing: false,
+            windowWashing: false,
+            solarPanelCleaning: false,
+            fenceRestoration: false,
+            highPressureCleaning: false
+          },
           message: ''
         });
+        setFiles([]);
       }, 2000);
     } catch (error) {
       setIsSubmitting(false);
@@ -60,7 +99,10 @@ const ContactForm = () => {
 
   return (
     <div className="max-w-4xl mx-auto glass-card p-8 rounded-xl">
-      <h2 className="text-3xl font-semibold text-navy mb-8 text-center">Send Us a Message</h2>
+      <h2 className="text-3xl font-semibold text-navy mb-8 text-center flex justify-center items-center">
+        <Mail className="text-green mr-2" size={28} /> 
+        Send Us a Message
+      </h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,7 +124,7 @@ const ContactForm = () => {
           
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-navy">
-              Email*
+              Email Address*
             </label>
             <input
               type="email"
@@ -113,7 +155,7 @@ const ContactForm = () => {
           
           <div>
             <label htmlFor="service" className="block mb-2 text-sm font-medium text-navy">
-              Service
+              Service Needed
             </label>
             <select
               id="service"
@@ -156,23 +198,161 @@ const ContactForm = () => {
           </div>
         </div>
         
+        {/* Additional Services */}
+        <div className="p-4 border border-gray-200 rounded-lg">
+          <p className="font-medium text-navy mb-3">Additional Services (Optional)</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="flex items-start">
+              <input
+                id="gutterCleaning"
+                name="additionalServices.gutterCleaning"
+                type="checkbox"
+                checked={formData.additionalServices.gutterCleaning}
+                onChange={handleChange}
+                className="h-4 w-4 mt-1 border border-gray-300 rounded"
+              />
+              <label htmlFor="gutterCleaning" className="ml-2 text-sm text-gray-700">
+                Gutter Cleaning
+              </label>
+            </div>
+            
+            <div className="flex items-start">
+              <input
+                id="paverSealing"
+                name="additionalServices.paverSealing"
+                type="checkbox"
+                checked={formData.additionalServices.paverSealing}
+                onChange={handleChange}
+                className="h-4 w-4 mt-1 border border-gray-300 rounded"
+              />
+              <label htmlFor="paverSealing" className="ml-2 text-sm text-gray-700">
+                Paver Sealing
+              </label>
+            </div>
+            
+            <div className="flex items-start">
+              <input
+                id="windowWashing"
+                name="additionalServices.windowWashing"
+                type="checkbox"
+                checked={formData.additionalServices.windowWashing}
+                onChange={handleChange}
+                className="h-4 w-4 mt-1 border border-gray-300 rounded"
+              />
+              <label htmlFor="windowWashing" className="ml-2 text-sm text-gray-700">
+                Window Washing
+              </label>
+            </div>
+            
+            <div className="flex items-start">
+              <input
+                id="solarPanelCleaning"
+                name="additionalServices.solarPanelCleaning"
+                type="checkbox"
+                checked={formData.additionalServices.solarPanelCleaning}
+                onChange={handleChange}
+                className="h-4 w-4 mt-1 border border-gray-300 rounded"
+              />
+              <label htmlFor="solarPanelCleaning" className="ml-2 text-sm text-gray-700">
+                Solar Panel Cleaning
+              </label>
+            </div>
+            
+            <div className="flex items-start">
+              <input
+                id="fenceRestoration"
+                name="additionalServices.fenceRestoration"
+                type="checkbox"
+                checked={formData.additionalServices.fenceRestoration}
+                onChange={handleChange}
+                className="h-4 w-4 mt-1 border border-gray-300 rounded"
+              />
+              <label htmlFor="fenceRestoration" className="ml-2 text-sm text-gray-700">
+                Fence Restoration
+              </label>
+            </div>
+            
+            <div className="flex items-start">
+              <input
+                id="highPressureCleaning"
+                name="additionalServices.highPressureCleaning"
+                type="checkbox"
+                checked={formData.additionalServices.highPressureCleaning}
+                onChange={handleChange}
+                className="h-4 w-4 mt-1 border border-gray-300 rounded"
+              />
+              <label htmlFor="highPressureCleaning" className="ml-2 text-sm text-gray-700">
+                High Pressure Cleaning
+              </label>
+            </div>
+          </div>
+        </div>
+        
         <div>
           <label htmlFor="message" className="block mb-2 text-sm font-medium text-navy">
-            Message*
+            Your Message*
           </label>
           <textarea
             id="message"
             name="message"
             rows={6}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-            placeholder="How can we help you?"
+            placeholder="Tell us about your project or any questions you may have..."
             value={formData.message}
             onChange={handleChange}
             required
           ></textarea>
         </div>
         
+        {/* Upload Images - Made smaller */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-navy">
+            Upload Images (Optional)
+          </label>
+          <div className="flex items-center justify-center w-full">
+            <label
+              htmlFor="dropzone-file"
+              className="flex flex-col items-center justify-center w-full py-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+            >
+              <div className="flex flex-col items-center justify-center py-2">
+                <Upload className="w-8 h-8 mb-1 text-gray-400" />
+                <p className="text-sm text-gray-500">Click to upload images</p>
+              </div>
+              <input 
+                id="dropzone-file" 
+                type="file" 
+                className="hidden" 
+                multiple
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
+          {files.length > 0 && (
+            <div className="mt-2 space-y-1">
+              {files.map((file, index) => (
+                <div key={index} className="flex justify-between items-center p-1 bg-gray-50 rounded text-xs">
+                  <span className="truncate text-gray-700">{file.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeFile(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
         <div className="text-center">
+          <div className="flex items-center justify-center mb-5">
+            <div className="inline-block p-3 border border-green rounded-full">
+              <span className="text-green">✓</span>
+            </div>
+            <span className="ml-2 text-sm font-medium text-navy">100% Satisfaction Guarantee</span>
+          </div>
           <button 
             type="submit" 
             className="bg-navy hover:bg-navyLight text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 inline-flex items-center"
