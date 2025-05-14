@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Mail, Upload, Trash2 } from 'lucide-react';
+import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
 type AdditionalServicesType = {
@@ -333,11 +333,11 @@ const ContactForm = () => {
           <div className="flex items-center justify-center w-full">
             <label
               htmlFor="dropzone-file"
-              className="flex flex-col items-center justify-center w-full py-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+              className="flex flex-col items-center justify-center w-full py-2 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
             >
               <div className="flex flex-col items-center justify-center py-2">
-                <Upload className="w-8 h-8 mb-1 text-gray-400" />
-                <p className="text-sm text-gray-500">Click to upload images</p>
+                <Upload className="w-6 h-6 mb-1 text-gray-400" />
+                <p className="text-xs text-gray-500">Click to upload images</p>
               </div>
               <input 
                 id="dropzone-file" 
@@ -369,10 +369,10 @@ const ContactForm = () => {
         
         <div className="text-center">
           <div className="flex items-center justify-center mb-5">
-            <div className="inline-block p-3 border border-green rounded-full">
-              <span className="text-green">✓</span>
+            <div className="inline-flex items-center justify-center p-2 border border-gray-300 rounded-full">
+              <Award className="text-gray-700" size={20} />
             </div>
-            <span className="ml-2 text-sm font-medium text-navy">100% Satisfaction Guarantee</span>
+            <span className="ml-2 text-sm font-medium text-gray-700">100% Satisfaction Guarantee</span>
           </div>
           <button 
             type="submit" 
@@ -387,7 +387,7 @@ const ContactForm = () => {
             ) : (
               <>
                 <Mail className="mr-2" size={20} />
-                Send Message
+                Submit Free Quote
               </>
             )}
           </button>

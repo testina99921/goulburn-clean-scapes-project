@@ -15,10 +15,16 @@ const Contact = () => {
       {/* Page Header */}
       <ContactHeader />
       
-      {/* Contact Information and Form */}
+      {/* Contact Information Header */}
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <ContactInfo layout="horizontal" />
+        </div>
+      </section>
+      
+      {/* Contact Form */}
       <section className="py-12">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <ContactInfo />
+        <div className="container mx-auto px-4 max-w-4xl">
           <ContactForm />
         </div>
       </section>

@@ -10,7 +10,6 @@ import ScrollAnimation from '../components/ScrollAnimation';
 const About = () => {
   // Use the image from Index page for consistency
   const ownerImage = "/lovable-uploads/4c20fc47-a9f3-4cac-817d-1719c44d45b8.png";
-  const ctaBackground = "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80";
 
   useEffect(() => {
     // Scroll to top on page load
@@ -202,15 +201,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <CTASection 
-        title="Ready to Transform Your Property?"
-        subtitle="Contact us today for a free, no-obligation quote on our professional pressure washing services."
-        buttonText="Get Your Free Quote"
-        buttonLink="/contact"
-        backgroundImage={ctaBackground}
-      />
 
       <Footer />
     </div>
