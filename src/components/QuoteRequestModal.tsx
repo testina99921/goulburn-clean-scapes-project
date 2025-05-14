@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, Mail, Upload, Check } from 'lucide-react';
@@ -9,9 +8,30 @@ interface QuoteRequestModalProps {
   onClose: () => void;
 }
 
+type AdditionalServicesType = {
+  gutterCleaning: boolean;
+  paverSealing: boolean;
+  windowWashing: boolean;
+  solarPanelCleaning: boolean;
+  fenceRestoration: boolean;
+  highPressureCleaning: boolean;
+};
+
+type FormDataType = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  service: string;
+  message: string;
+  binCleaning: boolean;
+  additionalServices: AdditionalServicesType;
+  files: File[];
+};
+
 const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataType>({
     name: '',
     email: '',
     phone: '',
@@ -44,13 +64,15 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     
     if (name.includes('.')) {
       const [group, field] = name.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [group]: {
-          ...prev[group as keyof typeof prev],
-          [field]: checked
-        }
-      }));
+      if (group === 'additionalServices' && typeof formData.additionalServices === 'object') {
+        setFormData(prev => ({
+          ...prev,
+          additionalServices: {
+            ...prev.additionalServices,
+            [field]: checked
+          }
+        }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,

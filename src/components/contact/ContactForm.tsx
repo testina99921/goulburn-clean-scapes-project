@@ -3,8 +3,27 @@ import React, { useState } from 'react';
 import { Mail, Upload, Trash2 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
+type AdditionalServicesType = {
+  gutterCleaning: boolean;
+  paverSealing: boolean;
+  windowWashing: boolean;
+  solarPanelCleaning: boolean;
+  fenceRestoration: boolean;
+  highPressureCleaning: boolean;
+};
+
+type FormDataType = {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  binCleaning: boolean;
+  additionalServices: AdditionalServicesType;
+  message: string;
+};
+
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataType>({
     name: '',
     email: '',
     phone: '',
@@ -30,13 +49,15 @@ const ContactForm = () => {
     
     if (name.includes('.')) {
       const [group, field] = name.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [group]: {
-          ...prev[group as keyof typeof prev],
-          [field]: checked
-        }
-      }));
+      if (group === 'additionalServices' && typeof formData.additionalServices === 'object') {
+        setFormData(prev => ({
+          ...prev,
+          additionalServices: {
+            ...prev.additionalServices,
+            [field]: checked
+          }
+        }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,
