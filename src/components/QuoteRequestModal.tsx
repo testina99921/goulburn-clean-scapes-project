@@ -1,8 +1,8 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, Mail, Upload, Check } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
+import emailjs from '@emailjs/browser';
 
 interface QuoteRequestModalProps {
   isOpen: boolean;
@@ -32,6 +32,7 @@ type FormDataType = {
 
 const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState<FormDataType>({
     name: '',
     email: '',
@@ -99,12 +100,47 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const prepareFormData = () => {
+    // Format additional services for email
+    const selectedServices = Object.entries(formData.additionalServices)
+      .filter(([_, selected]) => selected)
+      .map(([service]) => {
+        // Convert camelCase to readable format
+        return service === 'paverConcreteSealing' 
+          ? 'Paver & Concrete Sealing'
+          : service.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+      })
+      .join(', ');
+
+    // Prepare the data to be sent
+    return {
+      from_name: formData.name,
+      reply_to: formData.email,
+      phone_number: formData.phone,
+      address: formData.address,
+      service_needed: formData.service,
+      bin_cleaning: formData.binCleaning ? 'Yes' : 'No',
+      additional_services: selectedServices || 'None',
+      message: formData.message,
+    };
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitStatus('loading');
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Prepare the template parameters
+      const templateParams = prepareFormData();
+      
+      // Send the email using EmailJS
+      await emailjs.send(
+        'service_id', // Your EmailJS service ID (you'll need to replace this)
+        'template_id', // Your EmailJS template ID (you'll need to replace this)
+        templateParams,
+        'public_key' // Your EmailJS public key (you'll need to replace this)
+      );
+
       setSubmitStatus('success');
       toast({
         title: "Quote request sent!",
@@ -134,7 +170,15 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
         setSubmitStatus('idle');
         onClose();
       }, 1500);
-    }, 1500);
+    } catch (error) {
+      setSubmitStatus('error');
+      console.error('Error sending email:', error);
+      toast({
+        title: "Error",
+        description: "There was a problem sending your request. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -144,7 +188,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
           <h2 className="text-2xl font-semibold text-navy">Request a Free Quote</h2>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
           {submitStatus === 'success' ? (
             <div className="text-center py-10">
               <div className="w-16 h-16 bg-green rounded-full flex items-center justify-center mx-auto mb-4">

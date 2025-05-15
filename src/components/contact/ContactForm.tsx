@@ -1,7 +1,7 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import emailjs from '@emailjs/browser';
 
 type AdditionalServicesType = {
   gutterCleaning: boolean;
@@ -23,6 +23,7 @@ type FormDataType = {
 };
 
 const ContactForm = () => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState<FormDataType>({
     name: '',
     email: '',
@@ -76,56 +77,91 @@ const ContactForm = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
+  const prepareFormData = () => {
+    // Format additional services for email
+    const selectedServices = Object.entries(formData.additionalServices)
+      .filter(([_, selected]) => selected)
+      .map(([service]) => {
+        // Convert camelCase to readable format
+        return service === 'paverConcreteSealing' 
+          ? 'Paver & Concrete Sealing'
+          : service.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+      })
+      .join(', ');
+
+    // Prepare the data to be sent
+    return {
+      from_name: formData.name,
+      reply_to: formData.email,
+      phone_number: formData.phone,
+      service_needed: formData.service,
+      bin_cleaning: formData.binCleaning ? 'Yes' : 'No',
+      additional_services: selectedServices || 'None',
+      message: formData.message,
+    };
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setIsSubmitSuccess(false);
 
     try {
-      // Simulate form submission
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setIsSubmitSuccess(true);
-        toast({
-          title: "Message Sent",
-          description: "We'll get back to you soon!",
-        });
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          service: '',
-          binCleaning: false,
-          additionalServices: {
-            gutterCleaning: false,
-            paverConcreteSealing: false,
-            windowWashing: false,
-            solarPanelCleaning: false,
-            fenceRestoration: false,
-            highPressureCleaning: false
-          },
-          message: ''
-        });
-        setFiles([]);
-      }, 2000);
+      // Prepare the template parameters
+      const templateParams = prepareFormData();
+      
+      // Send the email using EmailJS
+      await emailjs.send(
+        'service_id', // Your EmailJS service ID (you'll need to replace this)
+        'template_id', // Your EmailJS template ID (you'll need to replace this)
+        templateParams,
+        'public_key' // Your EmailJS public key (you'll need to replace this)
+      );
+
+      setIsSubmitting(false);
+      setIsSubmitSuccess(true);
+      toast({
+        title: "Message Sent",
+        description: "We'll get back to you soon!",
+      });
+      
+      // Reset form data after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        binCleaning: false,
+        additionalServices: {
+          gutterCleaning: false,
+          paverConcreteSealing: false,
+          windowWashing: false,
+          solarPanelCleaning: false,
+          fenceRestoration: false,
+          highPressureCleaning: false
+        },
+        message: ''
+      });
+      setFiles([]);
     } catch (error) {
       setIsSubmitting(false);
+      console.error('Error sending email:', error);
       toast({
         title: "Error",
-        description: "There was a problem sending your message.",
+        description: "There was a problem sending your message. Please try again.",
         variant: "destructive",
       });
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto glass-card p-8 rounded-xl">
+    <div className="max-w-4xl mx-auto p-8 rounded-xl">
       <h2 className="text-3xl font-semibold text-navy mb-8 text-center flex justify-center items-center">
         <Mail className="text-green mr-2" size={28} /> 
         Send Us a Message
       </h2>
       
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="name" className="block mb-2 text-sm font-medium text-navy">
