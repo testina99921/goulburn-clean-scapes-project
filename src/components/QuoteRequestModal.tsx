@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { X, Mail, Upload, Check } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 import emailjs from '@emailjs/browser';
@@ -174,9 +174,21 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     } catch (error) {
       setSubmitStatus('error');
       console.error('Error sending email:', error);
+      
+      // More detailed error messages based on error type
+      let errorMessage = "There was a problem sending your request. Please try again.";
+      
+      if (error instanceof Error) {
+        if (error.toString().includes("Gmail_API")) {
+          errorMessage = "Email authentication error. Please contact us directly at elevatedpressurewashing.com@gmail.com or call us.";
+        } else if (error.toString().includes("network")) {
+          errorMessage = "Network connection issue. Please check your internet connection and try again.";
+        }
+      }
+      
       toast({
         title: "Error",
-        description: "There was a problem sending your request. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -185,9 +197,10 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-5">
-          <h2 className="text-2xl font-semibold text-navy">Request a Free Quote</h2>
-        </div>
+        <DialogTitle className="text-2xl font-semibold text-navy">Request a Free Quote</DialogTitle>
+        <DialogDescription className="sr-only">
+          Fill out the form below to request a free quote from Elevated Pressure Washing
+        </DialogDescription>
         
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
           {submitStatus === 'success' ? (

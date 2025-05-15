@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -146,9 +147,21 @@ const ContactForm = () => {
     } catch (error) {
       setIsSubmitting(false);
       console.error('Error sending email:', error);
+      
+      // More detailed error messages based on error type
+      let errorMessage = "There was a problem sending your message. Please try again.";
+      
+      if (error instanceof Error) {
+        if (error.toString().includes("Gmail_API")) {
+          errorMessage = "Email authentication error. Please contact us directly at elevatedpressurewashing.com@gmail.com";
+        } else if (error.toString().includes("network")) {
+          errorMessage = "Network connection issue. Please check your internet connection and try again.";
+        }
+      }
+      
       toast({
         title: "Error",
-        description: "There was a problem sending your message. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
