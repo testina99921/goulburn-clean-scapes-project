@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, Mail, Upload, Check } from 'lucide-react';
@@ -133,12 +134,12 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
       // Prepare the template parameters
       const templateParams = prepareFormData();
       
-      // Send the email using EmailJS
+      // Send the email using EmailJS with your real credentials
       await emailjs.send(
-        'service_id', // Your EmailJS service ID (you'll need to replace this)
-        'template_id', // Your EmailJS template ID (you'll need to replace this)
+        'service_qmpxjkw', 
+        'template_sdmczbi',
         templateParams,
-        'public_key' // Your EmailJS public key (you'll need to replace this)
+        'VgLV1u04aP3HwNDN_'
       );
 
       setSubmitStatus('success');
