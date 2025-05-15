@@ -10,9 +10,6 @@ const ContactHeader = () => {
           title="Contact Us" 
           subtitle="Get in touch with our team for inquiries and service requests"
         />
-        <p className="text-xl text-navy mt-4">
-          We're here to help with all your pressure washing needs. Contact us today for a free quote!
-        </p>
       </div>
     </section>
   );

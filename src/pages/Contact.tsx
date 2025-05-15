@@ -15,19 +15,19 @@ const Contact = () => {
       {/* Page Header */}
       <ContactHeader />
       
-      {/* Contact Information Header */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4">
-          <ContactInfo layout="horizontal" />
+      <div className="container mx-auto px-4 py-12">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Contact Information */}
+          <div className="md:w-1/3">
+            <ContactInfo layout="vertical" />
+          </div>
+          
+          {/* Contact Form */}
+          <div className="md:w-2/3">
+            <ContactForm />
+          </div>
         </div>
-      </section>
-      
-      {/* Contact Form */}
-      <section className="py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <ContactForm />
-        </div>
-      </section>
+      </div>
       
       {/* Full Width Map */}
       <ContactFullWidthMap />

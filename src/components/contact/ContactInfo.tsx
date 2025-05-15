@@ -12,40 +12,64 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ layout = 'vertical' }) => {
   return (
     <div className={`glass-card p-6 rounded-xl ${isHorizontal ? 'flex flex-wrap justify-around items-center' : ''}`}>
       {!isHorizontal && (
-        <h3 className="text-2xl font-semibold text-navy mb-4">Contact Information</h3>
+        <h3 className="text-2xl font-semibold text-navy mb-6">Contact Information</h3>
       )}
       
-      <div className={`${isHorizontal ? 'flex items-center mb-2 mr-6' : 'mb-2'}`}>
-        <MapPin className="text-navy inline mr-2" size={isHorizontal ? 20 : 18} />
-        <p className="text-navy inline">
-          <strong>Address:</strong> 123 Main Street, Goulburn, NSW 2580
-        </p>
+      <div className={`${isHorizontal ? 'mb-2 mr-6' : 'mb-6'}`}>
+        <div className="flex items-start">
+          <div className="bg-cyan-500 rounded-full p-2 mr-4 flex-shrink-0">
+            <Phone className="text-white" size={isHorizontal ? 20 : 24} />
+          </div>
+          <div>
+            <p className="text-gray-600 font-medium">Phone</p>
+            <p className="text-cyan-500 font-medium">
+              <a href="tel:+61412345678" className="hover:text-navyLight transition-colors">0417 264 292</a>
+            </p>
+          </div>
+        </div>
       </div>
       
-      <div className={`${isHorizontal ? 'flex items-center mb-2 mr-6' : 'mb-2'}`}>
-        <Phone className="text-navy inline mr-2" size={isHorizontal ? 20 : 18} />
-        <p className="text-navy inline">
-          <strong>Phone:</strong> <a href="tel:+61412345678" className="text-navy hover:text-navyLight transition-colors">+61 412 345 678</a>
-        </p>
+      <div className={`${isHorizontal ? 'mb-2 mr-6' : 'mb-6'}`}>
+        <div className="flex items-start">
+          <div className="bg-cyan-500 rounded-full p-2 mr-4 flex-shrink-0">
+            <Mail className="text-white" size={isHorizontal ? 20 : 24} />
+          </div>
+          <div>
+            <p className="text-gray-600 font-medium">Email</p>
+            <p className="text-cyan-500 font-medium">
+              <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors">rossjudd@hotmail.com</a>
+            </p>
+          </div>
+        </div>
       </div>
       
-      <div className={`${isHorizontal ? 'flex items-center mb-2' : 'mb-4'}`}>
-        <Mail className="text-navy inline mr-2" size={isHorizontal ? 20 : 18} />
-        <p className="text-navy inline">
-          <strong>Email:</strong> <a href="mailto:info@example.com" className="text-navy hover:text-navyLight transition-colors">info@example.com</a>
-        </p>
+      <div className={`${isHorizontal ? 'mb-2' : 'mb-6'}`}>
+        <div className="flex items-start">
+          <div className="bg-cyan-500 rounded-full p-2 mr-4 flex-shrink-0">
+            <MapPin className="text-white" size={isHorizontal ? 20 : 24} />
+          </div>
+          <div>
+            <p className="text-gray-600 font-medium">Location</p>
+            <p className="text-gray-800">Goulburn, NSW, Australia</p>
+            <p className="text-gray-500 text-sm">Serving Goulburn, Canberra & surrounds</p>
+          </div>
+        </div>
       </div>
       
       {!isHorizontal && (
-        <>
-          <h4 className="text-xl font-semibold text-navy mt-6 mb-3 flex items-center">
-            <Clock className="text-navy mr-2" size={18} />
-            Business Hours
-          </h4>
-          <p className="text-navy">Monday - Friday: 9am - 5pm</p>
-          <p className="text-navy">Saturday: 9am - 12pm</p>
-          <p className="text-navy">Sunday: Closed</p>
-        </>
+        <div className="mb-4">
+          <div className="flex items-start">
+            <div className="bg-cyan-500 rounded-full p-2 mr-4 flex-shrink-0">
+              <Clock className="text-white" size={24} />
+            </div>
+            <div>
+              <p className="text-gray-600 font-medium">Business Hours</p>
+              <p className="text-gray-800">Monday - Friday: 7:00 AM - 5:00 PM</p>
+              <p className="text-gray-800">Saturday: 8:00 AM - 3:00 PM</p>
+              <p className="text-gray-800">Sunday: By appointment</p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

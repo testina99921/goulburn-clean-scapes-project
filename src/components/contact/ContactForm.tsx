@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -370,9 +369,9 @@ const ContactForm = () => {
         <div className="text-center">
           <div className="flex items-center justify-center mb-5">
             <div className="inline-flex items-center justify-center p-2 border border-gray-300 rounded-full">
-              <Award className="text-gray-700" size={20} />
+              <Award className="text-black" size={20} />
             </div>
-            <span className="ml-2 text-sm font-medium text-gray-700">100% Satisfaction Guarantee</span>
+            <span className="ml-2 text-sm font-medium text-black">100% Satisfaction Guarantee</span>
           </div>
           <button 
             type="submit" 
