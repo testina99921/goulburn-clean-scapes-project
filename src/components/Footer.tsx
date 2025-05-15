@@ -11,14 +11,14 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-2 text-sm">
           {/* Company Info */}
           <div>
-            <h3 className="font-bold mb-1 text-sm">R Judd Enterprise</h3>
+            <h3 className="font-bold mb-1 text-sm">Elevated Pressure Washing</h3>
             <div className="flex items-center mb-1">
               <Phone size={12} className="mr-1" />
               <a href="tel:0417264292" className="hover:text-navyLight transition-colors text-xs">0417 264 292</a>
             </div>
             <div className="flex items-center mb-1">
               <Mail size={12} className="mr-1" />
-              <a href="mailto:rossjudd@hotmail.com" className="hover:text-navyLight transition-colors text-xs">rossjudd@hotmail.com</a>
+              <a href="mailto:elevatedpressurewashing.com@gmail.com" className="hover:text-navyLight transition-colors text-xs">elevatedpressurewashing.com@gmail.com</a>
             </div>
             <div className="flex items-start mb-1">
               <MapPin size={12} className="mr-1 mt-0.5 flex-shrink-0" />
@@ -72,7 +72,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/20 mt-2 pt-2 text-center text-white text-xs">
-          <p>© {currentYear} R Judd Enterprise. All rights reserved.</p>
+          <p>© {currentYear} Elevated Pressure Washing. All rights reserved.</p>
         </div>
       </div>
     </footer>

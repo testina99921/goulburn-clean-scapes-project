@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, Mail, Upload, Check } from 'lucide-react';
@@ -10,7 +11,7 @@ interface QuoteRequestModalProps {
 
 type AdditionalServicesType = {
   gutterCleaning: boolean;
-  paverSealing: boolean;
+  paverConcreteSealing: boolean;
   windowWashing: boolean;
   solarPanelCleaning: boolean;
   fenceRestoration: boolean;
@@ -36,12 +37,12 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
     email: '',
     phone: '',
     address: '',
-    service: 'house-washing',
+    service: '',
     message: '',
     binCleaning: false,
     additionalServices: {
       gutterCleaning: false,
-      paverSealing: false,
+      paverConcreteSealing: false,
       windowWashing: false,
       solarPanelCleaning: false,
       fenceRestoration: false,
@@ -117,12 +118,12 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
           email: '',
           phone: '',
           address: '',
-          service: 'house-washing',
+          service: '',
           message: '',
           binCleaning: false,
           additionalServices: {
             gutterCleaning: false,
-            paverSealing: false,
+            paverConcreteSealing: false,
             windowWashing: false,
             solarPanelCleaning: false,
             fenceRestoration: false,
@@ -233,6 +234,7 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
+                  <option value="">Select a Service</option>
                   <option value="house-washing">House Washing</option>
                   <option value="roof-cleaning">Roof Cleaning</option>
                   <option value="driveway-cleaning">Driveway Cleaning</option>
@@ -284,15 +286,15 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
                   
                   <div className="flex items-start">
                     <input
-                      id="paverSealing"
-                      name="additionalServices.paverSealing"
+                      id="paverConcreteSealing"
+                      name="additionalServices.paverConcreteSealing"
                       type="checkbox"
-                      checked={formData.additionalServices.paverSealing}
+                      checked={formData.additionalServices.paverConcreteSealing}
                       onChange={handleCheckboxChange}
                       className="h-4 w-4 mt-1 text-green border-gray-300 rounded"
                     />
-                    <label htmlFor="paverSealing" className="ml-2 text-sm text-gray-700">
-                      Paver Sealing
+                    <label htmlFor="paverConcreteSealing" className="ml-2 text-sm text-gray-700">
+                      Paver & Concrete Sealing
                     </label>
                   </div>
                   

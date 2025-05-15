@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -31,18 +32,18 @@ import {
 const SEOMetaTags = () => {
   useEffect(() => {
     // Update document title for SEO
-    document.title = "R Judd Enterprise | Professional Pressure Washing Services Goulburn, Canberra & NSW";
+    document.title = "Elevated Pressure Washing | Professional Pressure Washing Services Goulburn, Canberra & NSW";
     
     // Add meta description
     const metaDescription = document.createElement('meta');
     metaDescription.name = "description";
-    metaDescription.content = "R Judd Enterprise provides top-quality pressure washing services for residential and commercial properties in Goulburn, Canberra & NSW. Transform your property today!";
+    metaDescription.content = "Elevated Pressure Washing provides top-quality pressure washing services for residential and commercial properties in Goulburn, Canberra & NSW. Transform your property today!";
     document.head.appendChild(metaDescription);
     
     // Add keywords
     const metaKeywords = document.createElement('meta');
     metaKeywords.name = "keywords";
-    metaKeywords.content = "pressure washing, pressure cleaning, house washing, roof cleaning, driveway cleaning, Goulburn, Canberra, NSW, R Judd Enterprise";
+    metaKeywords.content = "pressure washing, pressure cleaning, house washing, roof cleaning, driveway cleaning, Goulburn, Canberra, NSW, Elevated Pressure Washing";
     document.head.appendChild(metaKeywords);
     
     // Add canonical link
@@ -76,7 +77,7 @@ const Index = () => {
     {
       name: "Alex Wilson",
       location: "Goulburn, NSW",
-      quote: "The team at R Judd Enterprise did an amazing job on my driveway and house exterior. It looks like new again! Professional, punctual, and thorough.",
+      quote: "The team at Elevated Pressure Washing did an amazing job on my driveway and house exterior. It looks like new again! Professional, punctual, and thorough.",
       rating: 5
     },
     {
@@ -195,17 +196,17 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <AnimateOnScroll className="md:w-1/3">
               <div className="rounded-lg overflow-hidden shadow-xl card-3d">
-                <img src="/lovable-uploads/4c20fc47-a9f3-4cac-817d-1719c44d45b8.png" alt="Ross Judd" className="w-full object-cover h-72" />
+                <img src="/lovable-uploads/4c20fc47-a9f3-4cac-817d-1719c44d45b8.png" alt="Elevated Pressure Washing" className="w-full object-cover h-72" />
               </div>
             </AnimateOnScroll>
             <div className="md:w-2/3">
               <AnimateOnScroll>
                 <h2 className="text-3xl font-light text-navy mb-4">Trusted by <span className="font-semibold">Goulburn</span></h2>
                 <p className="text-lg text-navy mb-4">
-                  Ross Judd of R JUDD Enterprises brings years of experience and a reputation for excellence to every pressure washing job. As a trusted name in Goulburn for many years, Ross has built a solid reputation for quality craftsmanship and customer satisfaction.
+                  Elevated Pressure Washing brings years of experience and a reputation for excellence to every pressure washing job. As a trusted name in Goulburn for many years, we have built a solid reputation for quality craftsmanship and customer satisfaction.
                 </p>
                 <p className="text-lg text-navy mb-6">
-                  Now offering professional pressure washing services, we bring the same commitment to quality and attention to detail that has made R JUDD Enterprises a trusted name in the community.
+                  Now offering professional pressure washing services, we bring the same commitment to quality and attention to detail that has made Elevated Pressure Washing a trusted name in the community.
                 </p>
                 <Link to="/about" className="text-navy font-medium hover:text-navyLight transition-colors flex items-center fancy-link">
                   Learn More About Us
@@ -337,7 +338,7 @@ const Index = () => {
                 <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <BuildingIcon size={32} className="text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3 text-navy">Backed by R JUDD Enterprises</h3>
+                <h3 className="text-xl font-semibold mb-3 text-navy">Backed by Experience</h3>
                 <p className="text-navy">
                   A trusted local business with years of experience serving the Goulburn community with excellence.
                 </p>
@@ -434,7 +435,7 @@ const Index = () => {
           <AnimateOnScroll>
             <h2 className="text-3xl font-light mb-6">Our Mission</h2>
             <p className="text-xl max-w-3xl mx-auto mb-6 opacity-90">
-              At R Judd Enterprise, our mission is to deliver exceptional pressure washing services that transform your property while upholding the highest standards of quality, customer satisfaction, and environmental responsibility.
+              At Elevated Pressure Washing, our mission is to deliver exceptional pressure washing services that transform your property while upholding the highest standards of quality, customer satisfaction, and environmental responsibility.
             </p>
             <p className="text-lg max-w-3xl mx-auto opacity-80">
               We believe in honesty, integrity, and building lasting relationships with our clients in Goulburn, Canberra and surrounding areas.

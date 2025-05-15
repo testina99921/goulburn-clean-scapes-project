@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
 type AdditionalServicesType = {
   gutterCleaning: boolean;
-  paverSealing: boolean;
+  paverConcreteSealing: boolean;
   windowWashing: boolean;
   solarPanelCleaning: boolean;
   fenceRestoration: boolean;
@@ -30,7 +31,7 @@ const ContactForm = () => {
     binCleaning: false,
     additionalServices: {
       gutterCleaning: false,
-      paverSealing: false,
+      paverConcreteSealing: false,
       windowWashing: false,
       solarPanelCleaning: false,
       fenceRestoration: false,
@@ -97,7 +98,7 @@ const ContactForm = () => {
           binCleaning: false,
           additionalServices: {
             gutterCleaning: false,
-            paverSealing: false,
+            paverConcreteSealing: false,
             windowWashing: false,
             solarPanelCleaning: false,
             fenceRestoration: false,
@@ -238,15 +239,15 @@ const ContactForm = () => {
             
             <div className="flex items-start">
               <input
-                id="paverSealing"
-                name="additionalServices.paverSealing"
+                id="paverConcreteSealing"
+                name="additionalServices.paverConcreteSealing"
                 type="checkbox"
-                checked={formData.additionalServices.paverSealing}
+                checked={formData.additionalServices.paverConcreteSealing}
                 onChange={handleChange}
                 className="h-4 w-4 mt-1 border border-gray-300 rounded"
               />
-              <label htmlFor="paverSealing" className="ml-2 text-sm text-gray-700">
-                Paver Sealing
+              <label htmlFor="paverConcreteSealing" className="ml-2 text-sm text-gray-700">
+                Paver & Concrete Sealing
               </label>
             </div>
             
