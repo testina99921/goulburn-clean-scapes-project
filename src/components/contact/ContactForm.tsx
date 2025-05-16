@@ -99,6 +99,7 @@ const ContactForm = () => {
       bin_cleaning: formData.binCleaning ? 'Yes' : 'No',
       additional_services: selectedServices || 'None',
       message: formData.message,
+      subject: `New Quote Request from ${formData.name} - Elevated Pressure Washing`
     };
   };
 
@@ -156,6 +157,8 @@ const ContactForm = () => {
           errorMessage = "Email authentication error. Please contact us directly at elevatedpressurewashing.com@gmail.com";
         } else if (error.toString().includes("network")) {
           errorMessage = "Network connection issue. Please check your internet connection and try again.";
+        } else if (error.toString().includes("dynamic variables")) {
+          errorMessage = "There was an issue with the form data. Please check your information and try again.";
         }
       }
       
