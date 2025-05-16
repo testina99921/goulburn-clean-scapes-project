@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -99,7 +100,6 @@ const ContactForm = () => {
       additional_services: selectedServices || 'None',
       message: formData.message || "No message provided",
       address: "Not provided", // Add empty address field to match template
-      subject: `Quote Request from ${formData.name} - Elevated Pressure Washing`
     };
   };
 
@@ -112,13 +112,31 @@ const ContactForm = () => {
       // Prepare the template parameters
       const templateParams = prepareFormData();
       
-      console.log("Sending email with params:", templateParams);
+      // Create the EmailJS template parameters with proper subject line
+      const emailParams = {
+        ...templateParams,
+        subject: `New Quote from ${formData.name || 'Customer'} - Elevated Pressure Washing`,
+      };
+      
+      console.log("Sending email with params:", emailParams);
+      
+      // If there are files, we need to handle them differently
+      if (files.length > 0) {
+        // EmailJS doesn't directly support file uploads in the free plan
+        // For file uploads, you would need their premium plan or an alternative approach
+        // Let the user know about file limitations
+        toast({
+          title: "Note about attachments",
+          description: "File attachments require EmailJS premium plan. The customer request has been sent without attachments.",
+          duration: 6000,
+        });
+      }
       
       // Send the email using EmailJS with your real credentials
       await emailjs.send(
         'service_qmpxjkw', 
         'template_sdmczbi',
-        templateParams,
+        emailParams,
         'VgLV1u04aP3HwNDN_'
       );
 

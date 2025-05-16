@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { X, Mail, Upload, Check } from 'lucide-react';
@@ -122,7 +123,6 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
       bin_cleaning: formData.binCleaning ? 'Yes' : 'No',
       additional_services: selectedServices || 'None',
       message: formData.message || "No message provided",
-      subject: `Quote Request from ${formData.name} - Elevated Pressure Washing`
     };
   };
 
@@ -134,13 +134,31 @@ const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({ isOpen, onClose }
       // Prepare the template parameters
       const templateParams = prepareFormData();
       
-      console.log("Sending email with params:", templateParams);
+      // Create the EmailJS template parameters with proper subject line
+      const emailParams = {
+        ...templateParams,
+        subject: `New Quote from ${formData.name || 'Customer'} - Elevated Pressure Washing`,
+      };
+      
+      console.log("Sending email with params:", emailParams);
+      
+      // If there are files, we need to handle them differently
+      if (formData.files.length > 0) {
+        // EmailJS doesn't directly support file uploads in the free plan
+        // For file uploads, you would need their premium plan or an alternative approach
+        // Let the user know about file limitations
+        toast({
+          title: "Note about attachments",
+          description: "File attachments require EmailJS premium plan. The customer request has been sent without attachments.",
+          duration: 6000,
+        });
+      }
       
       // Send the email using EmailJS with your real credentials
       await emailjs.send(
         'service_qmpxjkw', 
         'template_sdmczbi',
-        templateParams,
+        emailParams,
         'VgLV1u04aP3HwNDN_'
       );
 
