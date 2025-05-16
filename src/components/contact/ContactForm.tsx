@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Mail, Upload, Trash2, Award } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -90,16 +89,17 @@ const ContactForm = () => {
       })
       .join(', ');
 
-    // Prepare the data to be sent
+    // Prepare the data to be sent - ensure all fields match template variables exactly
     return {
-      from_name: formData.name,
-      reply_to: formData.email,
-      phone_number: formData.phone,
-      service_needed: formData.service,
+      from_name: formData.name || "Not provided",
+      reply_to: formData.email || "Not provided",
+      phone_number: formData.phone || "Not provided",
+      service_needed: formData.service || "Not specified",
       bin_cleaning: formData.binCleaning ? 'Yes' : 'No',
       additional_services: selectedServices || 'None',
-      message: formData.message,
-      subject: `New Quote Request from ${formData.name} - Elevated Pressure Washing`
+      message: formData.message || "No message provided",
+      address: "Not provided", // Add empty address field to match template
+      subject: `Quote Request from ${formData.name} - Elevated Pressure Washing`
     };
   };
 
@@ -111,6 +111,8 @@ const ContactForm = () => {
     try {
       // Prepare the template parameters
       const templateParams = prepareFormData();
+      
+      console.log("Sending email with params:", templateParams);
       
       // Send the email using EmailJS with your real credentials
       await emailjs.send(
@@ -153,6 +155,7 @@ const ContactForm = () => {
       let errorMessage = "There was a problem sending your message. Please try again.";
       
       if (error instanceof Error) {
+        console.error("Error details:", error.toString());
         if (error.toString().includes("Gmail_API")) {
           errorMessage = "Email authentication error. Please contact us directly at elevatedpressurewashing.com@gmail.com";
         } else if (error.toString().includes("network")) {

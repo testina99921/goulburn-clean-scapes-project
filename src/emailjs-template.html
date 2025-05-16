@@ -83,12 +83,10 @@
                     <th>Phone</th>
                     <td>{{phone_number}}</td>
                 </tr>
-                {{#if address}}
                 <tr>
                     <th>Address</th>
                     <td>{{address}}</td>
                 </tr>
-                {{/if}}
             </table>
             
             <h2 class="section-title">Service Details</h2>
@@ -101,18 +99,14 @@
                     <th>Bin Cleaning</th>
                     <td>{{bin_cleaning}}</td>
                 </tr>
-                {{#if additional_services}}
                 <tr>
                     <th>Additional Services</th>
                     <td>{{additional_services}}</td>
                 </tr>
-                {{/if}}
             </table>
             
-            {{#if message}}
             <h2 class="section-title">Customer Message</h2>
             <p>{{message}}</p>
-            {{/if}}
             
             <p class="highlight">Please contact this customer as soon as possible to discuss their requirements and provide a quote.</p>
         </div>
