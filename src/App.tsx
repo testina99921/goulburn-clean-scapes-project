@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import emailjs from '@emailjs/browser';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -13,8 +12,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import "./ScrollAnimation.js";
 
-// Initialize EmailJS
-emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+// Remove duplicate EmailJS initialization since it's done in main.tsx
 
 const queryClient = new QueryClient();
 

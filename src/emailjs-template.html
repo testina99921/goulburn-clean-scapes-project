@@ -1,5 +1,4 @@
 
-<!-- This is a template file that you can copy into your EmailJS account -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,10 +46,17 @@
         }
         th {
             background-color: #f2f2f2;
+            width: 30%;
         }
         .highlight {
             color: #006633;
             font-weight: bold;
+        }
+        .section-title {
+            background-color: #e6f2ff;
+            padding: 8px;
+            margin-top: 20px;
+            border-left: 3px solid #003366;
         }
     </style>
 </head>
@@ -62,7 +68,7 @@
         </div>
         
         <div class="content">
-            <h2>Customer Information</h2>
+            <h2 class="section-title">Customer Information</h2>
             
             <table>
                 <tr>
@@ -71,13 +77,13 @@
                 </tr>
                 <tr>
                     <th>Email</th>
-                    <td>{{reply_to}}</td>
+                    <td><a href="mailto:{{reply_to}}">{{reply_to}}</a></td>
                 </tr>
                 <tr>
                     <th>Phone</th>
                     <td>{{phone_number}}</td>
                 </tr>
-                {{if address}}
+                {{#if address}}
                 <tr>
                     <th>Address</th>
                     <td>{{address}}</td>
@@ -85,7 +91,7 @@
                 {{/if}}
             </table>
             
-            <h2>Service Details</h2>
+            <h2 class="section-title">Service Details</h2>
             <table>
                 <tr>
                     <th>Service Needed</th>
@@ -95,14 +101,16 @@
                     <th>Bin Cleaning</th>
                     <td>{{bin_cleaning}}</td>
                 </tr>
+                {{#if additional_services}}
                 <tr>
                     <th>Additional Services</th>
                     <td>{{additional_services}}</td>
                 </tr>
+                {{/if}}
             </table>
             
-            {{if message}}
-            <h2>Message</h2>
+            {{#if message}}
+            <h2 class="section-title">Customer Message</h2>
             <p>{{message}}</p>
             {{/if}}
             
@@ -110,7 +118,7 @@
         </div>
         
         <div class="footer">
-            <p>&copy; 2025 Elevated Pressure Washing | elevatedpressurewashing.com@gmail.com</p>
+            <p>&copy; 2025 Elevated Pressure Washing | <a href="mailto:elevatedpressurewashing.com@gmail.com" style="color: white;">elevatedpressurewashing.com@gmail.com</a></p>
         </div>
     </div>
 </body>
